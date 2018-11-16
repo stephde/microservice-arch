@@ -1,0 +1,46 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		// gradlePluginPortal() // do we need this for the docker plugin?
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("com.bmuschko:gradle-docker-plugin:4.0.2")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-spring-boot-application'
+
+group = 'com.kubernetes-monitor'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	compileOnly('org.projectlombok:lombok')
+	compile group: 'com.bmuschko', name: 'gradle-docker-plugin', version: '4.0.2'
+	compile 'io.kubernetes:client-java:3.0.0'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+//see https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin
+docker {
+	springBootApplication {
+		baseImage = 'openjdk:8-alpine'
+		ports = [8080]
+		tag = "spring-kubernetes-monitor"
+	}
+}
