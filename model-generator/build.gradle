@@ -1,0 +1,48 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		// gradlePluginPortal() // do we need this for the docker plugin?
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("com.bmuschko:gradle-docker-plugin:4.0.2")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-spring-boot-application'
+
+group = 'com.model-generator'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	compileOnly('org.projectlombok:lombok')
+	compile group: 'com.bmuschko', name: 'gradle-docker-plugin', version: '4.0.2'
+    compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.15.0'
+	compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.15.0'
+	compile group: 'org.knowm.xchart', name: 'xchart', version: '3.5.2'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+//see https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin
+docker {
+	springBootApplication {
+		baseImage = 'openjdk:8-alpine'
+		ports = [8080]
+		tag = "spring-model-generator"
+	}
+}

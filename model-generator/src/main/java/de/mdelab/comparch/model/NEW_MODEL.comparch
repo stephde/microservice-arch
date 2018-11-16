@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<comparch:Architecture xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:comparch="http://www.mdelab.de/comparch" uid="_zkuJwOWtEeigWYj_E3T8ZA" name="mRUBiS">
+  <componentTypes uid="_zk8MMOWtEeigWYj_E3T8ZA" criticality="0.9261" name="User Management Service" requiredInterfaceTypes="_zkuw0OWtEeigWYj_E3T8ZA _zk36wOWtEeigWYj_E3T8ZA _zk4h0OWtEeigWYj_E3T8ZA _zk0QYeWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zk4h4-WtEeigWYj_E3T8ZA _zk5I4eWtEeigWYj_E3T8ZA _zk5v8eWtEeigWYj_E3T8ZA _zk6XAOWtEeigWYj_E3T8ZA" instances="_zk-ocOWtEeigWYj_E3T8ZA" reliability="0.9478">
+    <parameterTypes uid="_zk8zQOWtEeigWYj_E3T8ZA" name="privacy-level" type="java.lang.String" defaultValue="LOW" instances="_zk_PgOWtEeigWYj_E3T8ZA"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zQeWtEeigWYj_E3T8ZA" criticality="0.5204" name="Item Management Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA _zk36wOWtEeigWYj_E3T8ZA _zkuw0OWtEeigWYj_E3T8ZA _zk0QYeWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzpVOWtEeigWYj_E3T8ZA _zkzpWuWtEeigWYj_E3T8ZA" instances="_zlAdpOWtEeigWYj_E3T8ZA" reliability="0.983"/>
+  <componentTypes uid="_zk8zQuWtEeigWYj_E3T8ZA" criticality="0.9862" name="Authentication Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkuw0OWtEeigWYj_E3T8ZA" instances="_zlAdq-WtEeigWYj_E3T8ZA" reliability="0.8052"/>
+  <componentTypes uid="_zk8zQ-WtEeigWYj_E3T8ZA" criticality="0.8727" name="Bid and Buy Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA _zk36wOWtEeigWYj_E3T8ZA _zkuw0OWtEeigWYj_E3T8ZA _zkzCROWtEeigWYj_E3T8ZA _zk0QYeWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkybMOWtEeigWYj_E3T8ZA _zkybNOWtEeigWYj_E3T8ZA" instances="_zlAdruWtEeigWYj_E3T8ZA" reliability="0.8724"/>
+  <componentTypes uid="_zk8zROWtEeigWYj_E3T8ZA" criticality="0.7575" name="Inventory Service" requiredInterfaceTypes="_zk36wOWtEeigWYj_E3T8ZA _zk0QYeWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCROWtEeigWYj_E3T8ZA" instances="_zlAdtuWtEeigWYj_E3T8ZA" reliability="0.9069"/>
+  <componentTypes uid="_zk8zReWtEeigWYj_E3T8ZA" criticality="0.5093" name="Reputation Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA _zk36wOWtEeigWYj_E3T8ZA _zkuw0OWtEeigWYj_E3T8ZA _zk0QYeWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zk4h4eWtEeigWYj_E3T8ZA" instances="_zlAduuWtEeigWYj_E3T8ZA" reliability="0.9887"/>
+  <componentTypes uid="_zk8zRuWtEeigWYj_E3T8ZA" criticality="0.2354" name="Persistence Service" providedInterfaceTypes="_zk0QYeWtEeigWYj_E3T8ZA" instances="_zlAdwOWtEeigWYj_E3T8ZA" reliability="0.8535"/>
+  <componentTypes uid="_zk8zR-WtEeigWYj_E3T8ZA" criticality="0.125" name="Query Service" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA _zk36wOWtEeigWYj_E3T8ZA" instances="_zlAdwuWtEeigWYj_E3T8ZA" reliability="0.9508"/>
+  <componentTypes uid="_zk8zSOWtEeigWYj_E3T8ZA" criticality="0.7397" name="Last Second Sales Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAdxuWtEeigWYj_E3T8ZA" reliability="0.922">
+    <parameterTypes uid="_zk8zSeWtEeigWYj_E3T8ZA" name="last-seconds" type="java.lang.Integer" defaultValue="300" instances="_zlAdx-WtEeigWYj_E3T8ZA"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zSuWtEeigWYj_E3T8ZA" criticality="0.3828" name="Past Sales Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAdyuWtEeigWYj_E3T8ZA" reliability="0.8059"/>
+  <componentTypes uid="_zk8zS-WtEeigWYj_E3T8ZA" criticality="0.199" name="Buy Now Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAdzeWtEeigWYj_E3T8ZA" reliability="0.8599"/>
+  <componentTypes uid="_zk8zTOWtEeigWYj_E3T8ZA" criticality="0.5436" name="Availability Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd0OWtEeigWYj_E3T8ZA" reliability="0.8073"/>
+  <componentTypes uid="_zk8zTeWtEeigWYj_E3T8ZA" criticality="0.35" name="Region Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd0-WtEeigWYj_E3T8ZA" reliability="0.8121"/>
+  <componentTypes uid="_zk8zTuWtEeigWYj_E3T8ZA" criticality="0.8785" name="Seller Reputation Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd1uWtEeigWYj_E3T8ZA" reliability="0.9164">
+    <parameterTypes uid="_zk8zT-WtEeigWYj_E3T8ZA" name="reputation-threshold" type="java.lang.Integer" defaultValue="5" instances="_zlAd1-WtEeigWYj_E3T8ZA"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zUOWtEeigWYj_E3T8ZA" criticality="0.2435" name="Comment Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd2uWtEeigWYj_E3T8ZA" reliability="0.8361">
+    <parameterTypes uid="_zk8zUeWtEeigWYj_E3T8ZA" name="rating-threshold" type="java.lang.Integer" defaultValue="5" instances="_zlAd2-WtEeigWYj_E3T8ZA"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zUuWtEeigWYj_E3T8ZA" criticality="0.5786" name="Category Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd3uWtEeigWYj_E3T8ZA" reliability="0.8089">
+    <parameterTypes uid="_zk8zU-WtEeigWYj_E3T8ZA" name="filtered-categories" type="java.lang.String" defaultValue="Coins,Jewelry" instances="_zlAd3-WtEeigWYj_E3T8ZA"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zVOWtEeigWYj_E3T8ZA" criticality="0.9489" name="Recommendation Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd4uWtEeigWYj_E3T8ZA" reliability="0.9883"/>
+  <componentTypes uid="_zk8zVeWtEeigWYj_E3T8ZA" criticality="0.8512" name="Future Sales Item Filter" requiredInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkzCQuWtEeigWYj_E3T8ZA" instances="_zlAd5eWtEeigWYj_E3T8ZA" reliability="0.9769">
+    <parameterTypes uid="_zk8zVuWtEeigWYj_E3T8ZA" name="days-to-run" type="java.lang.Integer" defaultValue="14" instances="_zlAd5uWtEeigWYj_E3T8ZA"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zV-WtEeigWYj_E3T8ZA" criticality="0.2066" name="Facebook Authentication Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkuw0OWtEeigWYj_E3T8ZA" reliability="0.9168">
+    <parameterTypes uid="_zk8zWOWtEeigWYj_E3T8ZA" name="ServiceURI" type="java.lang.String" defaultValue="http://localhost:8080/FacebookAuthenticationService/FbAuthenticationServiceImpl?wsdl"/>
+    <parameterTypes uid="_zk8zWeWtEeigWYj_E3T8ZA" name="ServiceNS" type="java.lang.String" defaultValue="http://authentication.facebook.com/"/>
+    <parameterTypes uid="_zk8zWuWtEeigWYj_E3T8ZA" name="ServiceNsLocalPartName" type="java.lang.String" defaultValue="FacebookAuthenticationService"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zW-WtEeigWYj_E3T8ZA" criticality="0.8763" name="Google Authentication Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkuw0OWtEeigWYj_E3T8ZA" reliability="0.8749">
+    <parameterTypes uid="_zk8zXOWtEeigWYj_E3T8ZA" name="ServiceURI" type="java.lang.String" defaultValue="http://localhost:8080/GoogleAuthenticationService/GoogleAuthenticationServiceImpl?wsdl"/>
+    <parameterTypes uid="_zk8zXeWtEeigWYj_E3T8ZA" name="ServiceNS" type="java.lang.String" defaultValue="http://authentication.google.com/"/>
+    <parameterTypes uid="_zk8zXuWtEeigWYj_E3T8ZA" name="ServiceNsLocalPartName" type="java.lang.String" defaultValue="GoogleAuthenticationService"/>
+  </componentTypes>
+  <componentTypes uid="_zk8zX-WtEeigWYj_E3T8ZA" criticality="0.8449" name="Twitter Authentication Service" requiredInterfaceTypes="_zk4h0OWtEeigWYj_E3T8ZA" providedInterfaceTypes="_zkuw0OWtEeigWYj_E3T8ZA" reliability="0.8077">
+    <parameterTypes uid="_zk8zYOWtEeigWYj_E3T8ZA" name="ServiceURI" type="java.lang.String" defaultValue="http://localhost:8080/TwitterAuthenticationService/TwitterAuthenticationServiceImpl?wsdl"/>
+    <parameterTypes uid="_zk8zYeWtEeigWYj_E3T8ZA" name="ServiceNS" type="java.lang.String" defaultValue="http://authentication.twitter.com/"/>
+    <parameterTypes uid="_zk8zYuWtEeigWYj_E3T8ZA" name="ServiceNsLocalPartName" type="java.lang.String" defaultValue="TwitterAuthenticationService"/>
+  </componentTypes>
+  <interfaceTypes uid="_zkuw0OWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.authservice.AuthenticationService" requiringComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA _zk8zQeWtEeigWYj_E3T8ZA _zk8zQ-WtEeigWYj_E3T8ZA _zk8zReWtEeigWYj_E3T8ZA" providingComponentTypes="_zk8zQuWtEeigWYj_E3T8ZA _zk8zV-WtEeigWYj_E3T8ZA _zk8zW-WtEeigWYj_E3T8ZA _zk8zX-WtEeigWYj_E3T8ZA" instances="_zk_2kOWtEeigWYj_E3T8ZA _zlAdp-WtEeigWYj_E3T8ZA _zlAdreWtEeigWYj_E3T8ZA _zlAdseWtEeigWYj_E3T8ZA _zlAdveWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zkx0IOWtEeigWYj_E3T8ZA" signature="authenticate(java.lang.String,java.lang.String)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zkybMOWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.bidandbuy.BidService" providingComponentTypes="_zk8zQ-WtEeigWYj_E3T8ZA" instances="_zlAdtOWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zkybMeWtEeigWYj_E3T8ZA" signature="getItemBidHistorySortyByBidPrice(int)"/>
+    <methodSpecifications uid="_zkybMuWtEeigWYj_E3T8ZA" signature="getItemBidHistory(int)"/>
+    <methodSpecifications uid="_zkybM-WtEeigWYj_E3T8ZA" signature="bidOnItem(int,float,float,int,java.lang.String,java.lang.String)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zkybNOWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.bidandbuy.BuyNowService" providingComponentTypes="_zk8zQ-WtEeigWYj_E3T8ZA" instances="_zlAdteWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zkzCQOWtEeigWYj_E3T8ZA" signature="getNumberOfAvailableInstances(int)"/>
+    <methodSpecifications uid="_zkzCQeWtEeigWYj_E3T8ZA" signature="buyItemNow(int,int,java.lang.String,java.lang.String)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zkzCQuWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.filter.ItemFilter" requiringComponentTypes="_zk8zR-WtEeigWYj_E3T8ZA _zk8zSOWtEeigWYj_E3T8ZA _zk8zSuWtEeigWYj_E3T8ZA _zk8zS-WtEeigWYj_E3T8ZA _zk8zTOWtEeigWYj_E3T8ZA _zk8zTeWtEeigWYj_E3T8ZA _zk8zTuWtEeigWYj_E3T8ZA _zk8zUOWtEeigWYj_E3T8ZA _zk8zUuWtEeigWYj_E3T8ZA _zk8zVOWtEeigWYj_E3T8ZA _zk8zVeWtEeigWYj_E3T8ZA" providingComponentTypes="_zk8zSOWtEeigWYj_E3T8ZA _zk8zSuWtEeigWYj_E3T8ZA _zk8zS-WtEeigWYj_E3T8ZA _zk8zTOWtEeigWYj_E3T8ZA _zk8zTeWtEeigWYj_E3T8ZA _zk8zTuWtEeigWYj_E3T8ZA _zk8zUOWtEeigWYj_E3T8ZA _zk8zUuWtEeigWYj_E3T8ZA _zk8zVOWtEeigWYj_E3T8ZA _zk8zVeWtEeigWYj_E3T8ZA" instances="_zlAdw-WtEeigWYj_E3T8ZA _zlAdyOWtEeigWYj_E3T8ZA _zlAdyeWtEeigWYj_E3T8ZA _zlAdy-WtEeigWYj_E3T8ZA _zlAdzOWtEeigWYj_E3T8ZA _zlAdzuWtEeigWYj_E3T8ZA _zlAdz-WtEeigWYj_E3T8ZA _zlAd0eWtEeigWYj_E3T8ZA _zlAd0uWtEeigWYj_E3T8ZA _zlAd1OWtEeigWYj_E3T8ZA _zlAd1eWtEeigWYj_E3T8ZA _zlAd2OWtEeigWYj_E3T8ZA _zlAd2eWtEeigWYj_E3T8ZA _zlAd3OWtEeigWYj_E3T8ZA _zlAd3eWtEeigWYj_E3T8ZA _zlAd4OWtEeigWYj_E3T8ZA _zlAd4eWtEeigWYj_E3T8ZA _zlAd4-WtEeigWYj_E3T8ZA _zlAd5OWtEeigWYj_E3T8ZA _zlAd5-WtEeigWYj_E3T8ZA _zlAd6OWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zkzCQ-WtEeigWYj_E3T8ZA" signature="filter(java.util.List,de.hpi.sam.rubis.entity.User)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zkzCROWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.inventorymgmt.InventoryService" requiringComponentTypes="_zk8zQ-WtEeigWYj_E3T8ZA" providingComponentTypes="_zk8zROWtEeigWYj_E3T8ZA" instances="_zlAdsuWtEeigWYj_E3T8ZA _zlAdueWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zkzpUOWtEeigWYj_E3T8ZA" signature="checkAvailabilityOfItem(de.hpi.sam.rubis.entity.Item)"/>
+    <methodSpecifications uid="_zkzpUeWtEeigWYj_E3T8ZA" signature="checkAvailabilityOfItem(int)"/>
+    <methodSpecifications uid="_zkzpUuWtEeigWYj_E3T8ZA" signature="cancelReservedItem(de.hpi.sam.rubis.entity.Item,int)"/>
+    <methodSpecifications uid="_zkzpU-WtEeigWYj_E3T8ZA" signature="reserveItem(de.hpi.sam.rubis.entity.Item,int)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zkzpVOWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.itemmgmt.BrowseCategoriesService" providingComponentTypes="_zk8zQeWtEeigWYj_E3T8ZA" instances="_zlAdqeWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zkzpVeWtEeigWYj_E3T8ZA" signature="getCategoriesInRegion(java.lang.String)"/>
+    <methodSpecifications uid="_zkzpVuWtEeigWYj_E3T8ZA" signature="getAllCategories()"/>
+    <methodSpecifications uid="_zkzpV-WtEeigWYj_E3T8ZA" signature="getCategoriesByName(java.lang.String)"/>
+    <methodSpecifications uid="_zkzpWOWtEeigWYj_E3T8ZA" signature="getItemsByName(java.lang.String)"/>
+    <methodSpecifications uid="_zkzpWeWtEeigWYj_E3T8ZA" signature="getPersonalizedItems(java.lang.String,java.lang.String)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zkzpWuWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.itemmgmt.ItemRegistrationService" providingComponentTypes="_zk8zQeWtEeigWYj_E3T8ZA" instances="_zlAdquWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk0QYOWtEeigWYj_E3T8ZA" signature="registerItem(java.lang.String,java.lang.String,int,float,float,float,java.util.Date,java.util.Date,int,java.lang.String,int)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk0QYeWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService" requiringComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA _zk8zQeWtEeigWYj_E3T8ZA _zk8zQ-WtEeigWYj_E3T8ZA _zk8zROWtEeigWYj_E3T8ZA _zk8zReWtEeigWYj_E3T8ZA" providingComponentTypes="_zk8zRuWtEeigWYj_E3T8ZA" instances="_zk_2k-WtEeigWYj_E3T8ZA _zlAdqOWtEeigWYj_E3T8ZA _zlAds-WtEeigWYj_E3T8ZA _zlAduOWtEeigWYj_E3T8ZA _zlAdvuWtEeigWYj_E3T8ZA _zlAdweWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk3TsOWtEeigWYj_E3T8ZA" signature="persistUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,de.hpi.sam.rubis.entity.Region,de.hpi.sam.rubis.entity.CustomerClass)"/>
+    <methodSpecifications uid="_zk3TseWtEeigWYj_E3T8ZA" signature="persistItem(java.lang.String,java.lang.String,int,float,float,float,java.util.Date,java.util.Date,de.hpi.sam.rubis.entity.User,de.hpi.sam.rubis.entity.Category)"/>
+    <methodSpecifications uid="_zk3TsuWtEeigWYj_E3T8ZA" signature="persistBid(de.hpi.sam.rubis.entity.User,de.hpi.sam.rubis.entity.Item,float,float,int,java.util.Date)"/>
+    <methodSpecifications uid="_zk3Ts-WtEeigWYj_E3T8ZA" signature="persistBuyNow(de.hpi.sam.rubis.entity.User,de.hpi.sam.rubis.entity.Item,int,java.util.Date)"/>
+    <methodSpecifications uid="_zk3TtOWtEeigWYj_E3T8ZA" signature="persistComment(de.hpi.sam.rubis.entity.User,de.hpi.sam.rubis.entity.User,de.hpi.sam.rubis.entity.Item,java.lang.String,int,java.util.Date)"/>
+    <methodSpecifications uid="_zk3TteWtEeigWYj_E3T8ZA" signature="reduceInventoryItem(de.hpi.sam.rubis.entity.Item,int)"/>
+    <methodSpecifications uid="_zk3TtuWtEeigWYj_E3T8ZA" signature="increaseInventoryItem(de.hpi.sam.rubis.entity.Item,int)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk36wOWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.queryservice.QueryService" requiringComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA _zk8zQeWtEeigWYj_E3T8ZA _zk8zQ-WtEeigWYj_E3T8ZA _zk8zROWtEeigWYj_E3T8ZA _zk8zReWtEeigWYj_E3T8ZA" providingComponentTypes="_zk8zR-WtEeigWYj_E3T8ZA" instances="_zk_2keWtEeigWYj_E3T8ZA _zlAdpuWtEeigWYj_E3T8ZA _zlAdsOWtEeigWYj_E3T8ZA _zlAdt-WtEeigWYj_E3T8ZA _zlAdvOWtEeigWYj_E3T8ZA _zlAdxeWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk36weWtEeigWYj_E3T8ZA" signature="findCurrentItemsInCategoryAndRegion(int,int,int)"/>
+    <methodSpecifications uid="_zk36wuWtEeigWYj_E3T8ZA" signature="findPastItemsInCategoryAndRegion(int,int,int)"/>
+    <methodSpecifications uid="_zk36w-WtEeigWYj_E3T8ZA" signature="findItemMaxBid(int)"/>
+    <methodSpecifications uid="_zk36xOWtEeigWYj_E3T8ZA" signature="findItemMaxBids(int,int)"/>
+    <methodSpecifications uid="_zk36xeWtEeigWYj_E3T8ZA" signature="findItemBidHistory(int)"/>
+    <methodSpecifications uid="_zk36xuWtEeigWYj_E3T8ZA" signature="findUserBuyNows(int,int)"/>
+    <methodSpecifications uid="_zk36x-WtEeigWYj_E3T8ZA" signature="retrieveAvailabilityOfItem(int)"/>
+    <methodSpecifications uid="_zk36yOWtEeigWYj_E3T8ZA" signature="findPastItemsInCategory(int,int)"/>
+    <methodSpecifications uid="_zk36yeWtEeigWYj_E3T8ZA" signature="findCurrentItemsInCategory(int,int)"/>
+    <methodSpecifications uid="_zk36yuWtEeigWYj_E3T8ZA" signature="findSuccessfulBidsForItem(int)"/>
+    <methodSpecifications uid="_zk36y-WtEeigWYj_E3T8ZA" signature="findUserCurrentSellings(int)"/>
+    <methodSpecifications uid="_zk36zOWtEeigWYj_E3T8ZA" signature="findUserPastSellings(int,int)"/>
+    <methodSpecifications uid="_zk36zeWtEeigWYj_E3T8ZA" signature="findUserPastWinningBids(int)"/>
+    <methodSpecifications uid="_zk36zuWtEeigWYj_E3T8ZA" signature="findUserCurrentMaxBids(int)"/>
+    <methodSpecifications uid="_zk36z-WtEeigWYj_E3T8ZA" signature="findCategoriesInRegion(java.lang.String)"/>
+    <methodSpecifications uid="_zk360OWtEeigWYj_E3T8ZA" signature="getNumberOfBidsForItem(int)"/>
+    <methodSpecifications uid="_zk360eWtEeigWYj_E3T8ZA" signature="findComment(int,int,int)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk4h0OWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.queryservice.BasicQueryService" requiringComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA _zk8zQeWtEeigWYj_E3T8ZA _zk8zQuWtEeigWYj_E3T8ZA _zk8zQ-WtEeigWYj_E3T8ZA _zk8zReWtEeigWYj_E3T8ZA _zk8zV-WtEeigWYj_E3T8ZA _zk8zW-WtEeigWYj_E3T8ZA _zk8zX-WtEeigWYj_E3T8ZA" providingComponentTypes="_zk8zR-WtEeigWYj_E3T8ZA" instances="_zk_2kuWtEeigWYj_E3T8ZA _zlAdpeWtEeigWYj_E3T8ZA _zlAdrOWtEeigWYj_E3T8ZA _zlAdr-WtEeigWYj_E3T8ZA _zlAdu-WtEeigWYj_E3T8ZA _zlAdxOWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk4h0eWtEeigWYj_E3T8ZA" signature="findUserByNickname(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h0uWtEeigWYj_E3T8ZA" signature="findAllCategories()"/>
+    <methodSpecifications uid="_zk4h0-WtEeigWYj_E3T8ZA" signature="findCategoryById(int)"/>
+    <methodSpecifications uid="_zk4h1OWtEeigWYj_E3T8ZA" signature="findCategoryByName(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h1eWtEeigWYj_E3T8ZA" signature="findCategoriesByName(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h1uWtEeigWYj_E3T8ZA" signature="findAllRegions()"/>
+    <methodSpecifications uid="_zk4h1-WtEeigWYj_E3T8ZA" signature="findRegionById(int)"/>
+    <methodSpecifications uid="_zk4h2OWtEeigWYj_E3T8ZA" signature="findRegionByName(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h2eWtEeigWYj_E3T8ZA" signature="findRegionsByName(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h2uWtEeigWYj_E3T8ZA" signature="findItemsByName(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h2-WtEeigWYj_E3T8ZA" signature="findItemById(int)"/>
+    <methodSpecifications uid="_zk4h3OWtEeigWYj_E3T8ZA" signature="findAllItems()"/>
+    <methodSpecifications uid="_zk4h3eWtEeigWYj_E3T8ZA" signature="findPersonalizedItems(de.hpi.sam.rubis.entity.User)"/>
+    <methodSpecifications uid="_zk4h3uWtEeigWYj_E3T8ZA" signature="isUserNicknameUsed(java.lang.String)"/>
+    <methodSpecifications uid="_zk4h3-WtEeigWYj_E3T8ZA" signature="findUserById(int)"/>
+    <methodSpecifications uid="_zk4h4OWtEeigWYj_E3T8ZA" signature="findAllUsers()"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk4h4eWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.reputationservice.ReputationService" providingComponentTypes="_zk8zReWtEeigWYj_E3T8ZA" instances="_zlAdv-WtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk4h4uWtEeigWYj_E3T8ZA" signature="giveComment(java.lang.String,java.lang.String,int,int,java.lang.String,int)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk4h4-WtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.usermgmt.AboutMeService" providingComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA" instances="_zlAdoOWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk5I4OWtEeigWYj_E3T8ZA" signature="getAboutMe(java.lang.String,java.lang.String)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk5I4eWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.usermgmt.BrowseRegionsService" providingComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA" instances="_zlAdoeWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk5v8OWtEeigWYj_E3T8ZA" signature="getAllRegions()"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk5v8eWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.usermgmt.UserRegistrationService" providingComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA" instances="_zlAdouWtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk5v8uWtEeigWYj_E3T8ZA" signature="registerUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,de.hpi.sam.rubis.entity.CustomerClass)"/>
+  </interfaceTypes>
+  <interfaceTypes uid="_zk6XAOWtEeigWYj_E3T8ZA" fqName="de.hpi.sam.rubis.usermgmt.ViewUserInfoService" providingComponentTypes="_zk8MMOWtEeigWYj_E3T8ZA" instances="_zlAdo-WtEeigWYj_E3T8ZA">
+    <methodSpecifications uid="_zk6-EOWtEeigWYj_E3T8ZA" signature="getUserInfo(int)"/>
+  </interfaceTypes>
+  <tenants uid="_zk9aUOWtEeigWYj_E3T8ZA" name="mRUBiS Tenant #1">
+    <components uid="_zk-ocOWtEeigWYj_E3T8ZA" criticality="0.9261" type="_zk8MMOWtEeigWYj_E3T8ZA" state="STARTED" name="User Management Service">
+      <parameters uid="_zk_PgOWtEeigWYj_E3T8ZA" value="LOW" type="_zk8zQOWtEeigWYj_E3T8ZA"/>
+      <requiredInterfaces uid="_zk_2kOWtEeigWYj_E3T8ZA" type="_zkuw0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBryeWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.authservice.AuthenticationService_to_de.hpi.sam.rubis.authservice.AuthenticationService" target="_zlAdreWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zk_2keWtEeigWYj_E3T8ZA" type="_zk36wOWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBryuWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.QueryService_to_de.hpi.sam.rubis.queryservice.QueryService" target="_zlAdxeWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zk_2kuWtEeigWYj_E3T8ZA" type="_zk4h0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBry-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.BasicQueryService_to_de.hpi.sam.rubis.queryservice.BasicQueryService" target="_zlAdxOWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zk_2k-WtEeigWYj_E3T8ZA" type="_zk0QYeWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBryOWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService_to_de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService" target="_zlAdweWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdoOWtEeigWYj_E3T8ZA" type="_zk4h4-WtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAdoeWtEeigWYj_E3T8ZA" type="_zk5I4eWtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAdouWtEeigWYj_E3T8ZA" type="_zk5v8eWtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAdo-WtEeigWYj_E3T8ZA" type="_zk6XAOWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdpOWtEeigWYj_E3T8ZA" criticality="0.5204" type="_zk8zQeWtEeigWYj_E3T8ZA" state="STARTED" name="Item Management Service">
+      <requiredInterfaces uid="_zlAdpeWtEeigWYj_E3T8ZA" type="_zk4h0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrx-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.BasicQueryService_to_de.hpi.sam.rubis.queryservice.BasicQueryService" target="_zlAdxOWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdpuWtEeigWYj_E3T8ZA" type="_zk36wOWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrxuWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.QueryService_to_de.hpi.sam.rubis.queryservice.QueryService" target="_zlAdxeWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdp-WtEeigWYj_E3T8ZA" type="_zkuw0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrxeWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.authservice.AuthenticationService_to_de.hpi.sam.rubis.authservice.AuthenticationService" target="_zlAdreWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdqOWtEeigWYj_E3T8ZA" type="_zk0QYeWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrxOWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService_to_de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService" target="_zlAdweWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdqeWtEeigWYj_E3T8ZA" type="_zkzpVOWtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAdquWtEeigWYj_E3T8ZA" type="_zkzpWuWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdq-WtEeigWYj_E3T8ZA" criticality="0.9862" type="_zk8zQuWtEeigWYj_E3T8ZA" state="STARTED" name="Authentication Service">
+      <requiredInterfaces uid="_zlAdrOWtEeigWYj_E3T8ZA" type="_zk4h0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrzOWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.BasicQueryService_to_de.hpi.sam.rubis.queryservice.BasicQueryService" target="_zlAdxOWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdreWtEeigWYj_E3T8ZA" type="_zkuw0OWtEeigWYj_E3T8ZA" connectors="_zlBrwuWtEeigWYj_E3T8ZA _zlBrxeWtEeigWYj_E3T8ZA _zlBryeWtEeigWYj_E3T8ZA _zlBrz-WtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdruWtEeigWYj_E3T8ZA" criticality="0.8727" type="_zk8zQ-WtEeigWYj_E3T8ZA" state="STARTED" name="Bid and Buy Service">
+      <requiredInterfaces uid="_zlAdr-WtEeigWYj_E3T8ZA" type="_zk4h0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr0eWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.BasicQueryService_to_de.hpi.sam.rubis.queryservice.BasicQueryService" target="_zlAdxOWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdsOWtEeigWYj_E3T8ZA" type="_zk36wOWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr0OWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.QueryService_to_de.hpi.sam.rubis.queryservice.QueryService" target="_zlAdxeWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdseWtEeigWYj_E3T8ZA" type="_zkuw0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrz-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.authservice.AuthenticationService_to_de.hpi.sam.rubis.authservice.AuthenticationService" target="_zlAdreWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdsuWtEeigWYj_E3T8ZA" type="_zkzCROWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrzeWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.inventorymgmt.InventoryService_to_de.hpi.sam.rubis.inventorymgmt.InventoryService" target="_zlAdueWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAds-WtEeigWYj_E3T8ZA" type="_zk0QYeWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrzuWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService_to_de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService" target="_zlAdweWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdtOWtEeigWYj_E3T8ZA" type="_zkybMOWtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAdteWtEeigWYj_E3T8ZA" type="_zkybNOWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdtuWtEeigWYj_E3T8ZA" criticality="0.7575" type="_zk8zROWtEeigWYj_E3T8ZA" state="STARTED" name="Inventory Service">
+      <requiredInterfaces uid="_zlAdt-WtEeigWYj_E3T8ZA" type="_zk36wOWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr0uWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.QueryService_to_de.hpi.sam.rubis.queryservice.QueryService" target="_zlAdxeWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAduOWtEeigWYj_E3T8ZA" type="_zk0QYeWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr0-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService_to_de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService" target="_zlAdweWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdueWtEeigWYj_E3T8ZA" type="_zkzCROWtEeigWYj_E3T8ZA" connectors="_zlBrzeWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAduuWtEeigWYj_E3T8ZA" criticality="0.5093" type="_zk8zReWtEeigWYj_E3T8ZA" state="STARTED" name="Reputation Service">
+      <requiredInterfaces uid="_zlAdu-WtEeigWYj_E3T8ZA" type="_zk4h0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrwOWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.BasicQueryService_to_de.hpi.sam.rubis.queryservice.BasicQueryService" target="_zlAdxOWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdvOWtEeigWYj_E3T8ZA" type="_zk36wOWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrweWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.queryservice.QueryService_to_de.hpi.sam.rubis.queryservice.QueryService" target="_zlAdxeWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdveWtEeigWYj_E3T8ZA" type="_zkuw0OWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrwuWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.authservice.AuthenticationService_to_de.hpi.sam.rubis.authservice.AuthenticationService" target="_zlAdreWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <requiredInterfaces uid="_zlAdvuWtEeigWYj_E3T8ZA" type="_zk0QYeWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBrw-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService_to_de.hpi.sam.rubis.persistenceservice.BusinessObjectsPersistenceService" target="_zlAdweWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdv-WtEeigWYj_E3T8ZA" type="_zk4h4eWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdwOWtEeigWYj_E3T8ZA" criticality="0.2354" type="_zk8zRuWtEeigWYj_E3T8ZA" state="STARTED" name="Persistence Service">
+      <providedInterfaces uid="_zlAdweWtEeigWYj_E3T8ZA" type="_zk0QYeWtEeigWYj_E3T8ZA" connectors="_zlBrw-WtEeigWYj_E3T8ZA _zlBrxOWtEeigWYj_E3T8ZA _zlBryOWtEeigWYj_E3T8ZA _zlBrzuWtEeigWYj_E3T8ZA _zlBr0-WtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdwuWtEeigWYj_E3T8ZA" criticality="0.125" type="_zk8zR-WtEeigWYj_E3T8ZA" state="STARTED" name="Query Service">
+      <requiredInterfaces uid="_zlAdw-WtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr1OWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAdyeWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdxOWtEeigWYj_E3T8ZA" type="_zk4h0OWtEeigWYj_E3T8ZA" connectors="_zlBrwOWtEeigWYj_E3T8ZA _zlBrx-WtEeigWYj_E3T8ZA _zlBry-WtEeigWYj_E3T8ZA _zlBrzOWtEeigWYj_E3T8ZA _zlBr0eWtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAdxeWtEeigWYj_E3T8ZA" type="_zk36wOWtEeigWYj_E3T8ZA" connectors="_zlBrweWtEeigWYj_E3T8ZA _zlBrxuWtEeigWYj_E3T8ZA _zlBryuWtEeigWYj_E3T8ZA _zlBr0OWtEeigWYj_E3T8ZA _zlBr0uWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdxuWtEeigWYj_E3T8ZA" criticality="0.7397" type="_zk8zSOWtEeigWYj_E3T8ZA" state="STARTED" name="Last Second Sales Item Filter">
+      <parameters uid="_zlAdx-WtEeigWYj_E3T8ZA" value="300" type="_zk8zSeWtEeigWYj_E3T8ZA"/>
+      <requiredInterfaces uid="_zlAdyOWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr1eWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAdzOWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdyeWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr1OWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdyuWtEeigWYj_E3T8ZA" criticality="0.3828" type="_zk8zSuWtEeigWYj_E3T8ZA" state="STARTED" name="Past Sales Item Filter">
+      <requiredInterfaces uid="_zlAdy-WtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr1uWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAdz-WtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdzOWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr1eWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAdzeWtEeigWYj_E3T8ZA" criticality="0.199" type="_zk8zS-WtEeigWYj_E3T8ZA" state="STARTED" name="Buy Now Item Filter">
+      <requiredInterfaces uid="_zlAdzuWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr1-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd0uWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAdz-WtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr1uWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd0OWtEeigWYj_E3T8ZA" criticality="0.5436" type="_zk8zTOWtEeigWYj_E3T8ZA" state="STARTED" name="Availability Item Filter">
+      <requiredInterfaces uid="_zlAd0eWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr2OWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd1eWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAd0uWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr1-WtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd0-WtEeigWYj_E3T8ZA" criticality="0.35" type="_zk8zTeWtEeigWYj_E3T8ZA" state="STARTED" name="Region Item Filter">
+      <requiredInterfaces uid="_zlAd1OWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr2eWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd2eWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAd1eWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr2OWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd1uWtEeigWYj_E3T8ZA" criticality="0.8785" type="_zk8zTuWtEeigWYj_E3T8ZA" state="STARTED" name="Seller Reputation Item Filter">
+      <parameters uid="_zlAd1-WtEeigWYj_E3T8ZA" value="5" type="_zk8zT-WtEeigWYj_E3T8ZA"/>
+      <requiredInterfaces uid="_zlAd2OWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr2uWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd3eWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAd2eWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr2eWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd2uWtEeigWYj_E3T8ZA" criticality="0.2435" type="_zk8zUOWtEeigWYj_E3T8ZA" state="STARTED" name="Comment Item Filter">
+      <parameters uid="_zlAd2-WtEeigWYj_E3T8ZA" value="5" type="_zk8zUeWtEeigWYj_E3T8ZA"/>
+      <requiredInterfaces uid="_zlAd3OWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr2-WtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd4eWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAd3eWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr2uWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd3uWtEeigWYj_E3T8ZA" criticality="0.5786" type="_zk8zUuWtEeigWYj_E3T8ZA" state="STARTED" name="Category Item Filter">
+      <parameters uid="_zlAd3-WtEeigWYj_E3T8ZA" value="Coins,Jewelry" type="_zk8zU-WtEeigWYj_E3T8ZA"/>
+      <requiredInterfaces uid="_zlAd4OWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr3OWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd5OWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAd4eWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr2-WtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd4uWtEeigWYj_E3T8ZA" criticality="0.9489" type="_zk8zVOWtEeigWYj_E3T8ZA" state="STARTED" name="Recommendation Item Filter">
+      <requiredInterfaces uid="_zlAd4-WtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA">
+        <connector uid="_zlBr3eWtEeigWYj_E3T8ZA" name="de.hpi.sam.rubis.filter.ItemFilter_to_de.hpi.sam.rubis.filter.ItemFilter" target="_zlAd6OWtEeigWYj_E3T8ZA"/>
+      </requiredInterfaces>
+      <providedInterfaces uid="_zlAd5OWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr3OWtEeigWYj_E3T8ZA"/>
+    </components>
+    <components uid="_zlAd5eWtEeigWYj_E3T8ZA" criticality="0.8512" type="_zk8zVeWtEeigWYj_E3T8ZA" state="STARTED" name="Future Sales Item Filter">
+      <parameters uid="_zlAd5uWtEeigWYj_E3T8ZA" value="14" type="_zk8zVuWtEeigWYj_E3T8ZA"/>
+      <requiredInterfaces uid="_zlAd5-WtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA"/>
+      <providedInterfaces uid="_zlAd6OWtEeigWYj_E3T8ZA" type="_zkzCQuWtEeigWYj_E3T8ZA" connectors="_zlBr3eWtEeigWYj_E3T8ZA"/>
+    </components>
+  </tenants>
+  <annotations uid="_zlCS0OWtEeigWYj_E3T8ZA"/>
+</comparch:Architecture>
