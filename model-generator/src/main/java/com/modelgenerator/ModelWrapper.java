@@ -18,8 +18,12 @@ public class ModelWrapper {
 
     public ModelWrapper(@NotNull CompArchLoader loader) {
         this.loader = loader;
-        this.model = loader.loadModel();
-        System.out.println(this.model.toString());
+        try {
+            this.model = loader.loadModel();
+            System.out.println(this.model.toString());
+        } catch (RuntimeException e) {
+            System.out.println("Could not load model due to: " + e.getMessage());
+        }
     }
 
     public void save() {
@@ -28,6 +32,10 @@ public class ModelWrapper {
 
     public void update(Object updateEvent) throws Exception {
         handleStateUpdate(updateEvent);
+    }
+
+    public Architecture getModel() {
+        return this.model;
     }
 
     private void handleStateUpdate(Object stateUpdateEvent) throws Exception {

@@ -15,7 +15,7 @@ import java.util.Map;
 public class CompArchLoader {
 
 
-    public Architecture loadModel(){
+    public Architecture loadModel() throws RuntimeException {
         ComparchPackage.eINSTANCE.eClass();
         String modelURI = "./model/mRUBiS.comparch";
         Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
