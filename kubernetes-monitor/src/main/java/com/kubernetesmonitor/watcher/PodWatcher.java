@@ -1,14 +1,22 @@
 package com.kubernetesmonitor.watcher;
 
 import com.google.gson.reflect.TypeToken;
+import com.kubernetesmonitor.events.DeploymentEvent;
+import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.models.Pod;
 import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.util.Watch;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PodWatcher extends AbstractWatcher<V1Pod> {
+
+    @Autowired
+    Publisher publisher;
 
     public PodWatcher(KubernetesConnector connector) {
         super(connector);
@@ -18,6 +26,7 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
     void watchCallback(Watch.Response<V1Pod> item) {
         Pod pod = this.responseParser.parsePodResponse(item.object);
         System.out.printf("Event type: %s : %s %n", item.type, pod.toString());
+        publisher.publishEvent(new DeploymentEvent(pod.getServiceName(), pod.getStatus()));
     }
 
     @Override

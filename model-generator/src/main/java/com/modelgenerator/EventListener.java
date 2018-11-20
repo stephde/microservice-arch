@@ -20,6 +20,8 @@ public class EventListener {
     private static final String BROKER_USERNAME = "admin";
     private static final String BROKER_PASSWORD = "admin";
 
+    private static final String QUEUE_NAME = "model.updates";
+
     @Bean
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
@@ -55,7 +57,7 @@ public class EventListener {
         return converter;
     }
 
-    @JmsListener(destination = "updates")
+    @JmsListener(destination = QUEUE_NAME)
     public void receiveMessage(final TextMessage message) throws JMSException {
         String messageData = message.getText();
 //        Map map = new Gson().fromJson(messageData, Map.class);

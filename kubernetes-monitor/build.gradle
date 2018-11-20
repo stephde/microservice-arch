@@ -33,6 +33,7 @@ dependencies {
 	compileOnly('org.projectlombok:lombok')
 	compile group: 'com.bmuschko', name: 'gradle-docker-plugin', version: '4.0.2'
 	compile 'io.kubernetes:client-java:3.0.0'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: '2.0.6.RELEASE'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
