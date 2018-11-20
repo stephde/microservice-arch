@@ -3,12 +3,12 @@ version: "3"
 services:
 
   monitor: 
-    image: spring-kubernetes-monitor
+    image: localhost:5000/spring-kubernetes-monitor
     ports: 
       - "8001:8080"
   
   model-generator:
-    image: spring-model-generator
+    image: localhost:5000/spring-model-generator
     ports: 
       - "8002:8080"
   
