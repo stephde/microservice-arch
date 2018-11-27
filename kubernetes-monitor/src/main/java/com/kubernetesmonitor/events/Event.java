@@ -1,12 +1,16 @@
 package com.kubernetesmonitor.events;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Event {
 
     public enum EVENT_TYPE { DEPLOYMENT_STATUS_UPDATE }
 
-    private final EVENT_TYPE type;
-    private final String componentName;
+    private EVENT_TYPE type;
+    private String componentName;
 }

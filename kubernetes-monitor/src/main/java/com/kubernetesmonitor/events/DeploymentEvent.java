@@ -1,11 +1,11 @@
 package com.kubernetesmonitor.events;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class DeploymentEvent extends Event {
+@Data
+public class DeploymentEvent extends com.kubernetesmonitor.events.Event {
 
     private String status;
 

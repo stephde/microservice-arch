@@ -40,6 +40,14 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
+sourceSets {
+	main {
+		java {
+			srcDir('../kubernetes-monitor/src/main/java/com/kubernetesmonitor/events')
+		}
+	}
+}
+
 //see https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin
 docker {
 	springBootApplication {

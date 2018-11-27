@@ -1,6 +1,8 @@
 package com.kubernetesmonitor;
 
 import com.google.common.collect.Lists;
+import com.kubernetesmonitor.events.DeploymentEvent;
+import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.watcher.ComponentStatusWatcher;
 import com.kubernetesmonitor.watcher.PodWatcher;
@@ -18,6 +20,13 @@ public class InfoController {
     private static final String API_ERROR = "Encountered exception while trying to access kubernetes api";
     @Autowired
     private KubernetesConnector kubernetesConnector;
+    @Autowired
+    Publisher publisher;
+
+    @GetMapping("/publish")
+    public void publish() {
+        publisher.publishEvent(new DeploymentEvent("AuthService", "RUNNING"));
+    }
 
     @GetMapping("/pods")
     public List<String> getPods() {
