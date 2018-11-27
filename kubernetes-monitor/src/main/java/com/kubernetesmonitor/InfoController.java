@@ -2,6 +2,7 @@ package com.kubernetesmonitor;
 
 import com.google.common.collect.Lists;
 import com.kubernetesmonitor.events.DeploymentEvent;
+import com.kubernetesmonitor.events.ServiceEvent;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.watcher.ComponentStatusWatcher;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -26,6 +28,11 @@ public class InfoController {
     @GetMapping("/publish")
     public void publish() {
         publisher.publishEvent(new DeploymentEvent("AuthService", "RUNNING"));
+    }
+
+    @GetMapping("/publish/service")
+    public void publishService() {
+        publisher.publishEvent(new ServiceEvent("AuthService", Collections.singletonList(8080)));
     }
 
     @GetMapping("/pods")

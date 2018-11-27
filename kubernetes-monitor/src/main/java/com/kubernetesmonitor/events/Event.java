@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Event {
 
-    public enum EVENT_TYPE { DEPLOYMENT_STATUS_UPDATE }
+    public enum EVENT_TYPE { DEPLOYMENT_STATUS_UPDATE, SERVICE_UPDATE }
 
     private EVENT_TYPE type;
     private String componentName;

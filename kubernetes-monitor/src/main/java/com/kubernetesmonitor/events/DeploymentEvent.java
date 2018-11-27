@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class DeploymentEvent extends com.kubernetesmonitor.events.Event {
+public class DeploymentEvent extends Event {
 
     private String status;
 

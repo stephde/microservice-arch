@@ -45,6 +45,9 @@ public class Publisher {
     }
 
     public void publishEvent(Event event) {
-        jmsTemplate.convertAndSend(DESTINATION_QUEUE, event);
+        jmsTemplate.convertAndSend(DESTINATION_QUEUE, event, m -> {
+            m.setStringProperty("_eventType", event.getType().name());
+            return m;
+        });
     }
 }

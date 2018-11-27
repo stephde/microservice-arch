@@ -1,6 +1,7 @@
 package com.modelgenerator.event;
 
 import com.kubernetesmonitor.events.DeploymentEvent;
+import com.kubernetesmonitor.events.ServiceEvent;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.JmsListener;
@@ -11,8 +12,6 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
 
 @Component
 public class EventListener {
@@ -55,18 +54,20 @@ public class EventListener {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
-
-        HashMap<String, Class<?>> idMapping = new HashMap<String, Class<?>>();
-        idMapping.put(DeploymentEvent.class.getName(), DeploymentEvent.class);
-        converter.setTypeIdMappings(idMapping);
-
         return converter;
     }
 
-    @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
+    @JmsListener(destination = QUEUE_NAME,
+                containerFactory = "jmsListenerContainerFactory",
+                selector = "_eventType = 'DEPLOYMENT_STATUS_UPDATE'")
     public void receiveEvent(@Payload final DeploymentEvent event) {
-//        Map map = new Gson().fromJson(messageData, Map.class);
         System.out.println("Received Event object : " + event.toString());
     }
 
+    @JmsListener(destination = QUEUE_NAME,
+                containerFactory = "jmsListenerContainerFactory",
+                selector = "_eventType = 'SERVICE_UPDATE'")
+    public void receiveEvent(@Payload final ServiceEvent event) {
+        System.out.println("Received Event object : " + event.toString());
+    }
 }
