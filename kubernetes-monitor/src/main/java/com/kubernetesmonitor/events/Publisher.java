@@ -11,20 +11,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Publisher {
-    private static final String BROKER_URL = "tcp://activemq:61616";
-    private static final String BROKER_USERNAME = "admin";
-    private static final String BROKER_PASSWORD = "admin";
 
-    private static final String DESTINATION_QUEUE = "model.updates";
+    @Autowired QueueConfig queueConfig;
 
     @Autowired
     JmsTemplate jmsTemplate;
 
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(BROKER_URL);
-        connectionFactory.setPassword(BROKER_USERNAME);
-        connectionFactory.setUserName(BROKER_PASSWORD);
+        connectionFactory.setBrokerURL(queueConfig.BROKER_URL);
+        connectionFactory.setPassword(queueConfig.BROKER_USERNAME);
+        connectionFactory.setUserName(queueConfig.BROKER_PASSWORD);
         return connectionFactory;
     }
 
@@ -45,7 +42,7 @@ public class Publisher {
     }
 
     public void publishEvent(Event event) {
-        jmsTemplate.convertAndSend(DESTINATION_QUEUE, event, m -> {
+        jmsTemplate.convertAndSend(queueConfig.QUEUE_NAME, event, m -> {
             m.setStringProperty("_eventType", event.getType().name());
             return m;
         });

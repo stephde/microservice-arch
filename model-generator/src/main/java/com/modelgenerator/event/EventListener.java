@@ -3,6 +3,7 @@ package com.modelgenerator.event;
 import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.ServiceEvent;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
@@ -16,17 +17,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventListener {
 
-    private static final String BROKER_URL = "tcp://activemq:61616";
-    private static final String BROKER_USERNAME = "admin";
-    private static final String BROKER_PASSWORD = "admin";
-
-    private static final String QUEUE_NAME = "model.updates";
+    @Autowired
+    QueueConfig queueConfig;
 
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(BROKER_URL);
-        connectionFactory.setPassword(BROKER_USERNAME);
-        connectionFactory.setUserName(BROKER_PASSWORD);
+        connectionFactory.setBrokerURL(queueConfig.BROKER_URL);
+        connectionFactory.setPassword(queueConfig.BROKER_USERNAME);
+        connectionFactory.setUserName(queueConfig.BROKER_PASSWORD);
         return connectionFactory;
     }
 
@@ -57,14 +55,14 @@ public class EventListener {
         return converter;
     }
 
-    @JmsListener(destination = QUEUE_NAME,
+    @JmsListener(destination = "${spring.activemq.queue-name}",
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'DEPLOYMENT_STATUS_UPDATE'")
     public void receiveEvent(@Payload final DeploymentEvent event) {
         System.out.println("Received Event object : " + event.toString());
     }
 
-    @JmsListener(destination = QUEUE_NAME,
+    @JmsListener(destination = "${spring.activemq.queue-name}",
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'SERVICE_UPDATE'")
     public void receiveEvent(@Payload final ServiceEvent event) {
