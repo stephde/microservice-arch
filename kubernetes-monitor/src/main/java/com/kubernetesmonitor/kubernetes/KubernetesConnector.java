@@ -35,6 +35,8 @@ public class KubernetesConnector {
         this.client = Config.defaultClient();
         Configuration.setDefaultApiClient(this.client);
 
+        System.out.println("Connecting to kubernetes on: "  + this.client.getBasePath());
+
         this.api = new CoreV1Api(client);
     }
 

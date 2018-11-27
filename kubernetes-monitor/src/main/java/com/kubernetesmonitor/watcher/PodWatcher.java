@@ -20,13 +20,14 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
 
     public PodWatcher(KubernetesConnector connector) {
         super(connector);
+        this.watch();
     }
 
     @Override
     void watchCallback(Watch.Response<V1Pod> item) {
         Pod pod = this.responseParser.parsePodResponse(item.object);
         System.out.printf("Event type: %s : %s %n", item.type, pod.toString());
-        publisher.publishEvent(new DeploymentEvent(pod.getServiceName(), pod.getStatus()));
+        publisher.publishEvent(new DeploymentEvent(pod.getServiceName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName()));
     }
 
     @Override

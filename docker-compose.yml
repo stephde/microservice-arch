@@ -14,3 +14,5 @@ services:
   
   activemq:
     image: webcenter/activemq:latest
+    ports:
+      - "61616:61616"
