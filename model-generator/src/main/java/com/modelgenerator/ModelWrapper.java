@@ -50,7 +50,7 @@ public class ModelWrapper {
                 .findFirst()
                 .orElseThrow(() -> new Exception("Component not found in model"));
 
-        component.setState(state);
-        System.out.println(component.toString());
+        //component.setState(state);
+        System.out.println("Changed component state to: " + state.toString()); //component.toString());
     }
 }
