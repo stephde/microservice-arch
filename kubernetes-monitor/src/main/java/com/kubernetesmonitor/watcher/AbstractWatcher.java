@@ -49,6 +49,7 @@ public abstract class AbstractWatcher<T> {
                 System.out.println("Error during Kubernetes APU call due to: " + ex.getResponseBody());
             } catch (Throwable ex) {
                 System.out.println(ex.getMessage());
+            } finally {
                 try {
                     Thread.sleep(3000); // sleep for 3sec before trying again
                 } catch (InterruptedException e) {

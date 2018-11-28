@@ -3,7 +3,7 @@ version: "3"
 services:
 
   monitor: 
-    image: spring-kubernetes-monitor
+    image: kubernetes-monitor
     ports: 
       - "8001:8080"
   
