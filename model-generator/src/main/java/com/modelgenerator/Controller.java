@@ -1,5 +1,6 @@
 package com.modelgenerator;
 
+import com.kubernetesmonitor.events.DeploymentEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,10 @@ public class Controller {
     @PostMapping("/message")
     public void sendMessage(@RequestBody String message) {
         System.out.println("Sending message: " + message);
-        jmsTemplate.convertAndSend("updates", message);
+        DeploymentEvent event = new DeploymentEvent("User Management Service #1", "RUNNING", "Node#1", "User Management Service");
+        jmsTemplate.convertAndSend("model-updates", message, m -> {
+            m.setStringProperty("_eventType", event.getType().name());
+            return m;
+        });
     }
 }

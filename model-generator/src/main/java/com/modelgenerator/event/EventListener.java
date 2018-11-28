@@ -2,6 +2,8 @@ package com.modelgenerator.event;
 
 import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.ServiceEvent;
+import com.modelgenerator.ModelWrapper;
+import de.mdelab.comparch.ComponentState;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,9 @@ public class EventListener {
 
     @Autowired
     QueueConfig queueConfig;
+
+    @Autowired
+    ModelWrapper modelWrapper;
 
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
@@ -60,6 +65,13 @@ public class EventListener {
                 selector = "_eventType = 'DEPLOYMENT_STATUS_UPDATE'")
     public void receiveEvent(@Payload final DeploymentEvent event) {
         System.out.println("Received Event object : " + event.toString());
+
+        ComponentState state = parseState(event.getStatus());
+        try {
+            modelWrapper.handleStateUpdate(event.getServiceName(), event.getComponentName(), state);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",
@@ -67,5 +79,14 @@ public class EventListener {
                 selector = "_eventType = 'SERVICE_UPDATE'")
     public void receiveEvent(@Payload final ServiceEvent event) {
         System.out.println("Received Event object : " + event.toString());
+    }
+
+    private ComponentState parseState(String remoteState) {
+        switch (remoteState) {
+            case "STARTED": return ComponentState.DEPLOYED;
+            case "RUNNING": return ComponentState.STARTED;
+            case "REMOVED": return ComponentState.UNDEPLOYED;
+            default: return ComponentState.UNDEPLOYED;
+        }
     }
 }

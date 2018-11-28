@@ -8,7 +8,7 @@ services:
       - "8001:8080"
   
   model-generator:
-    image: spring-model-generator
+    image: model-generator
     ports: 
       - "8002:8080"
   

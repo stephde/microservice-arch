@@ -1,5 +1,6 @@
 package com.modelgenerator;
 
+import com.kubernetesmonitor.events.Event;
 import com.google.gson.JsonObject;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
@@ -32,10 +33,6 @@ public class ModelWrapper {
         this.loader.saveModel(this.model);
     }
 
-    public void update(Object updateEvent) throws Exception {
-        handleStateUpdate(updateEvent);
-    }
-
     public Architecture getModel() {
         return this.model;
     }
@@ -57,19 +54,27 @@ public class ModelWrapper {
         return json;
     }
 
-    private void handleStateUpdate(Object stateUpdateEvent) throws Exception {
-        String compName = "Category Item Filter";
-        ComponentState state = ComponentState.DEPLOYED;
+    public void handleStateUpdate(String componentName, String instanceName, ComponentState value) throws Exception {
+//        Component component = this.model.getTenants()
+//                .stream()
+//                .map(Tenant::getComponents)
+//                .flatMap(List::stream)
+//                .filter(c -> c.getName().equals(compName))
+//                .findFirst()
+//                .orElseThrow(() -> new Exception("Component not found in model"));
 
-        Component component = this.model.getTenants()
+        Component component = this.model.getComponentTypes()
                 .stream()
-                .map(Tenant::getComponents)
-                .flatMap(List::stream)
-                .filter(c -> c.getName().equals(compName))
+                .filter(c -> c.getName().equals(componentName))
                 .findFirst()
-                .orElseThrow(() -> new Exception("Component not found in model"));
+                .orElseThrow(() -> new Exception("ComponentType - " + componentName + " not found in model"))
+                .getInstances()
+                .stream()
+                .filter(i -> i.getName().equals(instanceName))
+                .findFirst()
+                .orElseThrow(() -> new Exception("Instance - " + instanceName + " not found"));
 
-        //component.setState(state);
-        System.out.println("Changed component state to: " + state.toString()); //component.toString());
+        component.setState(value);
+        System.out.println("Changed " + component.getName() + " state to: " + value);
     }
 }
