@@ -1,5 +1,6 @@
 package com.modelgenerator;
 
+import com.google.gson.JsonObject;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
@@ -13,7 +14,8 @@ import java.util.List;
 @Service
 public class ModelWrapper {
 
-    @Autowired private CompArchLoader loader;
+    @Autowired
+    private CompArchLoader loader;
     private Architecture model;
 
     public ModelWrapper(@NotNull CompArchLoader loader) {
@@ -36,6 +38,23 @@ public class ModelWrapper {
 
     public Architecture getModel() {
         return this.model;
+    }
+
+    public JsonObject getModelAsJSON() {
+
+        JsonObject json = new JsonObject();
+        json.addProperty("instance", model.toString());
+
+        model.getComponentTypes().forEach(c -> {
+            JsonObject jsonComponent = new JsonObject();
+
+            jsonComponent.addProperty("name", c.getName());
+            jsonComponent.addProperty("Instances", c.getInstances().toString());
+            jsonComponent.addProperty("Parameters", c.getParameterTypes().toString());
+            json.add(c.getName(), jsonComponent);
+        });
+
+        return json;
     }
 
     private void handleStateUpdate(Object stateUpdateEvent) throws Exception {

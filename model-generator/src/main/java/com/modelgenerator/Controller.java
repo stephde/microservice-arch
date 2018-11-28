@@ -15,7 +15,7 @@ public class Controller {
 
     @GetMapping("/model")
     public String load() {
-        return this.modelWrapper.getModel().toString();
+        return this.modelWrapper.getModelAsJSON().toString();
     }
 
     @PostMapping("/message")
