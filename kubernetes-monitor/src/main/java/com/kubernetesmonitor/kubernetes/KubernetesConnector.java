@@ -7,6 +7,7 @@ import io.kubernetes.client.Configuration;
 import io.kubernetes.client.apis.AppsV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.util.Config;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@Slf4j
 public class KubernetesConnector {
     private CoreV1Api api;
     private AppsV1Api appsApi;
@@ -37,7 +39,7 @@ public class KubernetesConnector {
         this.client = Config.defaultClient();
         Configuration.setDefaultApiClient(this.client);
 
-        System.out.println("Connecting to kubernetes on: "  + this.client.getBasePath());
+        log.info("Connecting to kubernetes on: {}", this.client.getBasePath());
 
         this.api = new CoreV1Api(client);
         this.appsApi = new AppsV1Api(client);

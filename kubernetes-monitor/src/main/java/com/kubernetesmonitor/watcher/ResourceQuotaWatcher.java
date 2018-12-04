@@ -9,10 +9,12 @@ import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1ReplicaSet;
 import io.kubernetes.client.models.V1ResourceQuota;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ResourceQuotaWatcher extends AbstractWatcher<V1ResourceQuota> {
 
     @Autowired
@@ -25,12 +27,12 @@ public class ResourceQuotaWatcher extends AbstractWatcher<V1ResourceQuota> {
 
     @Override
     void watchCallback(Watch.Response<V1ResourceQuota> item) {
-        System.out.printf("#### V1ResourceQuota Watcher ---- Event type: %s : %s %n", item.type, item.toString());
+        log.info("#### V1ResourceQuota Watcher ---- Event type: {} : {}", item.type, item.toString());
     }
 
     @Override
     Call watchCall() throws ApiException {
-        System.out.println("#### Executing V1ResourceQuota call...");
+        log.info("#### Executing V1ResourceQuota call...");
         return this.kubernetesConnector.getResourceQuotaCall();
     }
 

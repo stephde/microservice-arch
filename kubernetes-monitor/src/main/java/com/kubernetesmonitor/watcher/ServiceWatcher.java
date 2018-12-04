@@ -9,8 +9,10 @@ import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Service;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Slf4j
 public class ServiceWatcher extends AbstractWatcher<V1Service> {
 
     @Autowired
@@ -24,7 +26,7 @@ public class ServiceWatcher extends AbstractWatcher<V1Service> {
     @Override
     void watchCallback(Watch.Response<V1Service> item) {
         Service service = this.responseParser.parseServiceResponse(item.object);
-        System.out.printf("%s : %s%n", item.type, service);
+        log.info("ServiceWatcher received: {} : {}", item.type, service);
         publisher.publishEvent(new ServiceEvent(service.getName(), service.getPorts()));
     }
 

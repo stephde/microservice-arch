@@ -9,10 +9,14 @@ import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class PodWatcher extends AbstractWatcher<V1Pod> {
 
     @Autowired
@@ -26,13 +30,13 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
     @Override
     void watchCallback(Watch.Response<V1Pod> item) {
         Pod pod = this.responseParser.parsePodResponse(item.object);
-        System.out.printf("Event type: %s : %s %n", item.type, pod.toString());
+        log.info("Event type: {} : {}", item.type, pod.toString());
         publisher.publishEvent(new DeploymentEvent(pod.getServiceName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName()));
     }
 
     @Override
     Call watchCall() throws ApiException {
-        System.out.println("#### Executing podwatch call...");
+        log.info("#### Executing podwatch call...");
         return this.kubernetesConnector.getListPodCall();
     }
 

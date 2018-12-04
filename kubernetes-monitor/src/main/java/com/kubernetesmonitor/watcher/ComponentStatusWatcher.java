@@ -7,7 +7,9 @@ import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1ComponentStatus;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ComponentStatusWatcher extends AbstractWatcher<V1ComponentStatus> {
 
     public ComponentStatusWatcher(KubernetesConnector connector) {
@@ -17,7 +19,7 @@ public class ComponentStatusWatcher extends AbstractWatcher<V1ComponentStatus> {
     @Override
     void watchCallback(Watch.Response<V1ComponentStatus> item) {
         ComponentStatus status = this.responseParser.parseComponentStatusResponse(item.object);
-        System.out.printf("%s : %s%n", item.type, status);
+        log.info("{} : {}", item.type, status);
     }
 
     @Override

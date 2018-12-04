@@ -10,10 +10,12 @@ import io.kubernetes.client.models.V1Deployment;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1ReplicaSet;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class DeploymentWatcher extends AbstractWatcher<V1Deployment> {
 
     @Autowired
@@ -27,12 +29,12 @@ public class DeploymentWatcher extends AbstractWatcher<V1Deployment> {
     @Override
     void watchCallback(Watch.Response<V1Deployment> response) {
         Deployment deployment = this.responseParser.parseDeploymentResponse(response.object);
-        System.out.printf("#### Deployment Watcher ---- Event type: %s : %s %n", response.type, deployment.toString());
+        log.info("#### Deployment Watcher ---- Event type: {} : {}", response.type, deployment.toString());
     }
 
     @Override
     Call watchCall() throws ApiException {
-        System.out.println("#### Executing Deployment call...");
+        log.info("#### Executing Deployment call...");
         return this.kubernetesConnector.getDeploymentCall();
     }
 

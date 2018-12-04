@@ -11,10 +11,12 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1ReplicaSet;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ReplicaSetWatcher extends AbstractWatcher<V1ReplicaSet> {
 
     @Autowired
@@ -28,12 +30,12 @@ public class ReplicaSetWatcher extends AbstractWatcher<V1ReplicaSet> {
     @Override
     void watchCallback(Watch.Response<V1ReplicaSet> response) {
         ReplicaSet replicaSet = this.responseParser.parseReplicaSetResponse(response.object);
-        System.out.printf("#### ReplicaSet Watcher ---- Event type: %s : %s %n", response.type, replicaSet.toString());
+        log.info("#### ReplicaSet Watcher ---- Event type: {} : {}", response.type, replicaSet.toString());
     }
 
     @Override
     Call watchCall() throws ApiException {
-        System.out.println("#### Executing ReplicaSet call...");
+        log.info("#### Executing ReplicaSet call...");
         return this.kubernetesConnector.getReplicaSetCall();
     }
 

@@ -9,10 +9,12 @@ import io.kubernetes.client.models.V1Deployment;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1ServiceStatus;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ServiceStatusWatcher extends AbstractWatcher<V1ServiceStatus> {
 
     @Autowired
@@ -25,12 +27,12 @@ public class ServiceStatusWatcher extends AbstractWatcher<V1ServiceStatus> {
 
     @Override
     void watchCallback(Watch.Response<V1ServiceStatus> item) {
-        System.out.printf("#### V1ServiceStatus Watcher ---- Event type: %s : %s %n", item.type, item.toString());
+        log.info("#### V1ServiceStatus Watcher ---- Event type: {} : {}", item.type, item.toString());
     }
 
     @Override
     Call watchCall() throws ApiException {
-        System.out.println("#### Executing V1ServiceStatus call...");
+        log.info("#### Executing V1ServiceStatus call...");
         return this.kubernetesConnector.getDeploymentCall();
     }
 

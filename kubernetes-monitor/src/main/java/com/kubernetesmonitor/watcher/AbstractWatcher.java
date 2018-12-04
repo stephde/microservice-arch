@@ -4,10 +4,12 @@ import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.kubernetes.KubernetesResponseParser;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.util.Watch;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 public abstract class AbstractWatcher<T> {
 
     protected KubernetesConnector kubernetesConnector;
@@ -39,16 +41,16 @@ public abstract class AbstractWatcher<T> {
         while (this.isWatchIsActive()) {
 
             try {
-                System.out.println("Initializing watcher " + getClass().getCanonicalName());
+                log.info("Initializing watcher {}", getClass().getCanonicalName());
 
                 watch = initWatch();
                 for (Watch.Response<T> item : watch) {
                     this.watchCallback(item);
                 }
             } catch (ApiException ex) {
-                System.out.println("Error during Kubernetes APU call due to: " + ex.getResponseBody());
+                log.error("Error during Kubernetes APU call due to: ", ex);
             } catch (Throwable ex) {
-                System.out.println(ex.getMessage());
+                log.error(ex.getMessage(), ex);
             } finally {
                 try {
                     Thread.sleep(3000); // sleep for 3sec before trying again
@@ -59,7 +61,7 @@ public abstract class AbstractWatcher<T> {
         }
 
         try {
-            System.out.println("Stopping watch of " + getClass().getCanonicalName());
+            log.info("Stopping watch of {}", getClass().getCanonicalName());
             if(watch != null) {
                 watch.close();
             }
