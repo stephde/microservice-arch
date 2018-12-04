@@ -1,9 +1,11 @@
 version: "3"
 
+# additional propery from https://docs.docker.com/docker-cloud/apps/stack-yaml-reference/
+
 services:
 
   monitor: 
-    image: localhost:5000/kubernetes-monitor
+    image: localhost:5000/kubernetesmonitor
     ports: 
       - "8001:8080"
   
@@ -11,7 +13,10 @@ services:
     image: localhost:5000/model-generator
     ports: 
       - "8002:8080"
-  
+    deploy:
+#      autoredeploy: true
+#       target_num_containers: 3
+
   activemq:
     image: webcenter/activemq:latest
     ports:

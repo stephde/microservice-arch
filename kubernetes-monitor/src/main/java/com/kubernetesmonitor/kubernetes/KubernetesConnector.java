@@ -4,6 +4,7 @@ import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
+import io.kubernetes.client.apis.AppsV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.util.Config;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 public class KubernetesConnector {
     private CoreV1Api api;
+    private AppsV1Api appsApi;
     private ApiClient client;
 
     public KubernetesConnector() throws IOException {
@@ -38,6 +40,7 @@ public class KubernetesConnector {
         System.out.println("Connecting to kubernetes on: "  + this.client.getBasePath());
 
         this.api = new CoreV1Api(client);
+        this.appsApi = new AppsV1Api(client);
     }
 
     public List<String> getAllPods() throws ApiException {
@@ -107,5 +110,24 @@ public class KubernetesConnector {
 
     public Call getListComponentStatusCall() throws ApiException {
         return this.api.listComponentStatusCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+    }
+
+    public Call getServiceStatusCall() throws ApiException {
+        String namespace = "mrubis";
+        return this.api.readNamespacedServiceStatusCall(null, namespace, null, null, null);
+    }
+
+    public Call getResourceQuotaCall() throws ApiException {
+        return this.api.listResourceQuotaForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+    }
+
+    public Call getReplicaSetCall() throws ApiException {
+        String namespace = "mrubis";
+        return this.appsApi.listReplicaSetForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+    }
+
+    public Call getDeploymentCall() throws ApiException {
+        String namespace = "mrubis";
+        return this.appsApi.listDeploymentForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 }

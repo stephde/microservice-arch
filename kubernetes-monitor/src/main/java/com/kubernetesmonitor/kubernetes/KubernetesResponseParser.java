@@ -1,9 +1,6 @@
 package com.kubernetesmonitor.kubernetes;
 
-import com.kubernetesmonitor.models.ComponentStatus;
-import com.kubernetesmonitor.models.Pod;
-import com.kubernetesmonitor.models.Service;
-import com.kubernetesmonitor.models.WatchableEntity;
+import com.kubernetesmonitor.models.*;
 import io.kubernetes.client.models.*;
 
 import java.util.List;
@@ -36,6 +33,29 @@ public class KubernetesResponseParser {
         return new Service(parseMetadata(serviceResponse.getMetadata()))
                 .setExternalName(serviceResponse.getSpec().getExternalName())
                 .setPorts(ports);
+    }
+
+    public Deployment parseDeploymentResponse(V1Deployment deploymentResponse) {
+        return new Deployment(parseMetadata(deploymentResponse.getMetadata()))
+                .setReplicas(deploymentResponse.getSpec().getReplicas())
+                .setAvailableReplicas(deploymentResponse.getStatus().getAvailableReplicas())
+                .setUnavailableReplicas(deploymentResponse.getStatus().getUnavailableReplicas())
+                .setCollisionCount(deploymentResponse.getStatus().getCollisionCount());
+    }
+
+    public ReplicaSet parseReplicaSetResponse(V1ReplicaSet replicaSet) {
+        return new ReplicaSet(parseMetadata(replicaSet.getMetadata()))
+                .setReplicas(replicaSet.getSpec().getReplicas())
+                .setMinReadySeconds(replicaSet.getSpec().getMinReadySeconds())
+                .setMatchLabels(replicaSet.getSpec().getSelector().getMatchLabels());
+    }
+
+    public ResourceQuota parseResourceQuota(V1ResourceQuota resourceQuota) {
+        return new ResourceQuota(parseMetadata(resourceQuota.getMetadata()))
+                .setHard(resourceQuota.getSpec().getHard())
+                .setHard_status(resourceQuota.getStatus().getHard())
+                .setUsed(resourceQuota.getStatus().getUsed())
+                .setScopes(resourceQuota.getSpec().getScopes());
     }
 
     private WatchableEntity parseMetadata(V1ObjectMeta metadata) {
