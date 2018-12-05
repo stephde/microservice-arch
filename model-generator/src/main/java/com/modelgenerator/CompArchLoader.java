@@ -2,6 +2,7 @@ package com.modelgenerator;
 
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.ComparchPackage;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class CompArchLoader {
 
 
@@ -25,14 +27,14 @@ public class CompArchLoader {
         Resource resource = resourceSet.getResource(URI.createURI(modelURI), true);
         Architecture architecture = (Architecture) resource.getContents().get(0);
 
-        System.out.println("Loaded model from: " + modelURI);
+        log.info("Loaded model from: {}", modelURI);
         this.logArchitecture(architecture);
 
         return architecture;
     }
 
     public void saveModel(Architecture model) {
-        System.out.println("Saving model to ...");
+        log.info("Saving model to ...");
     }
 
     private void logArchitecture(Architecture architecture) {

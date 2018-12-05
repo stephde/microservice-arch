@@ -4,6 +4,7 @@ import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.ServiceEvent;
 import com.modelgenerator.ModelWrapper;
 import de.mdelab.comparch.ComponentState;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class EventListener {
 
     @Autowired
@@ -64,7 +66,7 @@ public class EventListener {
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'DEPLOYMENT_STATUS_UPDATE'")
     public void receiveEvent(@Payload final DeploymentEvent event) {
-        System.out.println("Received Event object : " + event.toString());
+        log.info("Received Event object : {}", event.toString());
 
         ComponentState state = parseState(event.getStatus());
         try {
@@ -78,7 +80,7 @@ public class EventListener {
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'SERVICE_UPDATE'")
     public void receiveEvent(@Payload final ServiceEvent event) {
-        System.out.println("Received Event object : " + event.toString());
+        log.info("Received Event object : {} ", event.toString());
     }
 
     private ComponentState parseState(String remoteState) {
