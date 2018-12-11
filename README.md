@@ -15,7 +15,7 @@
 * simply run `docker-compose -f docker-compose.local.yml up`
 * verify by running `curl localhost:8002/model`
 
-## Run in kubernetes
+## Run in local kubernetes
 * start a local docker registry with: 
 ```
 docker run -d -p 5000:5000 --restart=always --name registry registry:2
@@ -29,11 +29,20 @@ scripts/tagAndPushDockerImages.sh
 * check out the [local dashboard](http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy)
 (you need to have kubectl proxy running `kubectl proxy` and might need to adjust the port)
 
+Create the target namespace before deployment.
+```
+kubectl create -f scripts/namespace.json
+```
+
 run with docker stack:
 ```
-docker stack deploy --compose-file docker-compose.yml dm
+docker stack deploy --namespace dm --compose-file docker-compose.yml dm
 ```
 remove stack with docker stack:
 ```
 docker stack rm dm
 ```
+
+## Monitor an application
+The namespace of the target application needs to match the namespace in the application.properties of the monitor.
+Otherwise, it can also be adjusted at runtime by calling the `POST /namespace` endpoint (as in `scripts/changeNamespace.sh`)

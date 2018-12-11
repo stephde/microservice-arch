@@ -11,6 +11,8 @@ import com.kubernetesmonitor.watcher.ServiceWatcher;
 import io.kubernetes.client.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -24,6 +26,11 @@ public class InfoController {
     private KubernetesConnector kubernetesConnector;
     @Autowired
     Publisher publisher;
+
+    @PostMapping("/namespace")
+    public void setNamespace(@RequestBody String namespace) {
+        kubernetesConnector.setNamespace(namespace);
+    }
 
     @GetMapping("/publish")
     public void publish() {

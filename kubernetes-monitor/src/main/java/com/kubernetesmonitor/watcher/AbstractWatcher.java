@@ -48,7 +48,7 @@ public abstract class AbstractWatcher<T> {
                     this.watchCallback(item);
                 }
             } catch (ApiException ex) {
-                log.error("Error during Kubernetes APU call due to: ", ex);
+                log.error("Error during Kubernetes API call due to: ", ex);
             } catch (Throwable ex) {
                 log.error(ex.getMessage(), ex);
             } finally {

@@ -34,12 +34,15 @@ public class KubernetesConnector {
     private CoreV1Api api;
     private AppsV1Api appsApi;
     private ApiClient client;
+    private final KubernetesConfig config;
 
-    public KubernetesConnector() throws IOException {
+    public KubernetesConnector(KubernetesConfig config) throws IOException {
+        this.config = config;
         this.client = Config.defaultClient();
         Configuration.setDefaultApiClient(this.client);
 
         log.info("Connecting to kubernetes on: {}", this.client.getBasePath());
+        log.info("Using namespace: {}", this.getNamespace());
 
         this.api = new CoreV1Api(client);
         this.appsApi = new AppsV1Api(client);
@@ -102,34 +105,70 @@ public class KubernetesConnector {
     }
 
     public Call getListPodCall() throws ApiException {
+
+        if(this.hasValidNamespace()) {
+            return this.api.listNamespacedPodCall(this.getNamespace(), null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+        }
+
         return this.api.listPodForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 
     public Call getListServiceCall() throws ApiException {
+
+        if(this.hasValidNamespace()) {
+            return this.api.listNamespacedServiceCall(this.getNamespace(), null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+        }
+
         return this.api.listServiceForAllNamespacesCall(
                 null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 
     public Call getListComponentStatusCall() throws ApiException {
+
         return this.api.listComponentStatusCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 
     public Call getServiceStatusCall() throws ApiException {
-        String namespace = "mrubis";
-        return this.api.readNamespacedServiceStatusCall(null, namespace, null, null, null);
+        return this.api.readNamespacedServiceStatusCall(null, this.getNamespace(), null, null, null);
     }
 
     public Call getResourceQuotaCall() throws ApiException {
+
+        if(this.hasValidNamespace()) {
+            return this.api.listNamespacedResourceQuotaCall(this.getNamespace(), null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+        }
+
         return this.api.listResourceQuotaForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 
     public Call getReplicaSetCall() throws ApiException {
-        String namespace = "mrubis";
+
+        if(this.hasValidNamespace()) {
+            return this.appsApi.listNamespacedReplicaSetCall(this.getNamespace(), null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+        }
+
         return this.appsApi.listReplicaSetForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 
     public Call getDeploymentCall() throws ApiException {
-        String namespace = "mrubis";
+
+        if(this.hasValidNamespace()) {
+            return this.appsApi.listNamespacedDeploymentCall(this.getNamespace(), null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+        }
+
         return this.appsApi.listDeploymentForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+    }
+
+    public String getNamespace() {
+        return this.config.NAMESPACE;
+    }
+
+    public void setNamespace(String namespace) {
+        log.info("Setting kubernetes namespace to: {}", namespace);
+        this.config.NAMESPACE = namespace;
+    }
+
+    public boolean hasValidNamespace() {
+        return this.getNamespace() != null && ! this.getNamespace().isEmpty();
     }
 }
