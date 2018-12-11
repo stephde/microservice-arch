@@ -47,7 +47,8 @@ public class KubernetesResponseParser {
         return new ReplicaSet(parseMetadata(replicaSet.getMetadata()))
                 .setReplicas(replicaSet.getSpec().getReplicas())
                 .setMinReadySeconds(replicaSet.getSpec().getMinReadySeconds())
-                .setMatchLabels(replicaSet.getSpec().getSelector().getMatchLabels());
+//                .setMatchLabels(replicaSet.getSpec().getSelector().getMatchLabels())
+                .setServiceName(replicaSet.getSpec().getTemplate().getSpec().getServiceAccountName());
     }
 
     public ResourceQuota parseResourceQuota(V1ResourceQuota resourceQuota) {
@@ -56,6 +57,17 @@ public class KubernetesResponseParser {
                 .setHard_status(resourceQuota.getStatus().getHard())
                 .setUsed(resourceQuota.getStatus().getUsed())
                 .setScopes(resourceQuota.getSpec().getScopes());
+    }
+
+    public KubeEvent parseEventResponse(V1Event event) {
+        return new KubeEvent(parseMetadata(event.getMetadata()))
+                .setLastTimestamp(event.getLastTimestamp())
+                .setMessage(event.getMessage())
+                .setName(event.getInvolvedObject().getName())
+                .setReason(event.getReason())
+                .setRelated(event.getRelated() != null ? event.getRelated().getName() : "")
+                .setSource(event.getSource().getComponent())
+                .setType(event.getType());
     }
 
     private WatchableEntity parseMetadata(V1ObjectMeta metadata) {

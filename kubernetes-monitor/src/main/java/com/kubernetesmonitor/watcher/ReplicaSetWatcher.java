@@ -30,7 +30,7 @@ public class ReplicaSetWatcher extends AbstractWatcher<V1ReplicaSet> {
     @Override
     void watchCallback(Watch.Response<V1ReplicaSet> response) {
         ReplicaSet replicaSet = this.responseParser.parseReplicaSetResponse(response.object);
-        log.info("#### ReplicaSet Watcher ---- Event type: {} : {}", response.type, replicaSet.toString());
+        log.info("{}", replicaSet.toString());
     }
 
     @Override
