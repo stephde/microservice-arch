@@ -52,7 +52,7 @@ Otherwise, it can also be adjusted at runtime by calling the `POST /namespace` e
 
 ```bash
 # after build, tag & push
-scripts/tagAndPushImages.sh
+scripts/tagAndPushDocker.sh
 
 # deploy stack
 docker stack deploy --namespace dm --compose-file docker-compose.yml dm

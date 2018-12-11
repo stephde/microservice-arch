@@ -12,7 +12,6 @@ import de.mdelab.comparch.ComponentState;
 import de.mdelab.comparch.ComponentType;
 import de.mdelab.comparch.ConcernedElement;
 import de.mdelab.comparch.Connector;
-import de.mdelab.comparch.DefaultComparchFactoryImpl;
 import de.mdelab.comparch.Impact;
 import de.mdelab.comparch.InputParameter;
 import de.mdelab.comparch.InterfaceType;
@@ -27,6 +26,7 @@ import de.mdelab.comparch.RequiredInterface;
 import de.mdelab.comparch.Tenant;
 
 import de.mdelab.comparch.WorkingData;
+import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;

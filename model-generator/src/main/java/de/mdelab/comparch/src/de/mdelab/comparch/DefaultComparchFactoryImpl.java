@@ -1,5 +1,26 @@
-package de.mdelab.comparch;
+package de.mdelab.comparch.src.de.mdelab.comparch;
 
+import de.mdelab.comparch.Architecture;
+import de.mdelab.comparch.ComponentType;
+import de.mdelab.comparch.InterfaceType;
+import de.mdelab.comparch.MethodSpecification;
+import de.mdelab.comparch.ParameterType;
+import de.mdelab.comparch.Tenant;
+import de.mdelab.comparch.ConcernedElement;
+import de.mdelab.comparch.Issue;
+import de.mdelab.comparch.Impact;
+import de.mdelab.comparch.AdaptationStrategy;
+import de.mdelab.comparch.InputParameter;
+import de.mdelab.comparch.MonitoredProperty;
+import de.mdelab.comparch.Annotations;
+import de.mdelab.comparch.Parameter;
+import de.mdelab.comparch.Component;
+import de.mdelab.comparch.RequiredInterface;
+import de.mdelab.comparch.ProvidedInterface;
+import de.mdelab.comparch.PerformanceStats;
+import de.mdelab.comparch.Connector;
+import de.mdelab.comparch.WorkingData;
+import de.mdelab.comparch.Exception;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -61,7 +82,7 @@ public class DefaultComparchFactoryImpl extends ComparchFactoryImpl {
 	}
 
 	@Override
-	public Tenant createTenant() {
+	public de.mdelab.comparch.Tenant createTenant() {
 		Tenant tenant = super.createTenant();
 		tenant.setUid(this.genUUID(tenant));
 		return tenant;

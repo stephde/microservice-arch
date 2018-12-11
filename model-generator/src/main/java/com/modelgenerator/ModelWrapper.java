@@ -5,13 +5,12 @@ import com.google.gson.JsonObject;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
-import de.mdelab.comparch.Tenant;
+import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -24,7 +23,8 @@ public class ModelWrapper {
     public ModelWrapper(@NotNull CompArchLoader loader) {
         this.loader = loader;
         try {
-            this.model = loader.loadModel();
+//            this.model = loader.loadModel();
+            this.generateModel("default");
             log.info(this.model.toString());
         } catch (RuntimeException e) {
             log.error("Could not load model due to: {}", e.getMessage());
@@ -37,6 +37,13 @@ public class ModelWrapper {
 
     public Architecture getModel() {
         return this.model;
+    }
+
+    public void generateModel(String name) {
+
+        DefaultComparchFactoryImpl factory = new DefaultComparchFactoryImpl();
+        this.model = factory.createArchitecture();
+        this.model.setName(name);
     }
 
     public JsonObject getModelAsJSON() {

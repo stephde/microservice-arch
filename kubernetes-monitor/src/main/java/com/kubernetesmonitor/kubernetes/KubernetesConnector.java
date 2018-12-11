@@ -150,6 +150,10 @@ public class KubernetesConnector {
         return this.api.listEventForAllNamespacesCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
     }
 
+    public Call getNamespacesCall() throws ApiException {
+        return this.api.listNamespaceCall(null, null, null, null, null, null, null, null, Boolean.TRUE, null, null);
+    }
+
     public Call getReplicaSetCall() throws ApiException {
 
         if(this.hasValidNamespace()) {

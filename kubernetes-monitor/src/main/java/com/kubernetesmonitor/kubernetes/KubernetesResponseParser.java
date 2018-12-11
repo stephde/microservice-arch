@@ -70,7 +70,7 @@ public class KubernetesResponseParser {
                 .setType(event.getType());
     }
 
-    private WatchableEntity parseMetadata(V1ObjectMeta metadata) {
+    public WatchableEntity parseMetadata(V1ObjectMeta metadata) {
         return new WatchableEntity()
                 .setName(metadata.getName())
                 .setNamespace(metadata.getNamespace())

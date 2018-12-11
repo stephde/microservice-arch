@@ -2,6 +2,7 @@ package com.modelgenerator.event;
 
 import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.ServiceEvent;
+import com.kubernetesmonitor.events.NamespaceEvent;
 import com.modelgenerator.ModelWrapper;
 import de.mdelab.comparch.ComponentState;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +67,7 @@ public class EventListener {
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'DEPLOYMENT_STATUS_UPDATE'")
     public void receiveEvent(@Payload final DeploymentEvent event) {
-        log.info("Received Event object : {}", event.toString());
+        log.info("Received : {}", event.toString());
 
         ComponentState state = parseState(event.getStatus());
         try {
@@ -80,7 +81,15 @@ public class EventListener {
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'SERVICE_UPDATE'")
     public void receiveEvent(@Payload final ServiceEvent event) {
-        log.info("Received Event object : {} ", event.toString());
+        log.info("Received : {} ", event.toString());
+    }
+
+    @JmsListener(destination = "${spring.activemq.queue-name}",
+                containerFactory = "jmsListenerContainerFactory",
+                selector = "_eventType = 'NAMESPACE_UPDATE'")
+    public void receiveEvent(@Payload final NamespaceEvent event) {
+        log.info("Received : {} ", event.toString());
+        modelWrapper.generateModel(event.getName());
     }
 
     private ComponentState parseState(String remoteState) {
