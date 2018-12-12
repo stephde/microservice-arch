@@ -20,7 +20,7 @@ public class KubernetesResponseParser {
                 .setStatus(podResponse.getStatus().getPhase())
                 .setContainerCount(podResponse.getSpec().getContainers().size())
                 .setNodeName(podResponse.getSpec().getNodeName())
-                .setServiceName(podResponse.getSpec().getServiceAccountName());
+                .setServiceName(extractServiceName(podResponse.getMetadata().getName()));
     }
 
     public Service parseServiceResponse(V1Service serviceResponse) {
@@ -48,7 +48,7 @@ public class KubernetesResponseParser {
                 .setReplicas(replicaSet.getSpec().getReplicas())
                 .setMinReadySeconds(replicaSet.getSpec().getMinReadySeconds())
 //                .setMatchLabels(replicaSet.getSpec().getSelector().getMatchLabels())
-                .setServiceName(replicaSet.getSpec().getTemplate().getSpec().getServiceAccountName());
+                .setServiceName(extractServiceName(replicaSet.getMetadata().getName()));
     }
 
     public ResourceQuota parseResourceQuota(V1ResourceQuota resourceQuota) {
@@ -75,5 +75,15 @@ public class KubernetesResponseParser {
                 .setName(metadata.getName())
                 .setNamespace(metadata.getNamespace())
                 .setCreationTime(metadata.getCreationTimestamp());
+    }
+
+    private String extractServiceName(String instanceName) {
+        int cutIndex = instanceName.indexOf("-");
+
+        if ( cutIndex > 0) {
+            return instanceName.substring(0, cutIndex);
+        }
+
+        return instanceName;
     }
 }

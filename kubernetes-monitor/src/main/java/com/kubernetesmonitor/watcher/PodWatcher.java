@@ -31,7 +31,7 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
     void watchCallback(Watch.Response<V1Pod> item) {
         Pod pod = this.responseParser.parsePodResponse(item.object);
         log.info("{}", pod.toString());
-        publisher.publishEvent(new DeploymentEvent(pod.getServiceName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName()));
+        publisher.publishEvent(new DeploymentEvent(pod.getName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName()));
     }
 
     @Override

@@ -70,11 +70,7 @@ public class EventListener {
         log.info("Received : {}", event.toString());
 
         ComponentState state = parseState(event.getStatus());
-        try {
-            modelWrapper.handleStateUpdate(event.getServiceName(), event.getComponentName(), state);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        modelWrapper.handleStateUpdate(event.getServiceName(), event.getComponentName(), event.getNodeName(), state);
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",
@@ -94,9 +90,9 @@ public class EventListener {
 
     private ComponentState parseState(String remoteState) {
         switch (remoteState) {
-            case "STARTED": return ComponentState.DEPLOYED;
-            case "RUNNING": return ComponentState.STARTED;
-            case "REMOVED": return ComponentState.UNDEPLOYED;
+            case "Pending": return ComponentState.STARTED;
+            case "Running": return ComponentState.DEPLOYED;
+            case "Removed": return ComponentState.UNDEPLOYED;
             default: return ComponentState.UNDEPLOYED;
         }
     }
