@@ -1,8 +1,8 @@
 package com.modelgenerator;
 
+import com.google.gson.JsonArray;
 import com.kubernetesmonitor.events.Event;
 import com.google.gson.JsonObject;
-import de.mdelab.comparch.*;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
@@ -58,9 +58,18 @@ public class ModelWrapper {
 
         model.getComponentTypes().forEach(c -> {
             JsonObject jsonComponent = new JsonObject();
-
             jsonComponent.addProperty("name", c.getName());
-            jsonComponent.addProperty("Instances", c.getInstances().toString());
+
+            JsonArray instances = new JsonArray();
+            c.getInstances().forEach(i -> {
+                JsonObject jsonInstance = new JsonObject();
+                jsonInstance.addProperty("name", i.getName());
+                jsonInstance.addProperty("state", i.getState().getName());
+                jsonInstance.addProperty("tenant", i.getTenant().getName());
+                instances.add(jsonInstance);
+            });
+            jsonComponent.add("Instances", instances);
+
             jsonComponent.addProperty("Parameters", c.getParameterTypes().toString());
             json.add(c.getName(), jsonComponent);
         });
@@ -81,7 +90,7 @@ public class ModelWrapper {
         try {
             tenant = getTenant(nodeName);
         } catch (Exception e) {
-            tenant = addTenant(nodeName);
+            tenant = createTenant(nodeName);
         }
 
         try {
@@ -92,7 +101,7 @@ public class ModelWrapper {
         } catch (Exception e) {
             // ToDo: define custom exception
             // component does not exist yet
-            addComponent(componentName, instanceName, tenant, state);
+            createAndAddComponent(componentName, instanceName, tenant, state);
         }
     }
 
@@ -105,7 +114,7 @@ public class ModelWrapper {
                 .orElseThrow(() -> new Exception("Instance - " + instanceName + " not found"));
     }
 
-    private void addComponent(String componentName, String instanceName, Tenant tenant, ComponentState state) {
+    private void createAndAddComponent(String componentName, String instanceName, Tenant tenant, ComponentState state) {
         ComponentType ct = this.factory.createComponentType();
         ct.setName(componentName);
         this.model.getComponentTypes().add(ct);
@@ -113,9 +122,11 @@ public class ModelWrapper {
         Component component = this.factory.createComponent();
         component.setName(instanceName);
         component.setState(state);
+        component.setTenant(tenant);
 
         try {
             getComponentType(componentName).getInstances().add(component);
+            log.info("Created and added component {} : {}", componentName, component);
         } catch (Exception e) {
             // this should never happen since we just added this type...
             log.error("Could not find componentType just after adding it...", e);
@@ -139,9 +150,12 @@ public class ModelWrapper {
     }
 
 
-    private Tenant addTenant(String name) {
+    private Tenant createTenant(String name) {
         Tenant tenant = this.factory.createTenant();
         tenant.setName(name);
+        log.info("Created Tenant {} : {}", name, tenant);
+
+        this.model.getTenants().add(tenant);
         return tenant;
     }
 }

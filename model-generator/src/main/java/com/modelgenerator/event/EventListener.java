@@ -89,11 +89,16 @@ public class EventListener {
     }
 
     private ComponentState parseState(String remoteState) {
+        log.debug("Remote component state === {}", remoteState);
+        ComponentState state = ComponentState.UNDEPLOYED;
+
         switch (remoteState) {
-            case "Pending": return ComponentState.STARTED;
-            case "Running": return ComponentState.DEPLOYED;
-            case "Removed": return ComponentState.UNDEPLOYED;
-            default: return ComponentState.UNDEPLOYED;
+            case "Running": state = ComponentState.STARTED; break;
+            case "Pending": state = ComponentState.DEPLOYED; break;
+            case "Removed": state = ComponentState.UNDEPLOYED; break;
         }
+
+        log.debug("Actual component state === {}", state.getName());
+        return state;
     }
 }

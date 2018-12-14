@@ -69,3 +69,18 @@ kubectl --namespace=dm scale --replicas=2 deployment/activemq
 # remove stack
 docker stack rm --namespace dm dm
 ```
+
+
+## Notes
+
+* remove container
+```
+2018-12-14 14:37:43 -- INFO  -- c.k.w.EventWatcher	: 
+KubeEvent(super=WatchableEntity(name=derbydbtestit-65bcc979fc-zxslz, namespace=dm, creationTime=2018-12-14T14:37:43.000Z), 
+    lastTimestamp=2018-12-14T14:37:43.000Z, 
+    message=Killing container with id docker://derbydbtestit:Need to kill Pod, 
+    reason=Killing, related=, type=Normal, source=kubelet, 
+    name=derbydbtestit-65bcc979fc-zxslz)
+```
+
+* container status in pod events is still pending after this though...
