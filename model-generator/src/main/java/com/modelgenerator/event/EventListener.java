@@ -1,8 +1,8 @@
 package com.modelgenerator.event;
 
-import com.kubernetesmonitor.events.DeploymentEvent;
-import com.kubernetesmonitor.events.ServiceEvent;
-import com.kubernetesmonitor.events.NamespaceEvent;
+import com.dm.events.DeploymentEvent;
+import com.dm.events.NamespaceEvent;
+import com.dm.events.ServiceEvent;
 import com.modelgenerator.ModelWrapper;
 import de.mdelab.comparch.ComponentState;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
 package com.kubernetesmonitor;
 
+import com.dm.events.DeploymentEvent;
+import com.dm.events.ServiceEvent;
 import com.google.common.collect.Lists;
-import com.kubernetesmonitor.events.DeploymentEvent;
-import com.kubernetesmonitor.events.ServiceEvent;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.watcher.ComponentStatusWatcher;

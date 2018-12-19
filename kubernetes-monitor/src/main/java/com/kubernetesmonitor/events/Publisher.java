@@ -1,5 +1,6 @@
 package com.kubernetesmonitor.events;
 
+import com.dm.events.Event;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

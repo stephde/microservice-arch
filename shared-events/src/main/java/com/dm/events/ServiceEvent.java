@@ -1,13 +1,12 @@
-package com.kubernetesmonitor.events;
+package com.dm.events;
 
 import lombok.Data;
 import org.joda.time.DateTime;
 
-import java.sql.DataTruncation;
 import java.util.List;
 
 @Data
-public class ServiceEvent extends com.kubernetesmonitor.events.Event {
+public class ServiceEvent extends Event {
 
     List<Integer> ports;
 

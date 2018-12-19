@@ -7,8 +7,6 @@ import com.kubernetesmonitor.models.Deployment;
 import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Deployment;
-import io.kubernetes.client.models.V1Pod;
-import io.kubernetes.client.models.V1ReplicaSet;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

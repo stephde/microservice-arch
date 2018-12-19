@@ -1,6 +1,6 @@
 package com.modelgenerator;
 
-import com.kubernetesmonitor.events.DeploymentEvent;
+import com.dm.events.DeploymentEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

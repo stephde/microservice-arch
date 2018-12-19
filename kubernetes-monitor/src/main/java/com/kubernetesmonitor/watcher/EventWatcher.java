@@ -1,16 +1,14 @@
 package com.kubernetesmonitor.watcher;
 
+import com.dm.events.DeploymentEvent;
 import com.google.gson.reflect.TypeToken;
-import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.EventFactory;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.models.KubeEvent;
-import com.kubernetesmonitor.models.Pod;
 import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Event;
-import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

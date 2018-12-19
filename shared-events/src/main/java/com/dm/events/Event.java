@@ -1,4 +1,4 @@
-package com.kubernetesmonitor.events;
+package com.dm.events;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

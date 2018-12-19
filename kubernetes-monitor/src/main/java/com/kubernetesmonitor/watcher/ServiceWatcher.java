@@ -1,8 +1,8 @@
 package com.kubernetesmonitor.watcher;
 
+import com.dm.events.ServiceEvent;
 import com.google.gson.reflect.TypeToken;
 import com.kubernetesmonitor.events.Publisher;
-import com.kubernetesmonitor.events.ServiceEvent;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.models.Service;
 import com.squareup.okhttp.Call;

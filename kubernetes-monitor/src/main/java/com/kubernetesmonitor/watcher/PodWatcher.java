@@ -1,7 +1,6 @@
 package com.kubernetesmonitor.watcher;
 
 import com.google.gson.reflect.TypeToken;
-import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.EventFactory;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
@@ -11,8 +10,6 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,16 +1,13 @@
 package com.kubernetesmonitor.watcher;
 
+import com.dm.events.NamespaceEvent;
 import com.google.gson.reflect.TypeToken;
-import com.kubernetesmonitor.events.DeploymentEvent;
-import com.kubernetesmonitor.events.NamespaceEvent;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
-import com.kubernetesmonitor.models.Pod;
 import com.kubernetesmonitor.models.WatchableEntity;
 import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Namespace;
-import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
@@ -37,7 +34,7 @@ public class NamespaceWatcher extends AbstractWatcher<V1Namespace> {
         // only publish if namespace is the right one
         if(namespace.getName().equals(kubernetesConnector.getNamespace())){
             DateTime eventTime = DateTime.now();
-            publisher.publishEvent(new NamespaceEvent(namespace, eventTime));
+            publisher.publishEvent(new NamespaceEvent(namespace.getName(), eventTime, namespace.getCreationTime()));
         }
     }
 

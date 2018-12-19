@@ -1,1 +1,3 @@
 rootProject.name = 'kubernetesmonitor'
+
+includeBuild '../shared-events'

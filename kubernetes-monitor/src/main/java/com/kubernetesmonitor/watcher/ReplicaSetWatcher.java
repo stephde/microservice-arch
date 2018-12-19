@@ -1,14 +1,11 @@
 package com.kubernetesmonitor.watcher;
 
 import com.google.gson.reflect.TypeToken;
-import com.kubernetesmonitor.events.DeploymentEvent;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
-import com.kubernetesmonitor.models.Pod;
 import com.kubernetesmonitor.models.ReplicaSet;
 import com.squareup.okhttp.Call;
 import io.kubernetes.client.ApiException;
-import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1ReplicaSet;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
