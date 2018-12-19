@@ -60,6 +60,7 @@ public class KubernetesResponseParser {
     public KubeEvent parseEventResponse(V1Event event) {
         return new KubeEvent(parseMetadata(event.getMetadata()))
                 .setLastTimestamp(event.getLastTimestamp())
+                .setEventTime(event.getEventTime())
                 .setMessage(event.getMessage())
                 .setName(event.getInvolvedObject().getName())
                 .setReason(event.getReason())

@@ -51,7 +51,7 @@ public class EventWatcher extends AbstractWatcher<V1Event> {
 
     private void handleDeleteEvents(KubeEvent event) {
         if(event.getReason().equals("Killing")) {
-            publisher.publishEvent(new DeploymentEvent(event.getName(), STATE_DELETED, null, event.getServiceName()));
+            publisher.publishEvent(new DeploymentEvent(event.getName(), STATE_DELETED, null, event.getServiceName(), event.getEventTime(), event.getCreationTime()));
         }
     }
 }

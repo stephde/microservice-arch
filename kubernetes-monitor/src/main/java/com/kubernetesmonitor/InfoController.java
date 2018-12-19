@@ -9,6 +9,7 @@ import com.kubernetesmonitor.watcher.ComponentStatusWatcher;
 import com.kubernetesmonitor.watcher.PodWatcher;
 import com.kubernetesmonitor.watcher.ServiceWatcher;
 import io.kubernetes.client.ApiException;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,12 +35,12 @@ public class InfoController {
 
     @GetMapping("/publish")
     public void publish() {
-        publisher.publishEvent(new DeploymentEvent("FakePod", "RUNNING", "Node#1", "A-Service"));
+        publisher.publishEvent(new DeploymentEvent("FakePod", "RUNNING", "Node#1", "A-Service", DateTime.now(), DateTime.now()));
     }
 
     @GetMapping("/publish/service")
     public void publishService() {
-        publisher.publishEvent(new ServiceEvent("AuthService", Collections.singletonList(8080)));
+        publisher.publishEvent(new ServiceEvent("AuthService", Collections.singletonList(8080), DateTime.now(), DateTime.now()));
     }
 
     @GetMapping("/pods")

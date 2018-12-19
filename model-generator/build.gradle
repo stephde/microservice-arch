@@ -36,6 +36,7 @@ dependencies {
     compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.15.0'
 	compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.15.0'
 	compile group: 'org.knowm.xchart', name: 'xchart', version: '3.5.2'
+	compile group: 'joda-time', name: 'joda-time', version: '2.10.1'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 

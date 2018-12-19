@@ -10,6 +10,7 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Service;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
@@ -27,7 +28,8 @@ public class ServiceWatcher extends AbstractWatcher<V1Service> {
     void watchCallback(Watch.Response<V1Service> item) {
         Service service = this.responseParser.parseServiceResponse(item.object);
         log.info("ServiceWatcher received: {} : {}", item.type, service);
-        publisher.publishEvent(new ServiceEvent(service.getName(), service.getPorts()));
+        DateTime eventTime = DateTime.now();
+        publisher.publishEvent(new ServiceEvent(service.getName(), service.getPorts(), eventTime, service.getCreationTime()));
     }
 
     @Override

@@ -70,7 +70,7 @@ public class EventListener {
         log.info("Received : {}", event.toString());
 
         ComponentState state = parseState(event.getStatus());
-        modelWrapper.handleInstanceStateUpdate(event.getServiceName(), event.getComponentName(), event.getNodeName(), state);
+        modelWrapper.handleInstanceStateUpdate(event.getServiceName(), event.getComponentName(), event.getNodeName(), state, event.getEventDateTime(), event.getCreationDateTime());
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",

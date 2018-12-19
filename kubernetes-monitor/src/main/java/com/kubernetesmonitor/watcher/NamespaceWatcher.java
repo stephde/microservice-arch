@@ -13,6 +13,7 @@ import io.kubernetes.client.models.V1Namespace;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +36,8 @@ public class NamespaceWatcher extends AbstractWatcher<V1Namespace> {
 
         // only publish if namespace is the right one
         if(namespace.getName().equals(kubernetesConnector.getNamespace())){
-            publisher.publishEvent(new NamespaceEvent(namespace.getName(), namespace.getNamespace()/*, namespace.getCreationTime()*/));
+            DateTime eventTime = DateTime.now();
+            publisher.publishEvent(new NamespaceEvent(namespace.getName(), namespace.getNamespace(), eventTime, namespace.getCreationTime()));
         }
     }
 

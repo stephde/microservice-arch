@@ -1,20 +1,20 @@
 package com.modelgenerator;
 
 import com.google.gson.JsonArray;
-import com.kubernetesmonitor.events.Event;
 import com.google.gson.JsonObject;
+import de.mdelab.comparch.*;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
 import de.mdelab.comparch.ComponentType;
+import de.mdelab.comparch.MonitoredProperty;
 import de.mdelab.comparch.Tenant;
 import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.emf.common.util.EList;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.lang.Exception;
-import java.util.Iterator;
 
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +26,9 @@ public class ModelWrapper {
     private CompArchLoader loader;
     private Architecture model;
     private DefaultComparchFactoryImpl factory;
+
+    private static final String PROPERTY_LASTE_UPDATE = "lastUpdate";
+    private static final String PROPERTY_CREATION_TIME = "creationTime";
 
     public ModelWrapper(@NotNull CompArchLoader loader) {
         this.loader = loader;
@@ -58,28 +61,34 @@ public class ModelWrapper {
         JsonObject json = new JsonObject();
         json.addProperty("instance", model.toString());
 
-        model.getComponentTypes().forEach(c -> {
+        model.getComponentTypes().forEach(ct -> {
             JsonObject jsonComponent = new JsonObject();
-            jsonComponent.addProperty("name", c.getName());
+            jsonComponent.addProperty("name", ct.getName());
 
             JsonArray instances = new JsonArray();
-            c.getInstances().forEach(i -> {
+            ct.getInstances().forEach(i -> {
                 JsonObject jsonInstance = new JsonObject();
                 jsonInstance.addProperty("name", i.getName());
                 jsonInstance.addProperty("state", i.getState().getName());
                 jsonInstance.addProperty("tenant", i.getTenant().getName());
+
+                // add monitored properties
+                i.getMonitoredProperties().forEach(prop -> {
+                    jsonInstance.addProperty(prop.getName(), prop.getValue());
+                });
+
                 instances.add(jsonInstance);
             });
             jsonComponent.add("Instances", instances);
 
-            jsonComponent.addProperty("Parameters", c.getParameterTypes().toString());
-            json.add(c.getName(), jsonComponent);
+            jsonComponent.addProperty("Parameters", ct.getParameterTypes().toString());
+            json.add(ct.getName(), jsonComponent);
         });
 
         return json;
     }
 
-    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state) {
+    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime) {
 //        Component component = this.model.getTenants()
 //                .stream()
 //                .map(Tenant::getComponents)
@@ -94,18 +103,21 @@ public class ModelWrapper {
         } else {
             Tenant tenant = getTenant(nodeName);
 
-            try {
-                Component component = getComponent(componentName, instanceName);
-                component.setState(state);
-                component.setTenant(tenant);
-                log.info("Changed {} state to: {}", component.getName(), state);
-            } catch (Exception e) {
-                // ToDo: define custom exception
-                // component does not exist yet
-                createAndAddComponent(componentName, instanceName, tenant, state);
-            }
+            Component component = getOrCreateComponent(componentName, instanceName);
+            component.setState(state);
+            component.setTenant(tenant);
+            component.getMonitoredProperties().add(createProperty(PROPERTY_LASTE_UPDATE, eventTime));
+            component.getMonitoredProperties().add(createProperty(PROPERTY_CREATION_TIME, creationTime));
+            log.info("Changed {} state to: {}", component.getName(), state);
         }
 
+    }
+
+    private MonitoredProperty createProperty(String name, DateTime time) {
+        MonitoredProperty monitoredProperty = this.factory.createMonitoredProperty();
+        monitoredProperty.setName(name);
+        monitoredProperty.setValue(time.toString());
+        return monitoredProperty;
     }
 
     private Component getComponent(String componentName, String instanceName) throws Exception {
@@ -117,14 +129,20 @@ public class ModelWrapper {
                 .orElseThrow(() -> new Exception("Instance - " + instanceName + " not found"));
     }
 
-    private void createAndAddComponent(String componentName, String instanceName, Tenant tenant, ComponentState state) {
-        Component component = this.factory.createComponent();
-        component.setName(instanceName);
-        component.setState(state);
-        component.setTenant(tenant);
+    private Component getOrCreateComponent(String componentName, String instanceName) {
+        Component component;
 
-        getComponentType(componentName).getInstances().add(component);
-        log.info("Created and added component {} : {}", componentName, component);
+        try {
+            component = getComponent(componentName, instanceName);
+        } catch (Exception e) {
+            component = this.factory.createComponent();
+            log.info("Settings component name to: {}", instanceName);
+            component.setName(instanceName);
+            getComponentType(componentName).getInstances().add(component);
+            log.info("Created and added component : {}", component);
+        }
+
+        return component;
     }
 
     private void removeComponent(String componentName, String instanceName) {

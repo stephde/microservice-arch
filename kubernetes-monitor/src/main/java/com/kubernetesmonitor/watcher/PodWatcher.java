@@ -12,8 +12,11 @@ import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 @Slf4j
@@ -31,7 +34,9 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
     void watchCallback(Watch.Response<V1Pod> item) {
         Pod pod = this.responseParser.parsePodResponse(item.object);
         log.info("{}", pod.toString());
-        publisher.publishEvent(new DeploymentEvent(pod.getName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName()));
+
+        DateTime eventTime = DateTime.now();
+        publisher.publishEvent(new DeploymentEvent(pod.getName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName(), eventTime, pod.getCreationTime()));
     }
 
     @Override

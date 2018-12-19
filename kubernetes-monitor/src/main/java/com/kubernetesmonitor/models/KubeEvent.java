@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 public class KubeEvent extends WatchableEntity {
 //    private String action; // usually null
     private DateTime lastTimestamp;
+    private DateTime eventTime;
 //    private String kind; // is always Event
     private String message;
     private String reason; // Scheduled, Pulling, ...
