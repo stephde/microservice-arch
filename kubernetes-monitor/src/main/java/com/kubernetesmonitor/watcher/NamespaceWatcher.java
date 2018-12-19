@@ -37,7 +37,7 @@ public class NamespaceWatcher extends AbstractWatcher<V1Namespace> {
         // only publish if namespace is the right one
         if(namespace.getName().equals(kubernetesConnector.getNamespace())){
             DateTime eventTime = DateTime.now();
-            publisher.publishEvent(new NamespaceEvent(namespace.getName(), namespace.getNamespace(), eventTime, namespace.getCreationTime()));
+            publisher.publishEvent(new NamespaceEvent(namespace, eventTime));
         }
     }
 

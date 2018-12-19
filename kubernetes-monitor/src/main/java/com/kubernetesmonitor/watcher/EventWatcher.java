@@ -2,6 +2,7 @@ package com.kubernetesmonitor.watcher;
 
 import com.google.gson.reflect.TypeToken;
 import com.kubernetesmonitor.events.DeploymentEvent;
+import com.kubernetesmonitor.events.EventFactory;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.models.KubeEvent;
@@ -19,10 +20,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class EventWatcher extends AbstractWatcher<V1Event> {
 
-    private static final String STATE_DELETED = "Deleted";
 
     @Autowired
     Publisher publisher;
+    @Autowired
+    EventFactory eventFactory;
 
     public EventWatcher(KubernetesConnector connector) {
         super(connector);
@@ -51,7 +53,8 @@ public class EventWatcher extends AbstractWatcher<V1Event> {
 
     private void handleDeleteEvents(KubeEvent event) {
         if(event.getReason().equals("Killing")) {
-            publisher.publishEvent(new DeploymentEvent(event.getName(), STATE_DELETED, null, event.getServiceName(), event.getEventTime(), event.getCreationTime()));
+            DeploymentEvent deletionEvent = eventFactory.createPodDeletionEvent(event);
+            publisher.publishEvent(deletionEvent);
         }
     }
 }

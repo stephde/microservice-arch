@@ -2,6 +2,7 @@ package com.kubernetesmonitor.watcher;
 
 import com.google.gson.reflect.TypeToken;
 import com.kubernetesmonitor.events.DeploymentEvent;
+import com.kubernetesmonitor.events.EventFactory;
 import com.kubernetesmonitor.events.Publisher;
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.models.Pod;
@@ -24,6 +25,8 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
 
     @Autowired
     Publisher publisher;
+    @Autowired
+    EventFactory eventFactory;
 
     public PodWatcher(KubernetesConnector connector) {
         super(connector);
@@ -36,7 +39,7 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
         log.info("{}", pod.toString());
 
         DateTime eventTime = DateTime.now();
-        publisher.publishEvent(new DeploymentEvent(pod.getName(), pod.getStatus(), pod.getNodeName(), pod.getServiceName(), eventTime, pod.getCreationTime()));
+        publisher.publishEvent(eventFactory.createPodUpdateEvent(pod, eventTime));
     }
 
     @Override

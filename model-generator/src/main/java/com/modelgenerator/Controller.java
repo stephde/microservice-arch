@@ -25,7 +25,7 @@ public class Controller {
     @PostMapping("/message")
     public void sendMessage(@RequestBody String message) {
         log.info("Sending message: {}", message);
-        DeploymentEvent event = new DeploymentEvent("User Management Service #1", "RUNNING", "Node#1", "User Management Service", DateTime.now(), DateTime.now());
+        DeploymentEvent event = new DeploymentEvent("User Management Service #1", DateTime.now(), DateTime.now());
         jmsTemplate.convertAndSend("model-updates", message, m -> {
             m.setStringProperty("_eventType", event.getType().name());
             return m;

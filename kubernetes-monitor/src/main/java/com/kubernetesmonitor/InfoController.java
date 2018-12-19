@@ -35,7 +35,7 @@ public class InfoController {
 
     @GetMapping("/publish")
     public void publish() {
-        publisher.publishEvent(new DeploymentEvent("FakePod", "RUNNING", "Node#1", "A-Service", DateTime.now(), DateTime.now()));
+        publisher.publishEvent(new DeploymentEvent("FakePod", DateTime.now(), DateTime.now()));
     }
 
     @GetMapping("/publish/service")
