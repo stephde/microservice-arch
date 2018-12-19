@@ -12,6 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ComponentStatusWatcher extends AbstractWatcher<V1ComponentStatus> {
 
+    /**
+     * Compenstatuses refer to internal kubernetes services (e.g. scheduler, controller-manager, etcd)
+     * @param connector
+     */
+
     public ComponentStatusWatcher(KubernetesConnector connector) {
         super(connector);
     }

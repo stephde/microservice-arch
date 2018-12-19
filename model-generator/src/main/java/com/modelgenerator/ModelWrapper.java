@@ -10,9 +10,11 @@ import de.mdelab.comparch.ComponentType;
 import de.mdelab.comparch.Tenant;
 import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.emf.common.util.EList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.lang.Exception;
+import java.util.Iterator;
 
 import javax.validation.constraints.NotNull;
 
@@ -77,7 +79,7 @@ public class ModelWrapper {
         return json;
     }
 
-    public void handleStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state) {
+    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state) {
 //        Component component = this.model.getTenants()
 //                .stream()
 //                .map(Tenant::getComponents)
@@ -86,23 +88,24 @@ public class ModelWrapper {
 //                .findFirst()
 //                .orElseThrow(() -> new Exception("Component not found in model"));
 
-        Tenant tenant;
-        try {
-            tenant = getTenant(nodeName);
-        } catch (Exception e) {
-            tenant = createTenant(nodeName);
+        if(state.equals(ComponentState.UNDEPLOYED)) {
+            log.info("Removing instance: {}", instanceName);
+            removeComponent(componentName, instanceName);
+        } else {
+            Tenant tenant = getTenant(nodeName);
+
+            try {
+                Component component = getComponent(componentName, instanceName);
+                component.setState(state);
+                component.setTenant(tenant);
+                log.info("Changed {} state to: {}", component.getName(), state);
+            } catch (Exception e) {
+                // ToDo: define custom exception
+                // component does not exist yet
+                createAndAddComponent(componentName, instanceName, tenant, state);
+            }
         }
 
-        try {
-            Component component = getComponent(componentName, instanceName);
-            component.setState(state);
-            component.setTenant(tenant);
-            log.info("Changed {} state to: {}", component.getName(), state);
-        } catch (Exception e) {
-            // ToDo: define custom exception
-            // component does not exist yet
-            createAndAddComponent(componentName, instanceName, tenant, state);
-        }
     }
 
     private Component getComponent(String componentName, String instanceName) throws Exception {
@@ -115,38 +118,59 @@ public class ModelWrapper {
     }
 
     private void createAndAddComponent(String componentName, String instanceName, Tenant tenant, ComponentState state) {
-        ComponentType ct = this.factory.createComponentType();
-        ct.setName(componentName);
-        this.model.getComponentTypes().add(ct);
-
         Component component = this.factory.createComponent();
         component.setName(instanceName);
         component.setState(state);
         component.setTenant(tenant);
 
-        try {
-            getComponentType(componentName).getInstances().add(component);
-            log.info("Created and added component {} : {}", componentName, component);
-        } catch (Exception e) {
-            // this should never happen since we just added this type...
-            log.error("Could not find componentType just after adding it...", e);
-        }
+        getComponentType(componentName).getInstances().add(component);
+        log.info("Created and added component {} : {}", componentName, component);
     }
 
-    private ComponentType getComponentType(String typeName) throws Exception {
-        return this.model.getComponentTypes()
+    private void removeComponent(String componentName, String instanceName) {
+        getComponentType(componentName)
+                .getInstances()
+                .removeIf(component -> component.getName().equals(instanceName));
+    }
+
+    private ComponentType getComponentType(String typeName) {
+        ComponentType componentType;
+
+        try {
+            componentType = this.model.getComponentTypes()
                 .stream()
                 .filter(c -> c.getName().equals(typeName))
                 .findFirst()
                 .orElseThrow(() -> new Exception("ComponentType - " + typeName + " not found in model"));
+        } catch (Exception ex) {
+            componentType = createComponentType(typeName);
+        }
+
+        return componentType;
     }
 
-    private Tenant getTenant(String nodeName) throws Exception {
-       return  this.model.getTenants()
-                .stream()
-                .filter(t -> t.getName().equals(nodeName))
-                .findFirst()
-                .orElseThrow(() -> new Exception("Tenant - " + nodeName + " not found in model"));
+    private ComponentType createComponentType(String componentName) {
+        ComponentType ct = this.factory.createComponentType();
+        ct.setName(componentName);
+        this.model.getComponentTypes().add(ct);
+
+        return ct;
+    }
+
+    private Tenant getTenant(String nodeName) {
+        Tenant tenant;
+
+        try {
+            tenant = this.model.getTenants()
+                    .stream()
+                    .filter(t -> t.getName().equals(nodeName))
+                    .findFirst()
+                    .orElseThrow(() -> new Exception("Tenant - " + nodeName + " not found in model"));
+        } catch (Exception e) {
+            tenant = createTenant(nodeName);
+        }
+
+        return tenant;
     }
 
 

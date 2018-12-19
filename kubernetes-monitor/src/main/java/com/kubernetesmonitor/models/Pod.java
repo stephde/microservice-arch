@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 public class Pod extends WatchableEntity {
     private DateTime startTime;
     private int containerCount;
-    private String serviceName;
     private String nodeName;
     private String status;
 

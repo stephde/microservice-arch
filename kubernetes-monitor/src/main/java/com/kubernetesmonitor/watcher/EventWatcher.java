@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class EventWatcher extends AbstractWatcher<V1Event> {
 
+    private static final String STATE_DELETED = "Deleted";
+
     @Autowired
     Publisher publisher;
 
@@ -31,6 +33,8 @@ public class EventWatcher extends AbstractWatcher<V1Event> {
     void watchCallback(Watch.Response<V1Event> item) {
         KubeEvent event = this.responseParser.parseEventResponse(item.object);
         log.info("{}", event.toString());
+
+        handleDeleteEvents(event);
     }
 
     @Override
@@ -43,5 +47,11 @@ public class EventWatcher extends AbstractWatcher<V1Event> {
     protected Watch<V1Event> initWatch() throws ApiException {
         return Watch.createWatch(this.kubernetesConnector.getClient(), this.watchCall(), new TypeToken<Watch.Response<V1Event>>() {
         }.getType());
+    }
+
+    private void handleDeleteEvents(KubeEvent event) {
+        if(event.getReason().equals("Killing")) {
+            publisher.publishEvent(new DeploymentEvent(event.getName(), STATE_DELETED, null, event.getServiceName()));
+        }
     }
 }

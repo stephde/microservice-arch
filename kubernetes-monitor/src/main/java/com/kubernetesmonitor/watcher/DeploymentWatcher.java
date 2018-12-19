@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 @Slf4j
 public class DeploymentWatcher extends AbstractWatcher<V1Deployment> {
 
@@ -30,6 +30,9 @@ public class DeploymentWatcher extends AbstractWatcher<V1Deployment> {
     void watchCallback(Watch.Response<V1Deployment> response) {
         Deployment deployment = this.responseParser.parseDeploymentResponse(response.object);
         log.info("#### Deployment Watcher ---- Event type: {} : {}", response.type, deployment.toString());
+
+      // #### Deployment Watcher ---- Event type: DELETED : Deployment(super=WatchableEntity(name=queryservice, namespace=dm, serviceName=queryservice, creationTime=2018-12-19T12:44:20.000Z), replicas=1, unavailableReplicas=null, availableReplicas=null, collisionCount=null)
+        //ToDo: handle deleted deployments
     }
 
     @Override
