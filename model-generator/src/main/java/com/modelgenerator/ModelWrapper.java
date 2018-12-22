@@ -1,8 +1,8 @@
 package com.modelgenerator;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import de.mdelab.comparch.*;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
@@ -15,6 +15,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.lang.Exception;
+import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +28,8 @@ public class ModelWrapper {
     private CompArchLoader loader;
     private Architecture model;
     private DefaultComparchFactoryImpl factory;
+
+    private List<Component> removedInstances = Lists.newArrayList();
 
     private static final String PROPERTY_LASTE_UPDATE = "lastUpdate";
     private static final String PROPERTY_CREATION_TIME = "creationTime";
@@ -96,10 +100,15 @@ public class ModelWrapper {
 //                .filter(c -> c.getName().equals(compName))
 //                .findFirst()
 //                .orElseThrow(() -> new Exception("Component not found in model"));
+        if ( isStaleUpdate(instanceName) ) {
+            // do nothing if update is irrelevant
+            return;
+        }
 
-        if(state.equals(ComponentState.UNDEPLOYED)) {
+        if (state.equals(ComponentState.UNDEPLOYED)) {
             log.info("Removing instance: {}", instanceName);
-            removeComponent(componentName, instanceName);
+            Optional<Component> removedIntance = removeComponent(componentName, instanceName);
+            removedIntance.ifPresent(i -> this.removedInstances.add(i));
         } else {
             Tenant tenant = getTenant(nodeName);
 
@@ -110,7 +119,17 @@ public class ModelWrapper {
             component.getMonitoredProperties().add(createProperty(PROPERTY_CREATION_TIME, creationTime));
             log.info("Changed {} state to: {}", component.getName(), state);
         }
+    }
 
+    /**
+     * return true if the update relates to an already removed instance
+     * @param instanceName
+     * @return
+     */
+    public boolean isStaleUpdate(String instanceName) {
+        return removedInstances
+                .stream()
+                .anyMatch(c -> c.getName().equals(instanceName));
     }
 
     private MonitoredProperty createProperty(String name, DateTime time) {
@@ -145,10 +164,19 @@ public class ModelWrapper {
         return component;
     }
 
-    private void removeComponent(String componentName, String instanceName) {
+    private Optional<Component> removeComponent(String componentName, String instanceName) {
+        Component component;
+        try {
+            component = getComponent(componentName, instanceName);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+
         getComponentType(componentName)
                 .getInstances()
-                .removeIf(component -> component.getName().equals(instanceName));
+                .remove(component);
+
+        return Optional.of(component);
     }
 
     private ComponentType getComponentType(String typeName) {

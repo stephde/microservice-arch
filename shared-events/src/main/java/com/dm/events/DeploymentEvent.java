@@ -1,9 +1,11 @@
 package com.dm.events;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.joda.time.DateTime;
 
+@NoArgsConstructor
 @Data
 @ToString(callSuper = true)
 public class DeploymentEvent extends Event {

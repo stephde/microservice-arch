@@ -1,10 +1,12 @@
 package com.dm.events;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Data
 public class ServiceEvent extends Event {
 
