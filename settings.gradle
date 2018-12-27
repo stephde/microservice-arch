@@ -1,3 +1,4 @@
 include 'shared-events'
 include 'kubernetes-monitor'
 include 'model-generator'
+include 'tracing-example'

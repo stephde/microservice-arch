@@ -100,7 +100,7 @@ public class ModelWrapper {
 //                .filter(c -> c.getName().equals(compName))
 //                .findFirst()
 //                .orElseThrow(() -> new Exception("Component not found in model"));
-        if ( isStaleUpdate(instanceName) ) {
+        if ( isStaleInstance(instanceName) ) {
             // do nothing if update is irrelevant
             return;
         }
@@ -126,7 +126,7 @@ public class ModelWrapper {
      * @param instanceName
      * @return
      */
-    public boolean isStaleUpdate(String instanceName) {
+    public boolean isStaleInstance(String instanceName) {
         return removedInstances
                 .stream()
                 .anyMatch(c -> c.getName().equals(instanceName));
