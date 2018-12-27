@@ -15,13 +15,28 @@ services:
   activemq:
     image: webcenter/activemq:latest
 
-  jaeger:
-    image: jaegertracing/all-in-one
-    ports:
-      - "16686:16686"
-      - "6831:6831"
-
   demo:
     image: tracing-example
     ports:
       - "8003:8080"
+
+  zipkin:
+    image: openzipkin/zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/tree/1.19.0/zipkin-server#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+      # Uncomment to disable scribe
+      # - SCRIBE_ENABLED=false
+      # Uncomment to enable self-tracing
+      # - SELF_TRACING_ENABLED=true
+      # Uncomment to enable debug logging
+      # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+
+#  jaeger:
+#    image: jaegertracing/all-in-one
+#    ports:
+#      - "16686:16686"
+#      - "6831:6831"

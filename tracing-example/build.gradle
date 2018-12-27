@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	compile group: 'io.opentracing.contrib', name: 'opentracing-spring-cloud-starter-jaeger', version: '0.1.13'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '2.0.2.RELEASE'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
