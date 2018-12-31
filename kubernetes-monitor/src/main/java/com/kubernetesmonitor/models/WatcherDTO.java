@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WatcherDTO {
     private AbstractWatcher.WATCHER_TYPE type;
-    private boolean isActive;
+    private boolean active;
 }

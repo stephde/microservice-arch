@@ -4,6 +4,13 @@
     <div>
       Monitored Namespace: <div class="bold">{{ namespace }}</div>
     </div>
+    <div>
+      <ul id="watcherList">
+        <li v-for="watcher in watchers">
+          {{ watcher.type}} : <toggle-button @change="() => handleToggle(watcher)" v-model="watcher.active"/>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -11,9 +18,9 @@
 import api from './api'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Monitor',
   data () {
-      return { namespace: null }
+      return { namespace: null , watchers: []}
   },
   created () {
     // fetch the data when the view is created and the data is
@@ -23,7 +30,12 @@ export default {
   methods: {
     async fetchData () {
       this.namespace = await api.getNamespace()
-      console.log(this.namespace)
+      this.watchers = await api.getWatchers()
+      console.log(this.watchers)
+    },
+    handleToggle(watcher) {
+      console.log(`Setting watcher ${watcher.type} to ${watcher.active}`)
+      api.setWatcher(watcher.type, watcher.active)
     }
   }
 }
@@ -47,5 +59,8 @@ a {
 }
 .bold {
   font-weight: bold;
+}
+#watcherList {
+  display: inline-grid
 }
 </style>

@@ -46,6 +46,10 @@ public abstract class AbstractWatcher<T> {
         return this.watchIsActive;
     }
 
+    public WATCHER_TYPE getType() {
+        return this.watcherType;
+    }
+
     private void doWatch() {
         Watch<T> watch = null;
 
@@ -91,6 +95,6 @@ public abstract class AbstractWatcher<T> {
     }
 
     public WatcherDTO getDTO() {
-        return new WatcherDTO(this.watcherType, this.isWatchIsActive());
+        return new WatcherDTO(this.getType(), this.isWatchIsActive());
     }
 }

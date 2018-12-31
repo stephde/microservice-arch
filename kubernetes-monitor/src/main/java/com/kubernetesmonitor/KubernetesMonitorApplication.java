@@ -22,7 +22,10 @@ public class KubernetesMonitorApplication {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/*").allowedOrigins("http://localhost:8080");
+				registry.addMapping("/api/*")
+						.allowedOrigins("http://localhost:8080")
+						.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
+						.allowedHeaders("*");
 			}
 		};
 	}
