@@ -12,9 +12,8 @@ import io.kubernetes.client.models.V1Event;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @Slf4j
 public class EventWatcher extends AbstractWatcher<V1Event> {
 

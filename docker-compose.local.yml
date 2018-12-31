@@ -6,11 +6,12 @@ services:
     image: kubernetes-monitor
     ports: 
       - "8001:8080"
+      - "8002:8081"
   
   model-generator:
     image: model-generator
     ports: 
-      - "8002:8080"
+      - "8003:8080"
   
   activemq:
     image: webcenter/activemq:latest
@@ -18,7 +19,7 @@ services:
   demo:
     image: tracing-example
     ports:
-      - "8003:8080"
+      - "8004:8080"
 
   zipkin:
     image: openzipkin/zipkin

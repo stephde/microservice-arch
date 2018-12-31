@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
+//@Component
 @Slf4j
 public class PodWatcher extends AbstractWatcher<V1Pod> {
 

@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @Slf4j
 public class NamespaceWatcher extends AbstractWatcher<V1Namespace> {
 

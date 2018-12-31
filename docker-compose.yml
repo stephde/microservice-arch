@@ -8,11 +8,12 @@ services:
     image: localhost:5000/kubernetes-monitor
     ports: 
       - "8001:8080"
-  
+      - "8002:8081"
+
   model-generator:
     image: localhost:5000/model-generator
     ports: 
-      - "8002:8080"
+      - "8003:8080"
     deploy:
 #      autoredeploy: true
 #       target_num_containers: 3

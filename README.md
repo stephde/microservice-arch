@@ -71,6 +71,13 @@ docker stack rm --namespace dm dm
 ```
 
 
+## Zipkin
+
+http://localhost:9411/zipkin/api/v2/dependencies?endTs=1545921678313
+
+[swagger](https://zipkin.io/zipkin-api/)
+
+
 ## Notes
 
 * remove container
