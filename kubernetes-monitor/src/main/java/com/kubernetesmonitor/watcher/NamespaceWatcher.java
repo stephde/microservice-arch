@@ -14,16 +14,15 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
 @Slf4j
+@Component
 public class NamespaceWatcher extends AbstractWatcher<V1Namespace> {
 
     @Autowired
     Publisher publisher;
 
     public NamespaceWatcher(KubernetesConnector connector) {
-        super(connector);
-        this.watch();
+        super(connector, WATCHER_TYPE.NAMESPACE_WATCHER);
     }
 
     @Override

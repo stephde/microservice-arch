@@ -2,6 +2,7 @@ package com.kubernetesmonitor.watcher;
 
 import com.kubernetesmonitor.kubernetes.KubernetesConnector;
 import com.kubernetesmonitor.kubernetes.KubernetesResponseParser;
+import com.kubernetesmonitor.models.WatcherDTO;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +13,24 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public abstract class AbstractWatcher<T> {
 
+    public enum WATCHER_TYPE {
+        DEPLOYMENT_WATCHER,
+        EVENT_WATCHER,
+        NAMESPACE_WATCHER,
+        POD_WATCHER,
+        REPLCIASET_WATCHER,
+        SERVICE_WATCHER,
+        OTHER
+    }
+
     protected KubernetesConnector kubernetesConnector;
     protected KubernetesResponseParser responseParser;
-    private boolean watchIsActive;
+    private boolean watchIsActive = false;
+    private WATCHER_TYPE watcherType;
 
-    protected AbstractWatcher(KubernetesConnector connector) {
+    protected AbstractWatcher(KubernetesConnector connector, WATCHER_TYPE type) {
         this.kubernetesConnector = connector;
+        this.watcherType = type;
         this.responseParser = new KubernetesResponseParser();
     }
 
@@ -75,5 +88,9 @@ public abstract class AbstractWatcher<T> {
         this.watchIsActive = true;
 
         CompletableFuture.runAsync(this::doWatch);
+    }
+
+    public WatcherDTO getDTO() {
+        return new WatcherDTO(this.watcherType, this.isWatchIsActive());
     }
 }

@@ -12,16 +12,17 @@ import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class ServiceWatcher extends AbstractWatcher<V1Service> {
 
     @Autowired
     Publisher publisher;
 
     public ServiceWatcher(KubernetesConnector connector) {
-        super(connector);
-        this.watch();
+        super(connector, WATCHER_TYPE.REPLCIASET_WATCHER);
     }
 
     @Override

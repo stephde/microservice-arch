@@ -12,16 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
 @Slf4j
+@Component
 public class DeploymentWatcher extends AbstractWatcher<V1Deployment> {
 
     @Autowired
     Publisher publisher;
 
     public DeploymentWatcher(KubernetesConnector connector) {
-        super(connector);
-        this.watch();
+        super(connector, WATCHER_TYPE.DEPLOYMENT_WATCHER);
     }
 
     @Override

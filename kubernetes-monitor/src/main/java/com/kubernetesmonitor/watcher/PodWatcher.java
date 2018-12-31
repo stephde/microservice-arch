@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-//@Component
 @Slf4j
+@Component
 public class PodWatcher extends AbstractWatcher<V1Pod> {
 
     @Autowired
@@ -26,8 +26,7 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
     EventFactory eventFactory;
 
     public PodWatcher(KubernetesConnector connector) {
-        super(connector);
-        this.watch();
+        super(connector, WATCHER_TYPE.POD_WATCHER);
     }
 
     @Override
@@ -51,3 +50,4 @@ public class PodWatcher extends AbstractWatcher<V1Pod> {
         }.getType());
     }
 }
+

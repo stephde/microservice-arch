@@ -12,16 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
 @Slf4j
+@Component
 public class ReplicaSetWatcher extends AbstractWatcher<V1ReplicaSet> {
 
     @Autowired
     Publisher publisher;
 
     public ReplicaSetWatcher(KubernetesConnector connector) {
-        super(connector);
-        this.watch();
+        super(connector, WATCHER_TYPE.REPLCIASET_WATCHER);
     }
 
     @Override
@@ -42,3 +41,4 @@ public class ReplicaSetWatcher extends AbstractWatcher<V1ReplicaSet> {
         }.getType());
     }
 }
+

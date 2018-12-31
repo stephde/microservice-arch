@@ -8,8 +8,10 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1ComponentStatus;
 import io.kubernetes.client.util.Watch;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class ComponentStatusWatcher extends AbstractWatcher<V1ComponentStatus> {
 
     /**
@@ -18,7 +20,7 @@ public class ComponentStatusWatcher extends AbstractWatcher<V1ComponentStatus> {
      */
 
     public ComponentStatusWatcher(KubernetesConnector connector) {
-        super(connector);
+        super(connector, WATCHER_TYPE.OTHER);
     }
 
     @Override

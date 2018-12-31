@@ -13,16 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
 @Slf4j
+@Component
 public class ServiceStatusWatcher extends AbstractWatcher<V1ServiceStatus> {
 
     @Autowired
     Publisher publisher;
 
     public ServiceStatusWatcher(KubernetesConnector connector) {
-        super(connector);
-        this.watch();
+        super(connector, WATCHER_TYPE.OTHER);
     }
 
     @Override
