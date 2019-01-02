@@ -1,13 +1,7 @@
 package com.kubernetesmonitor;
 
-import com.kubernetesmonitor.kubernetes.KubernetesConnector;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 public class KubernetesMonitorApplication {
@@ -17,16 +11,32 @@ public class KubernetesMonitorApplication {
 	}
 
 	// Enable CORS globally
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/*")
-						.allowedOrigins("http://localhost:8080")
-						.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
-						.allowedHeaders("*");
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/api/*")
+//						.allowedOrigins("http://localhost:8080", "http://localhost:8080/")
+//						.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
+//						.allowedHeaders("*");
+//			}
+//		};
+//	}
+
+//	@Bean
+//	CorsConfigurationSource corsConfigurationSource() {
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		CorsConfiguration corsConfiguration = new CorsConfiguration();
+//		corsConfiguration.addAllowedOrigin("http://localhost:8080");
+//		corsConfiguration.setAllowedMethods(Arrays.asList(
+//				HttpMethod.GET.name(),
+//				HttpMethod.HEAD.name(),
+//				HttpMethod.POST.name(),
+//				HttpMethod.PUT.name(),
+//				HttpMethod.DELETE.name()));
+//		corsConfiguration.addAllowedHeader("*");
+//		source.registerCorsConfiguration("/**", corsConfiguration); // you restrict your path here
+//		return source;
+//	}
 }

@@ -1,13 +1,15 @@
 <template>
   <div class="hello">
     <h1>Kubernetes Monitor</h1>
-    <div>
-      Monitored Namespace: <div class="bold">{{ namespace }}</div>
+    <div class="namespace-container">
+      <div class="namespace-title">Monitored Namespace: </div>
+      <div class="namespace">{{ namespace }}</div>
     </div>
     <div>
       <ul id="watcherList">
         <li v-for="watcher in watchers">
-          {{ watcher.type}} : <toggle-button @change="() => handleToggle(watcher)" v-model="watcher.active"/>
+          <div class="watcher-name">{{ watcher.type}} :</div>
+          <toggle-button @change="() => handleToggle(watcher)" v-model="watcher.active"/>
         </li>
       </ul>
     </div>
@@ -51,16 +53,29 @@ ul {
   padding: 0;
 }
 li {
-  display: inline-block;
+  display: flex;
+  padding: 10px;
   margin: 0 10px;
+  text-align: left;
 }
 a {
   color: #42b983;
 }
-.bold {
+.namespace {
   font-weight: bold;
+  display: inline-block;
+  padding-left: 20px;
+}
+.namespace-container {
+  display: inline-flex;
+}
+.watcher-name {
+  flex-grow: 1;
 }
 #watcherList {
   display: inline-grid
+}
+.vue-js-switch {
+  padding-left: 20px;
 }
 </style>

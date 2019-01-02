@@ -18,7 +18,7 @@ export default {
     getNamespace: async () => {
         let { data } = await axios.get('/api/namespace')
 
-        return data
+        return data.trim()
     },
 
     getWatchers: async () => {
