@@ -13,14 +13,13 @@ import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.lang.Exception;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
-@Service
+@org.springframework.stereotype.Component
 @Slf4j
 public class ModelWrapper {
 

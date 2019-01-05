@@ -21,6 +21,11 @@ export default {
         return data.trim()
     },
 
+    setNamespace: (namespace) => {
+        console.info(`Setting namespace to ${namespace}`)
+        axios.post('/api/namespace', namespace)
+    },
+
     getWatchers: async () => {
         let { data } = await axios.get('/api/watchers')
 
@@ -28,6 +33,7 @@ export default {
     },
 
     setWatcher: (type, active) => {
+        console.info(`Setting watcher ${type} to ${active}`)
         axios.post(`/api/watchers/${type}`, active ? "true" : "false")
     }
 }

@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,22 +20,12 @@ import java.util.stream.Collectors;
 public class WatcherController {
 
     private final KubernetesConnector kubernetesConnector;
-
-    private final NamespaceWatcher namespaceWatcher;
-    private final EventWatcher eventWatcher;
-    private final ServiceWatcher serviceWatcher;
-    private final PodWatcher podWatcher;
-
-    private List<AbstractWatcher> watchers;
+    private final List<AbstractWatcher> watchers;
 
     @Autowired
     public WatcherController(KubernetesConnector kubernetesConnector, NamespaceWatcher namespaceWatcher, EventWatcher eventWatcher, ServiceWatcher serviceWatcher, PodWatcher podWatcher) {
-        watchers = Lists.newArrayList(namespaceWatcher, eventWatcher, serviceWatcher, podWatcher);
         this.kubernetesConnector = kubernetesConnector;
-        this.namespaceWatcher = namespaceWatcher;
-        this.eventWatcher = eventWatcher;
-        this.serviceWatcher = serviceWatcher;
-        this.podWatcher = podWatcher;
+        this.watchers = Lists.newArrayList(namespaceWatcher, eventWatcher, serviceWatcher, podWatcher);
     }
 
     @GetMapping("/api/namespace")
@@ -42,7 +34,7 @@ public class WatcherController {
     }
 
     @PostMapping("/api/namespace")
-    public void setNamespace(@RequestBody String namespace) {
+    public void setNamespace(@RequestBody @NotEmpty String namespace) {
         kubernetesConnector.setNamespace(namespace);
     }
 

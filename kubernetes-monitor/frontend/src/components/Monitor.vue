@@ -2,8 +2,10 @@
   <div class="hello">
     <h1>Kubernetes Monitor</h1>
     <div class="namespace-container">
-      <div class="namespace-title">Monitored Namespace: </div>
-      <div class="namespace">{{ namespace }}</div>
+      <md-field>
+        <label>Monitored Namespace</label>
+        <md-input v-model="namespace" placeholder="Set Namespace" @change="() => handleNamespaceUpdate(namespace)"></md-input>
+      </md-field>
     </div>
     <div>
       <ul id="watcherList">
@@ -33,11 +35,13 @@ export default {
     async fetchData () {
       this.namespace = await api.getNamespace()
       this.watchers = await api.getWatchers()
-      console.log(this.watchers)
+      console.info(this.watchers)
     },
     handleToggle(watcher) {
-      console.log(`Setting watcher ${watcher.type} to ${watcher.active}`)
       api.setWatcher(watcher.type, watcher.active)
+    },
+    handleNamespaceUpdate(namespace) {
+      api.setNamespace(namespace)
     }
   }
 }
@@ -60,6 +64,11 @@ li {
 }
 a {
   color: #42b983;
+}
+input {
+  border-radius: 20px;
+  border-color: rgb(191, 203, 217);
+  margin: 0 20px;
 }
 .namespace {
   font-weight: bold;
