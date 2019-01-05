@@ -3,6 +3,9 @@ package com.modelgenerator;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.modelgenerator.Exception.ComponentTypeNotFoundException;
+import com.modelgenerator.Exception.ElementNotFoundException;
+import com.modelgenerator.Exception.TenantNotFoundExceptions;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
@@ -13,7 +16,6 @@ import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.lang.Exception;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,13 +94,6 @@ public class ModelWrapper {
     }
 
     public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime) {
-//        Component component = this.model.getTenants()
-//                .stream()
-//                .map(Tenant::getComponents)
-//                .flatMap(List::stream)
-//                .filter(c -> c.getName().equals(compName))
-//                .findFirst()
-//                .orElseThrow(() -> new Exception("Component not found in model"));
         if ( isStaleInstance(instanceName) ) {
             // do nothing if update is irrelevant
             return;
@@ -138,25 +133,32 @@ public class ModelWrapper {
         return monitoredProperty;
     }
 
-    private Component getComponent(String componentName, String instanceName) throws Exception {
+    private Component getComponent(String componentName, String instanceName) throws ElementNotFoundException {
         return getComponentType(componentName)
                 .getInstances()
                 .stream()
                 .filter(i -> i.getName().equals(instanceName))
                 .findFirst()
-                .orElseThrow(() -> new Exception("Instance - " + instanceName + " not found"));
+                .orElseThrow(() -> new ComponentTypeNotFoundException(instanceName));
     }
 
-    private Component getOrCreateComponent(String componentName, String instanceName) {
+    private Component getOrCreateComponent(String serviceName, String instanceName) {
         Component component;
 
         try {
-            component = getComponent(componentName, instanceName);
-        } catch (Exception e) {
+            component = getComponent(serviceName, instanceName);
+        } catch (ElementNotFoundException e) {
             component = this.factory.createComponent();
             log.info("Settings component name to: {}", instanceName);
             component.setName(instanceName);
-            getComponentType(componentName).getInstances().add(component);
+
+            ComponentType componentType;
+            try {
+                componentType = getComponentType(serviceName);
+            } catch (ComponentTypeNotFoundException ex) {
+                componentType = createComponentType(serviceName);
+            }
+            componentType.getInstances().add(component);
             log.info("Created and added component : {}", component);
         }
 
@@ -167,31 +169,22 @@ public class ModelWrapper {
         Component component;
         try {
             component = getComponent(componentName, instanceName);
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-
-        getComponentType(componentName)
+            getComponentType(componentName)
                 .getInstances()
                 .remove(component);
+        } catch (ElementNotFoundException e) {
+            return Optional.empty();
+        }
 
         return Optional.of(component);
     }
 
-    private ComponentType getComponentType(String typeName) {
-        ComponentType componentType;
-
-        try {
-            componentType = this.model.getComponentTypes()
+    private ComponentType getComponentType(String typeName) throws ComponentTypeNotFoundException {
+        return this.model.getComponentTypes()
                 .stream()
                 .filter(c -> c.getName().equals(typeName))
                 .findFirst()
-                .orElseThrow(() -> new Exception("ComponentType - " + typeName + " not found in model"));
-        } catch (Exception ex) {
-            componentType = createComponentType(typeName);
-        }
-
-        return componentType;
+                .orElseThrow(() -> new ComponentTypeNotFoundException(typeName));
     }
 
     private ComponentType createComponentType(String componentName) {
@@ -210,8 +203,8 @@ public class ModelWrapper {
                     .stream()
                     .filter(t -> t.getName().equals(nodeName))
                     .findFirst()
-                    .orElseThrow(() -> new Exception("Tenant - " + nodeName + " not found in model"));
-        } catch (Exception e) {
+                    .orElseThrow(() -> new TenantNotFoundExceptions(nodeName));
+        } catch (TenantNotFoundExceptions e) {
             tenant = createTenant(nodeName);
         }
 
