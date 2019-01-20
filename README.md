@@ -100,3 +100,6 @@ kubectl -n kube-system describe secret $(
 ) | \
 awk '$1=="token:"{print $2}'
 ``` 
+
+* docker stack use kubernetes orchestrator
+DOCKER_STACK_ORCHESTRATOR=kubernetes

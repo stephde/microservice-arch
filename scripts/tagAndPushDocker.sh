@@ -7,3 +7,6 @@ docker push ${REGISTRY_URI}model-generator
 
 docker tag kubernetes-monitor ${REGISTRY_URI}kubernetes-monitor
 docker push ${REGISTRY_URI}kubernetes-monitor
+
+docker tag tracing-example ${REGISTRY_URI}tracing-example
+docker push ${REGISTRY_URI}tracing-example
