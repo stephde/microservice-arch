@@ -1,5 +1,6 @@
 package com.modelgenerator.event;
 
+import com.dm.events.DependencyEvent;
 import com.dm.events.DeploymentEvent;
 import com.dm.events.NamespaceEvent;
 import com.dm.events.ServiceEvent;
@@ -86,6 +87,13 @@ public class EventListener {
     public void receiveEvent(@Payload final NamespaceEvent event) {
         log.info("Received : {} ", event.toString());
         modelWrapper.generateModel(event.getName());
+    }
+    @JmsListener(destination = "${spring.activemq.queue-name}",
+                containerFactory = "jmsListenerContainerFactory",
+                selector = "_eventType = 'DEPENDENCY_UPDATE'")
+    public void receiveEvent(@Payload final DependencyEvent event) {
+        log.info("Received : {} ", event.toString());
+//        modelWrapper.updateDependencies(event.getName());
     }
 
     private ComponentState parseState(String remoteState) {

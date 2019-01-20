@@ -3,6 +3,7 @@ version = '0.0.1-SNAPSHOT'
 
 dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: "${springActiveMQVersion}"
+	compile project(':shared-events')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 

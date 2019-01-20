@@ -8,7 +8,12 @@ import org.joda.time.DateTime;
 @Data
 public class Event {
 
-    public enum EVENT_TYPE { DEPLOYMENT_STATUS_UPDATE, SERVICE_UPDATE, NAMESPACE_UPDATE }
+    public enum EVENT_TYPE {
+        DEPLOYMENT_STATUS_UPDATE,
+        SERVICE_UPDATE,
+        NAMESPACE_UPDATE,
+        DEPENDENCY_UPDATE
+    }
 
     private EVENT_TYPE type;
     private String componentName;
