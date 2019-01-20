@@ -1,0 +1,56 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.6.RELEASE'
+        springActiveMQVersion = '2.0.6.RELEASE'
+        lombokVersion = '1.18.4'
+    }
+    repositories {
+        gradlePluginPortal() // we need this to download the palantir gradle docker plugin
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+    }
+}
+
+
+subprojects {
+    apply plugin: 'java'
+
+    group = 'com.distributed-monitoring'
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    // add docker build dependency for all modules except events library
+    if (!it.name.startsWith('shared-events')) {
+        apply plugin: 'org.springframework.boot'
+        apply plugin: 'io.spring.dependency-management'
+        apply plugin: 'com.palantir.docker'
+
+        dependencies {
+            implementation('org.springframework.boot:spring-boot-starter-web')
+        }
+
+        task unpack(type: Copy) {
+            dependsOn bootJar
+            from(zipTree(tasks.bootJar.outputs.files.singleFile))
+            into("build/dependency")
+        }
+    }
+
+    dependencies {
+        compileOnly("org.projectlombok:lombok:${lombokVersion}")
+        compile group: 'joda-time', name: 'joda-time', version: '2.10.1'
+    }
+
+    // run hello to verify that all modules are included correctly
+    task hello {
+        doLast { task ->
+            println "I'm $task.project.name"
+        }
+    }
+}

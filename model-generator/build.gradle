@@ -1,51 +1,19 @@
-buildscript {
-	ext {
-		springBootVersion = '2.0.6.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-		gradlePluginPortal() // we need this to download the palantir gradle docker plugin
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
-	}
-}
 
-apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.palantir.docker'
 
-group = 'com.model-generator'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
-repositories {
-	mavenCentral()
-	jcenter()
-}
 
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-web')
-	compileOnly('org.projectlombok:lombok')
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: '2.0.6.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: "${springActiveMQVersion}"
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
     compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.15.0'
 	compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.15.0'
 	compile group: 'org.knowm.xchart', name: 'xchart', version: '3.5.2'
-	compile group: 'joda-time', name: 'joda-time', version: '2.10.1'
 	compile project(':shared-events')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
-task unpack(type: Copy) {
-	dependsOn bootJar
-	from(zipTree(tasks.bootJar.outputs.files.singleFile))
-	into("build/dependency")
-}
 docker {
 	name "${bootJar.baseName}"
 	copySpec.with {

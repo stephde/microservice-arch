@@ -3,17 +3,25 @@
 ## Prerequisites
 * git
 * docker, docker-compose
+* gradle (optional)
 * kubectl *(kubernetes cli)*
 * kompose *(docker-compose wrapper for kubernetes)*
 
+if you have gradle installed locally you can use it to run build tasks.
+Otherwise, you can use the executable wrapper file `gradlew` (or for windows `gradlew.bat`)
+
 ## Run Locally
-* create docker images with
-```bash
-./kubernetes-monitor/gradlew dockerBuildImage
-./model-generator/gradlew dockerBuildImage
-```
+
+**via Docker**
+
+* create docker images with `./gradlew docker`
 * simply run `docker-compose -f docker-compose.local.yml up`
 * verify by running `curl localhost:8002/model`
+
+**as spring boot**
+* build all projects with `./gradlew build`
+* build single project with `./gradlew kubernetes-monitor:build`
+* run with `./gradlew kubernetes-monitor:bootRun`
 
 ## Run in local kubernetes
 * start a local docker registry with: 
@@ -76,6 +84,12 @@ docker stack rm --namespace dm dm
 http://localhost:9411/zipkin/api/v2/dependencies?endTs=1545921678313
 
 [swagger](https://zipkin.io/zipkin-api/)
+
+
+## How to add a module
+* use spring boot starter
+* add new module to settings.gradle
+* ...
 
 
 ## Notes

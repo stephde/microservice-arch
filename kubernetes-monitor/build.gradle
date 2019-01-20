@@ -1,47 +1,15 @@
-buildscript {
-	ext {
-		springBootVersion = '2.0.6.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-		 gradlePluginPortal() // we need this to download the palantir gradle docker plugin
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
-	}
-}
 
-apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.palantir.docker'
 
-group = 'com.kubernetesmonitor'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-web')
-	compileOnly('org.projectlombok:lombok')
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: "${springActiveMQVersion}"
 	compile 'io.kubernetes:client-java:3.0.0'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-activemq', version: '2.0.6.RELEASE'
 	compile project(':shared-events')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
-task unpack(type: Copy) {
-	dependsOn bootJar
-	from(zipTree(tasks.bootJar.outputs.files.singleFile))
-	into("build/dependency")
-}
 docker {
 	name "${bootJar.baseName}"
 	copySpec.with {
