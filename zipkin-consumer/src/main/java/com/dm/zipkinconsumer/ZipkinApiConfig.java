@@ -9,7 +9,7 @@ public class ZipkinApiConfig {
     @Value("${zipkin.api.url}")
     String URL;
 
-    @Value("${zipkin.api.base-path}")
+    @Value("${zipkin.api.path}")
     String BASE_PATH;
 
     @Value("${zipkin.api.interval}")
