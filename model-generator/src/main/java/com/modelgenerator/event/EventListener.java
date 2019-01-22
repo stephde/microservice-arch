@@ -70,8 +70,13 @@ public class EventListener {
     public void receiveEvent(@Payload final DeploymentEvent event) {
         log.info("Received : {}", event.toString());
 
-        ComponentState state = parseState(event.getStatus());
-        modelWrapper.handleInstanceStateUpdate(event.getServiceName(), event.getComponentName(), event.getNodeName(), state, event.getEventDateTime(), event.getCreationDateTime());
+        modelWrapper.handleInstanceStateUpdate(
+                event.getServiceName(),
+                event.getComponentName(),
+                event.getNodeName(),
+                parseState(event.getStatus()),
+                event.getEventDateTime(),
+                event.getCreationDateTime());
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",
@@ -93,7 +98,11 @@ public class EventListener {
                 selector = "_eventType = 'DEPENDENCY_UPDATE'")
     public void receiveEvent(@Payload final DependencyEvent event) {
         log.info("Received : {} ", event.toString());
-//        modelWrapper.updateDependencies(event.getName());
+        modelWrapper.handleDependencyUpdate(
+                event.getComponentName(),
+                event.getCalledServiceName(),
+                event.getCallCount(),
+                event.getErrorCount());
     }
 
     private ComponentState parseState(String remoteState) {

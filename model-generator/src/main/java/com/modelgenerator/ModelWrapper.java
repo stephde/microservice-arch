@@ -3,6 +3,7 @@ package com.modelgenerator;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.modelgenerator.Exception.ComponentNotFoundException;
 import com.modelgenerator.Exception.ComponentTypeNotFoundException;
 import com.modelgenerator.Exception.ElementNotFoundException;
 import com.modelgenerator.Exception.TenantNotFoundExceptions;
@@ -10,7 +11,10 @@ import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
 import de.mdelab.comparch.ComponentType;
+import de.mdelab.comparch.Connector;
 import de.mdelab.comparch.MonitoredProperty;
+import de.mdelab.comparch.ProvidedInterface;
+import de.mdelab.comparch.RequiredInterface;
 import de.mdelab.comparch.Tenant;
 import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +38,8 @@ public class ModelWrapper {
 
     private static final String PROPERTY_LASTE_UPDATE = "lastUpdate";
     private static final String PROPERTY_CREATION_TIME = "creationTime";
+    private static final String PROPERTY_INVOCATION_COUNT = "invocationCount";
+    private static final String PROPERTY_ERROR_COUNT = "errorCount";
 
     public ModelWrapper(@NotNull CompArchLoader loader) {
         this.loader = loader;
@@ -71,26 +77,42 @@ public class ModelWrapper {
             jsonComponent.addProperty("name", ct.getName());
 
             JsonArray instances = new JsonArray();
-            ct.getInstances().forEach(i -> {
-                JsonObject jsonInstance = new JsonObject();
-                jsonInstance.addProperty("name", i.getName());
-                jsonInstance.addProperty("state", i.getState().getName());
-                jsonInstance.addProperty("tenant", i.getTenant().getName());
+            ct.getInstances().forEach(i -> instances.add(getComponentAsJson(i)));
+            jsonComponent.add("instances", instances);
 
-                // add monitored properties
-                i.getMonitoredProperties().forEach(prop -> {
-                    jsonInstance.addProperty(prop.getName(), prop.getValue());
-                });
-
-                instances.add(jsonInstance);
-            });
-            jsonComponent.add("Instances", instances);
-
-            jsonComponent.addProperty("Parameters", ct.getParameterTypes().toString());
+            jsonComponent.addProperty("parameters", ct.getParameterTypes().toString());
             json.add(ct.getName(), jsonComponent);
         });
 
         return json;
+    }
+
+    private JsonObject getComponentAsJson(Component component) {
+        JsonObject jsonInstance = new JsonObject();
+        jsonInstance.addProperty("name", component.getName());
+        jsonInstance.addProperty("state", component.getState().getName());
+        jsonInstance.addProperty("tenant", component.getTenant().getName());
+
+        // add monitored properties
+        component.getMonitoredProperties().forEach(prop -> {
+            jsonInstance.addProperty(prop.getName(), prop.getValue());
+        });
+
+
+        JsonArray requiredInterfaces = new JsonArray();
+        component.getRequiredInterfaces().forEach(i -> {
+            String targetComponentName = i.getConnector().getTarget().getComponent().getName();
+
+            JsonObject jsonComponent = new JsonObject();
+            jsonComponent.addProperty("targetName", targetComponentName);
+            i.getConnector().getMonitoredProperties().forEach(prop -> {
+                jsonComponent.addProperty(prop.getName(), prop.getValue());
+            });
+            requiredInterfaces.add(jsonComponent);
+        });
+        jsonInstance.add("requiredInterfaces", requiredInterfaces);
+
+        return jsonInstance;
     }
 
     public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime) {
@@ -115,6 +137,22 @@ public class ModelWrapper {
         }
     }
 
+    public void handleDependencyUpdate(String callingService, String calledService, Integer callCount, Integer errorCount) {
+        try {
+            Component callingComponent = this.getAnyComponent(callingService);
+            Component calledComponent = this.getAnyComponent(calledService);
+
+            //ToDo: check if connection already exists
+
+            //create connector
+            Connector connector = this.createConnection(callingComponent, calledComponent);
+            connector.getMonitoredProperties().add(createProperty(PROPERTY_INVOCATION_COUNT, callCount));
+            connector.getMonitoredProperties().add(createProperty(PROPERTY_ERROR_COUNT, errorCount));
+        } catch (ElementNotFoundException e) {
+            log.error(e.getMessage());
+        }
+    }
+
     /**
      * return true if the update relates to an already removed instance
      * @param instanceName
@@ -126,10 +164,10 @@ public class ModelWrapper {
                 .anyMatch(c -> c.getName().equals(instanceName));
     }
 
-    private MonitoredProperty createProperty(String name, DateTime time) {
+    private MonitoredProperty createProperty(String name, Object value) {
         MonitoredProperty monitoredProperty = this.factory.createMonitoredProperty();
         monitoredProperty.setName(name);
-        monitoredProperty.setValue(time.toString());
+        monitoredProperty.setValue(value.toString());
         return monitoredProperty;
     }
 
@@ -139,7 +177,15 @@ public class ModelWrapper {
                 .stream()
                 .filter(i -> i.getName().equals(instanceName))
                 .findFirst()
-                .orElseThrow(() -> new ComponentTypeNotFoundException(instanceName));
+                .orElseThrow(() -> new ComponentNotFoundException(instanceName));
+    }
+
+    private Component getAnyComponent(String componentName) throws ElementNotFoundException {
+        return getComponentType(componentName)
+                .getInstances()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ComponentNotFoundException(componentName));
     }
 
     private Component getOrCreateComponent(String serviceName, String instanceName) {
@@ -219,5 +265,23 @@ public class ModelWrapper {
 
         this.model.getTenants().add(tenant);
         return tenant;
+    }
+
+    private Connector createConnection(Component callingComponent, Component calledComponent) {
+        RequiredInterface requiredInterface = this.factory.createRequiredInterface();
+        requiredInterface.setComponent(callingComponent);
+
+        ProvidedInterface providedInterface = this.factory.createProvidedInterface();
+        providedInterface.setComponent(calledComponent);
+
+        Connector connector = this.factory.createConnector();
+        connector.setName(callingComponent.getName() + "-connector");
+        connector.setSource(requiredInterface);
+        connector.setTarget(providedInterface);
+
+        requiredInterface.setConnector(connector);
+        providedInterface.getConnectors().add(connector);
+
+        return connector;
     }
 }
