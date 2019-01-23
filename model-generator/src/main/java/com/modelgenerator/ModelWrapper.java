@@ -34,7 +34,7 @@ public class ModelWrapper {
 
     private List<Component> removedInstances = Lists.newArrayList();
 
-    private static final String PROPERTY_LASTE_UPDATE = "lastUpdate";
+    private static final String PROPERTY_LAST_UPDATE = "lastUpdate";
     private static final String PROPERTY_CREATION_TIME = "creationTime";
     private static final String PROPERTY_INVOCATION_COUNT = "invocationCount";
     private static final String PROPERTY_ERROR_COUNT = "errorCount";
@@ -81,7 +81,7 @@ public class ModelWrapper {
             Component component = getOrCreateComponent(componentName, instanceName);
             component.setState(state);
             component.setTenant(tenant);
-            component.getMonitoredProperties().add(createProperty(PROPERTY_LASTE_UPDATE, eventTime));
+            component.getMonitoredProperties().add(createProperty(PROPERTY_LAST_UPDATE, eventTime));
             component.getMonitoredProperties().add(createProperty(PROPERTY_CREATION_TIME, creationTime));
             log.info("Changed {} state to: {}", component.getName(), state);
         }
