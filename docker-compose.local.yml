@@ -2,12 +2,12 @@ version: "3"
 
 services:
 
-#  monitor:
-#    image: kubernetes-monitor
-#    ports:
-#      - "8001:8080"
-#      - "8002:8081"
-#
+  monitor:
+    image: kubernetes-monitor
+    ports:
+      - "8001:8080"
+      - "8002:8081"
+
   model-generator:
     image: model-generator
     ports: 

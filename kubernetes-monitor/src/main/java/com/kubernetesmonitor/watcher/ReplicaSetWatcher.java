@@ -20,7 +20,7 @@ public class ReplicaSetWatcher extends AbstractWatcher<V1ReplicaSet> {
     Publisher publisher;
 
     public ReplicaSetWatcher(KubernetesConnector connector) {
-        super(connector, WATCHER_TYPE.REPLCIASET_WATCHER);
+        super(connector, WATCHER_TYPE.REPLICASET_WATCHER);
     }
 
     @Override

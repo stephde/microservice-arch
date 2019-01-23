@@ -19,6 +19,7 @@ Otherwise, you can use the executable wrapper file `gradlew` (or for windows `gr
 * verify by running `curl localhost:8002/model`
 
 **as spring boot**
+
 * build all projects with `./gradlew build`
 * build single project with `./gradlew kubernetes-monitor:build`
 * run with `./gradlew kubernetes-monitor:bootRun`

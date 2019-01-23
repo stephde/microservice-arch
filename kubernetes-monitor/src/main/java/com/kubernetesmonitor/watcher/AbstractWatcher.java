@@ -18,7 +18,7 @@ public abstract class AbstractWatcher<T> {
         EVENT_WATCHER,
         NAMESPACE_WATCHER,
         POD_WATCHER,
-        REPLCIASET_WATCHER,
+        REPLICASET_WATCHER,
         SERVICE_WATCHER,
         OTHER
     }

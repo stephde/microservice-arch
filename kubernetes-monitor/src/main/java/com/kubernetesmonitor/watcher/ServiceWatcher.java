@@ -22,7 +22,7 @@ public class ServiceWatcher extends AbstractWatcher<V1Service> {
     Publisher publisher;
 
     public ServiceWatcher(KubernetesConnector connector) {
-        super(connector, WATCHER_TYPE.REPLCIASET_WATCHER);
+        super(connector, WATCHER_TYPE.SERVICE_WATCHER);
     }
 
     @Override

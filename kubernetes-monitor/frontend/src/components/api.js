@@ -1,9 +1,9 @@
 import * as Axios from 'axios'
 
 const axios = Axios.create({
-    baseURL: 'http://localhost:8081',
+    baseURL: 'http://localhost:8002',
     headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:8080',
+        'Access-Control-Allow-Origin': 'http://localhost:8001',
         // 'X-CSRF-TOKEN' : 'cross-site-forgery-token'
         'Content-Type': 'application/json'
     }
