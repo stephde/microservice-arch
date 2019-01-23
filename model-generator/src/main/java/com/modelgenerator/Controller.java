@@ -16,10 +16,11 @@ public class Controller {
 
     @Autowired ModelWrapper modelWrapper;
     @Autowired JmsTemplate jmsTemplate;
+    @Autowired JSONParser jsonParser;
 
     @GetMapping("/model")
     public String load() {
-        return this.modelWrapper.getModelAsJSON().toString();
+        return jsonParser.getModelAsJSON(this.modelWrapper.getModel()).toString();
     }
 
     @PostMapping("/message")
