@@ -1,4 +1,10 @@
-# Distributed Monitoring setup
+# Distributed Monitoring
+
+This application generates runtime architecture models for microservice systems deployed to kubernetes.
+It uses the kubernetes API to retrieve and update deployment related data.
+The data is used to generate a CompArch model which can be used to explore the architecture and implement self-adaptation.
+Furthermore, zipkin is used to explore dependecies between the services and add their interfaces and their usage to the model.
+The CompArch implementation is copied from [thomas-vogel/mRUBiS](https://github.com/thomas-vogel/mRUBiS). 
 
 ## Prerequisites
 * git
