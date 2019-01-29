@@ -1,0 +1,87 @@
+{
+  instance: "de.mdelab.comparch.impl.ArchitectureImpl@143640d5 (uid: _7p23cSO_EemSpoxVpztcqg, criticality: 0.0) (name: default)",
+  activemq: {
+    name: "activemq",
+    instances: [
+      {
+        name: "activemq-7dbb98fdcf-6c2d4",
+        state: "STARTED",
+        tenant: "docker-for-desktop",
+        lastUpdate: "2019-01-29T12:19:23.302Z",
+        creationTime: "2019-01-29T12:16:51.000Z",
+        requiredInterfaces: [ ]
+      }
+    ],
+    parameters: "[]"
+  },
+  monitor: {
+    name: "monitor",
+    instances: [
+      {
+        name: "monitor-6948588bc5-2qwcw",
+        state: "STARTED",
+        tenant: "docker-for-desktop",
+        lastUpdate: "2019-01-29T12:19:24.600Z",
+        creationTime: "2019-01-29T12:16:51.000Z",
+        requiredInterfaces: [ ]
+      }
+    ],
+    parameters: "[]"
+  },
+  zipkin: {
+    name: "zipkin",
+    instances: [
+      {
+        name: "zipkin-consumer-cf56fbf97-pqmcv",
+        state: "STARTED",
+        tenant: "docker-for-desktop",
+        lastUpdate: "2019-01-29T12:19:25.114Z",
+        creationTime: "2019-01-29T12:16:51.000Z",
+        requiredInterfaces: [ ]
+      },
+      {
+        name: "zipkin-76bfc9bf78-swh6l",
+        state: "STARTED",
+        tenant: "docker-for-desktop",
+        lastUpdate: "2019-01-29T12:19:25.486Z",
+        creationTime: "2019-01-29T12:16:51.000Z",
+        requiredInterfaces: [ ]
+      }
+    ],
+    parameters: "[]"
+  },
+  demo: {
+    name: "demo",
+    instances: [
+      {
+        name: "demo-554d4f757-24m64",
+        state: "STARTED",
+        tenant: "docker-for-desktop",
+        lastUpdate: "2019-01-29T12:19:25.290Z",
+        creationTime: "2019-01-29T12:16:51.000Z",
+        requiredInterfaces: [
+          {
+            targetName: "demo-554d4f757-24m64",
+            invocationCount: "10",
+            errorCount: "NONE"
+          }
+        ]
+      }
+    ],
+    parameters: "[]"
+  },
+  model: {
+    name: "model",
+    instances: [
+      {
+        name: "model-generator-68bb66f559-4brxl",
+        state: "STARTED",
+        tenant: "docker-for-desktop",
+        lastUpdate: "2019-01-29T12:19:25.544Z",
+        creationTime: "2019-01-29T12:16:51.000Z",
+        requiredInterfaces: [ ]
+      }
+    ],
+    parameters: "[]"
+  }
+}

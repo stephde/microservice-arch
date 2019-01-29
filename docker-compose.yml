@@ -23,6 +23,11 @@ services:
     ports:
       - "61616:61616"
 
+  zipkin-consumer:
+    image: localhost:5000/zipkin-consumer
+    ports:
+      - "8005:8080"
+
   zipkin:
       image: openzipkin/zipkin
       # Environment settings are defined here https://github.com/openzipkin/zipkin/tree/1.19.0/zipkin-server#environment-variables

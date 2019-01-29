@@ -92,14 +92,46 @@ public class ModelWrapper {
             Component callingComponent = this.getAnyComponent(callingService);
             Component calledComponent = this.getAnyComponent(calledService);
 
-            //ToDo: check if connection already exists
-
-            //create connector
-            Connector connector = this.createConnection(callingComponent, calledComponent);
-            connector.getMonitoredProperties().add(createProperty(PROPERTY_INVOCATION_COUNT, callCount));
-            connector.getMonitoredProperties().add(createProperty(PROPERTY_ERROR_COUNT, errorCount));
+            Optional<Connector> connector = getConnector(callingComponent, calledComponent);
+            if(connector.isPresent()) {
+                updateConnectorProperties(connector.get(), callCount, errorCount);
+            } else {
+                //create connector
+                Connector newConnector = this.createConnection(callingComponent, calledComponent);
+                newConnector.getMonitoredProperties().add(createProperty(PROPERTY_INVOCATION_COUNT, callCount));
+                newConnector.getMonitoredProperties().add(createProperty(PROPERTY_ERROR_COUNT, errorCount));
+            }
         } catch (ElementNotFoundException e) {
             log.error(e.getMessage());
+        }
+    }
+
+    Optional<Connector> getConnector(Component origin, Component target) {
+        return origin.getRequiredInterfaces()
+                .stream()
+                .filter(i -> i.getConnector().getTarget().getComponent().equals(target))
+                .map(RequiredInterface::getConnector)
+                .findFirst();
+    }
+
+    void updateConnectorProperties(Connector connector, Integer callCount, Integer errorCount) {
+        Optional<MonitoredProperty> optionalInvocationCountProp = connector.getMonitoredProperties().stream().filter(p -> p.getName().equals(PROPERTY_INVOCATION_COUNT)).findFirst();
+        Optional<MonitoredProperty> optionalErrorCountProp = connector.getMonitoredProperties().stream().filter(p -> p.getName().equals(PROPERTY_ERROR_COUNT)).findFirst();
+
+        if (optionalInvocationCountProp.isPresent()) {
+            String callCountValue = callCount != null ? callCount.toString() : "";
+            optionalInvocationCountProp.get().setValue(callCountValue);
+        } else {
+            MonitoredProperty property = createProperty(PROPERTY_INVOCATION_COUNT, callCount);
+            connector.getMonitoredProperties().add(property);
+        }
+
+        if (optionalErrorCountProp.isPresent()) {
+            String errorCountValue = errorCount != null ? errorCount.toString() : "";
+            optionalErrorCountProp.get().setValue(errorCountValue);
+        } else {
+            MonitoredProperty property = createProperty(PROPERTY_ERROR_COUNT, errorCount);
+            connector.getMonitoredProperties().add(property);
         }
     }
 
@@ -115,9 +147,10 @@ public class ModelWrapper {
     }
 
     private MonitoredProperty createProperty(String name, Object value) {
+        Optional<Object> optionalValue = Optional.ofNullable(value);
         MonitoredProperty monitoredProperty = this.factory.createMonitoredProperty();
         monitoredProperty.setName(name);
-        monitoredProperty.setValue(value.toString());
+        monitoredProperty.setValue(optionalValue.orElse("NONE").toString());
         return monitoredProperty;
     }
 
