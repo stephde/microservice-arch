@@ -23,6 +23,11 @@ public class Controller {
         return jsonParser.getModelAsJSON(this.modelWrapper.getModel()).toString();
     }
 
+    @GetMapping("/savemodel")
+    public void saveModel() {
+        modelWrapper.save();
+    }
+
     @PostMapping("/message")
     public void sendMessage(@RequestBody String message) {
         log.info("Sending message: {}", message);

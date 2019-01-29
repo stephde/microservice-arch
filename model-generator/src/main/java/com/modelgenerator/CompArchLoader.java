@@ -7,9 +7,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 @Service
@@ -34,7 +37,19 @@ public class CompArchLoader {
     }
 
     public void saveModel(Architecture model) {
-        log.info("Saving model to ...");
+        String modelURI = "./model/generatedModel.comparch";
+        log.info("Saving model to {}", modelURI);
+
+        ResourceSet rs = new ResourceSetImpl();
+        URI uri = URI.createFileURI(modelURI);
+        Resource snapshot = rs.createResource(uri);
+        snapshot.getContents().add(EcoreUtil.copy(model));
+        try {
+            snapshot.save(Collections.EMPTY_MAP);
+        } catch (IOException e) {
+            log.warn("Cannot save model to file {}", model);
+            e.printStackTrace();
+        }
     }
 
     private void logArchitecture(Architecture architecture) {
