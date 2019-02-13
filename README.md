@@ -22,13 +22,13 @@ Otherwise, you can use the executable wrapper file `gradlew` (or for windows `gr
 
 * create docker images with `./gradlew docker`
 * simply run `docker-compose -f docker-compose.local.yml up`
-* verify by running `curl localhost:8002/model`
+* verify by running `curl localhost:8003/model`
 
 **as spring boot**
 
 * build all projects with `./gradlew build`
-* build single project with `./gradlew kubernetes-monitor:build`
-* run with `./gradlew kubernetes-monitor:bootRun`
+* build single project with `./gradlew kubernetes-consumer:build`
+* run with `./gradlew kubernetes-consumer:bootRun`
 
 ## Run in local kubernetes
 * start a local docker registry with: 

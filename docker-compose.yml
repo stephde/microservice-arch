@@ -4,13 +4,13 @@ version: "3"
 
 services:
 
-  monitor: 
-    image: localhost:5000/kubernetes-monitor
+  kubeconsumer:
+    image: localhost:5000/kubernetes-consumer
     ports: 
       - "8001:8080"
       - "8002:8081"
 
-  model-generator:
+  modelgenerator:
     image: localhost:5000/model-generator
     ports: 
       - "8003:8080"
@@ -23,7 +23,7 @@ services:
     ports:
       - "61616:61616"
 
-  zipkin-consumer:
+  zipkinconsumer:
     image: localhost:5000/zipkin-consumer
     ports:
       - "8005:8080"

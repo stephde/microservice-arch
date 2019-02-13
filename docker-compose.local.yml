@@ -2,13 +2,13 @@ version: "3"
 
 services:
 
-  monitor:
-    image: kubernetes-monitor
+  kubeconsumer:
+    image: kubernetes-consumer
     ports:
       - "8001:8080"
       - "8002:8081"
 
-  model-generator:
+  modelgenerator:
     image: model-generator
     ports: 
       - "8003:8080"
@@ -21,7 +21,7 @@ services:
     ports:
       - "8004:8080"
 
-  zipkin-consumer:
+  zipkinconsumer:
     image: zipkin-consumer
     ports:
       - "8005:8080"

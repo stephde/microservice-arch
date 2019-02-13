@@ -1,0 +1,3 @@
+rootProject.name = 'kubernetes-consumer'
+
+includeBuild '../shared-events'
