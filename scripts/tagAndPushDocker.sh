@@ -2,8 +2,8 @@
 
 REGISTRY_URI=localhost:5000/
 
-docker tag model-generator ${REGISTRY_URI}model-generator
-docker push ${REGISTRY_URI}model-generator
+docker tag model-maintainer ${REGISTRY_URI}model-maintainer
+docker push ${REGISTRY_URI}model-maintainer
 
 docker tag kubernetes-consumer ${REGISTRY_URI}kubernetes-consumer
 docker push ${REGISTRY_URI}kubernetes-consumer

@@ -10,8 +10,8 @@ services:
       - "8001:8080"
       - "8002:8081"
 
-  modelgenerator:
-    image: localhost:5000/model-generator
+  modelmaintainer:
+    image: localhost:5000/model-maintainer
     ports: 
       - "8003:8080"
     deploy:

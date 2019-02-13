@@ -8,8 +8,8 @@ services:
       - "8001:8080"
       - "8002:8081"
 
-  modelgenerator:
-    image: model-generator
+  modelmaintainer:
+    image: model-maintainer
     ports: 
       - "8003:8080"
   

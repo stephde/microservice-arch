@@ -2,6 +2,6 @@ rootProject.name = 'distributed-monitoring'
 
 include 'shared-events'
 include 'kubernetes-consumer'
-include 'model-generator'
+include 'model-maintainer'
 include 'tracing-example'
 include 'zipkin-consumer'
