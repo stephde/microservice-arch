@@ -1,48 +1,46 @@
-package com.modelmaintainer;
+package com.modelmaintainer.model;
 
 import com.google.common.collect.Lists;
 import com.modelmaintainer.Exception.ComponentNotFoundException;
 import com.modelmaintainer.Exception.ComponentTypeNotFoundException;
 import com.modelmaintainer.Exception.ElementNotFoundException;
 import com.modelmaintainer.Exception.TenantNotFoundExceptions;
+import de.mdelab.comparch.ArchitecturalElement;
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.Component;
 import de.mdelab.comparch.ComponentState;
 import de.mdelab.comparch.ComponentType;
 import de.mdelab.comparch.Connector;
 import de.mdelab.comparch.MonitoredProperty;
-import de.mdelab.comparch.ProvidedInterface;
 import de.mdelab.comparch.RequiredInterface;
 import de.mdelab.comparch.Tenant;
-import de.mdelab.comparch.src.de.mdelab.comparch.DefaultComparchFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.emf.common.util.EList;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
-@org.springframework.stereotype.Component
+import static com.modelmaintainer.model.MonitorableProperties.PROPERTY_INVOCATION_COUNT;
+
+@Service
 @Slf4j
 public class ModelWrapper {
 
     @Autowired
     private CompArchLoader loader;
+    @Autowired
+    private CompArchFactory factory;
     private Architecture model;
-    private DefaultComparchFactoryImpl factory;
 
-    private List<Component> removedInstances = Lists.newArrayList();
-
-    private static final String PROPERTY_LAST_UPDATE = "lastUpdate";
-    private static final String PROPERTY_CREATION_TIME = "creationTime";
-    private static final String PROPERTY_INVOCATION_COUNT = "invocationCount";
-    private static final String PROPERTY_ERROR_COUNT = "errorCount";
-    private static final String PROPERTY_NODE = "node";
+    private List<de.mdelab.comparch.Component> removedInstances = Lists.newArrayList();
 
     public ModelWrapper(@NotNull CompArchLoader loader) {
         this.loader = loader;
-        this.factory = new DefaultComparchFactoryImpl();
         try {
 //            this.model = loader.loadModel();
             this.generateModel("default");
@@ -61,9 +59,7 @@ public class ModelWrapper {
     }
 
     public void generateModel(String name) {
-
-        this.model = this.factory.createArchitecture();
-        this.model.setName(name);
+        this.model = this.factory.createModel(name);
     }
 
     public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime) {
@@ -83,9 +79,10 @@ public class ModelWrapper {
             Component component = getOrCreateComponent(componentName, instanceName);
             component.setState(state);
             component.setTenant(tenant);
-            component.getMonitoredProperties().add(createProperty(PROPERTY_NODE, nodeName));
-            component.getMonitoredProperties().add(createProperty(PROPERTY_LAST_UPDATE, eventTime));
-            component.getMonitoredProperties().add(createProperty(PROPERTY_CREATION_TIME, creationTime));
+            EList<MonitoredProperty> properties = component.getMonitoredProperties();
+            properties.add(this.factory.createNodeProperty(nodeName));
+            properties.add(this.factory.createLastUpdateProperty(eventTime));
+            properties.add(this.factory.createCreationTimeProperty(creationTime));
             log.info("Changed {} state to: {}", component.getName(), state);
         }
     }
@@ -100,9 +97,10 @@ public class ModelWrapper {
                 updateConnectorProperties(connector.get(), callCount, errorCount);
             } else {
                 //create connector
-                Connector newConnector = this.createConnection(callingComponent, calledComponent);
-                newConnector.getMonitoredProperties().add(createProperty(PROPERTY_INVOCATION_COUNT, callCount));
-                newConnector.getMonitoredProperties().add(createProperty(PROPERTY_ERROR_COUNT, errorCount));
+                Connector newConnector = this.factory.createConnector(callingComponent, calledComponent);
+                EList<MonitoredProperty> properties = newConnector.getMonitoredProperties();
+                properties.add(this.factory.createInvocationProperty(callCount));
+                properties.add(this.factory.createErrorCountProperty(errorCount));
             }
         } catch (ElementNotFoundException e) {
             log.error(e.getMessage());
@@ -118,14 +116,14 @@ public class ModelWrapper {
     }
 
     void updateConnectorProperties(Connector connector, Integer callCount, Integer errorCount) {
-        Optional<MonitoredProperty> optionalInvocationCountProp = connector.getMonitoredProperties().stream().filter(p -> p.getName().equals(PROPERTY_INVOCATION_COUNT)).findFirst();
-        Optional<MonitoredProperty> optionalErrorCountProp = connector.getMonitoredProperties().stream().filter(p -> p.getName().equals(PROPERTY_ERROR_COUNT)).findFirst();
+        Optional<MonitoredProperty> optionalInvocationCountProp = getProperty(connector, PROPERTY_INVOCATION_COUNT);
+        Optional<MonitoredProperty> optionalErrorCountProp = getProperty(connector, PROPERTY_INVOCATION_COUNT);
 
         if (optionalInvocationCountProp.isPresent()) {
             String callCountValue = callCount != null ? callCount.toString() : "";
             optionalInvocationCountProp.get().setValue(callCountValue);
         } else {
-            MonitoredProperty property = createProperty(PROPERTY_INVOCATION_COUNT, callCount);
+            MonitoredProperty property = this.factory.createInvocationProperty(callCount);
             connector.getMonitoredProperties().add(property);
         }
 
@@ -133,7 +131,7 @@ public class ModelWrapper {
             String errorCountValue = errorCount != null ? errorCount.toString() : "";
             optionalErrorCountProp.get().setValue(errorCountValue);
         } else {
-            MonitoredProperty property = createProperty(PROPERTY_ERROR_COUNT, errorCount);
+            MonitoredProperty property = this.factory.createErrorCountProperty(errorCount);
             connector.getMonitoredProperties().add(property);
         }
     }
@@ -149,13 +147,6 @@ public class ModelWrapper {
                 .anyMatch(c -> c.getName().equals(instanceName));
     }
 
-    private MonitoredProperty createProperty(String name, Object value) {
-        Optional<Object> optionalValue = Optional.ofNullable(value);
-        MonitoredProperty monitoredProperty = this.factory.createMonitoredProperty();
-        monitoredProperty.setName(name);
-        monitoredProperty.setValue(optionalValue.orElse("NONE").toString());
-        return monitoredProperty;
-    }
 
     private Component getComponent(String componentName, String instanceName) throws ElementNotFoundException {
         return getComponentType(componentName)
@@ -180,15 +171,14 @@ public class ModelWrapper {
         try {
             component = getComponent(serviceName, instanceName);
         } catch (ElementNotFoundException e) {
-            component = this.factory.createComponent();
-            log.info("Settings component name to: {}", instanceName);
-            component.setName(instanceName);
+            component = this.factory.createComponent(instanceName);
 
             ComponentType componentType;
             try {
                 componentType = getComponentType(serviceName);
             } catch (ComponentTypeNotFoundException ex) {
-                componentType = createComponentType(serviceName);
+                componentType = this.factory.createComponentType(serviceName);
+                this.model.getComponentTypes().add(componentType);
             }
             componentType.getInstances().add(component);
             log.info("Created and added component : {}", component);
@@ -219,14 +209,6 @@ public class ModelWrapper {
                 .orElseThrow(() -> new ComponentTypeNotFoundException(typeName));
     }
 
-    private ComponentType createComponentType(String componentName) {
-        ComponentType ct = this.factory.createComponentType();
-        ct.setName(componentName);
-        this.model.getComponentTypes().add(ct);
-
-        return ct;
-    }
-
     private Tenant getTenant(String tenantName) {
         Tenant tenant;
 
@@ -237,37 +219,18 @@ public class ModelWrapper {
                     .findFirst()
                     .orElseThrow(() -> new TenantNotFoundExceptions(tenantName));
         } catch (TenantNotFoundExceptions e) {
-            tenant = createTenant(tenantName);
+            tenant = this.factory.createTenant(tenantName);
+            this.model.getTenants().add(tenant);
         }
 
         return tenant;
     }
 
-
-    private Tenant createTenant(String name) {
-        Tenant tenant = this.factory.createTenant();
-        tenant.setName(name);
-        log.info("Created Tenant {} : {}", name, tenant);
-
-        this.model.getTenants().add(tenant);
-        return tenant;
+    public Optional<MonitoredProperty> getProperty(ArchitecturalElement element, String type) {
+        return element.getMonitoredProperties()
+                .stream()
+                .filter(p -> p.getName().equals(type))
+                .findFirst();
     }
 
-    private Connector createConnection(Component callingComponent, Component calledComponent) {
-        RequiredInterface requiredInterface = this.factory.createRequiredInterface();
-        requiredInterface.setComponent(callingComponent);
-
-        ProvidedInterface providedInterface = this.factory.createProvidedInterface();
-        providedInterface.setComponent(calledComponent);
-
-        Connector connector = this.factory.createConnector();
-        connector.setName(callingComponent.getName() + "-connector");
-        connector.setSource(requiredInterface);
-        connector.setTarget(providedInterface);
-
-        requiredInterface.setConnector(connector);
-        providedInterface.getConnectors().add(connector);
-
-        return connector;
-    }
 }

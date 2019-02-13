@@ -1,4 +1,4 @@
-package com.modelmaintainer;
+package com.modelmaintainer.model;
 
 import de.mdelab.comparch.Architecture;
 import de.mdelab.comparch.ComparchPackage;

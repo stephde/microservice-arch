@@ -1,4 +1,4 @@
-package com.modelmaintainer;
+package com.modelmaintainer.model;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -38,9 +38,7 @@ public class JSONParser {
         jsonInstance.addProperty("tenant", component.getTenant().getName());
 
         // add monitored properties
-        component.getMonitoredProperties().forEach(prop -> {
-            jsonInstance.addProperty(prop.getName(), prop.getValue());
-        });
+        component.getMonitoredProperties().forEach(prop -> jsonInstance.addProperty(prop.getName(), prop.getValue()));
 
 
         JsonArray requiredInterfaces = getInterfacesAsJSON(component.getRequiredInterfaces());
