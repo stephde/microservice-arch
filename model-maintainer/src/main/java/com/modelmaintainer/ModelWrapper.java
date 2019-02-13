@@ -38,6 +38,7 @@ public class ModelWrapper {
     private static final String PROPERTY_CREATION_TIME = "creationTime";
     private static final String PROPERTY_INVOCATION_COUNT = "invocationCount";
     private static final String PROPERTY_ERROR_COUNT = "errorCount";
+    private static final String PROPERTY_NODE = "node";
 
     public ModelWrapper(@NotNull CompArchLoader loader) {
         this.loader = loader;
@@ -76,11 +77,13 @@ public class ModelWrapper {
             Optional<Component> removedIntance = removeComponent(componentName, instanceName);
             removedIntance.ifPresent(i -> this.removedInstances.add(i));
         } else {
-            Tenant tenant = getTenant(nodeName);
+            // ToDo: if we want to support multiple tenants we need to save a list with the names
+            Tenant tenant = getTenant(model.getName());
 
             Component component = getOrCreateComponent(componentName, instanceName);
             component.setState(state);
             component.setTenant(tenant);
+            component.getMonitoredProperties().add(createProperty(PROPERTY_NODE, nodeName));
             component.getMonitoredProperties().add(createProperty(PROPERTY_LAST_UPDATE, eventTime));
             component.getMonitoredProperties().add(createProperty(PROPERTY_CREATION_TIME, creationTime));
             log.info("Changed {} state to: {}", component.getName(), state);
@@ -224,17 +227,17 @@ public class ModelWrapper {
         return ct;
     }
 
-    private Tenant getTenant(String nodeName) {
+    private Tenant getTenant(String tenantName) {
         Tenant tenant;
 
         try {
             tenant = this.model.getTenants()
                     .stream()
-                    .filter(t -> t.getName().equals(nodeName))
+                    .filter(t -> t.getName().equals(tenantName))
                     .findFirst()
-                    .orElseThrow(() -> new TenantNotFoundExceptions(nodeName));
+                    .orElseThrow(() -> new TenantNotFoundExceptions(tenantName));
         } catch (TenantNotFoundExceptions e) {
-            tenant = createTenant(nodeName);
+            tenant = createTenant(tenantName);
         }
 
         return tenant;
