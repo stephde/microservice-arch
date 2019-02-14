@@ -1,0 +1,43 @@
+version: "3"
+
+# additional propery from https://docs.docker.com/docker-cloud/apps/stack-yaml-reference/
+
+services:
+
+  kubeconsumer:
+    image: ${REGISTRY}/kubernetes-consumer:${TAG}
+    ports: 
+      - "8001:8080"
+      - "8002:8081"
+
+  modelmaintainer:
+    image: ${REGISTRY}/model-maintainer:${TAG}
+    ports: 
+      - "8003:8080"
+    deploy:
+#      autoredeploy: true
+#       target_num_containers: 3
+
+  activemq:
+    image: webcenter/activemq:latest
+    ports:
+      - "61616:61616"
+
+  zipkinconsumer:
+    image: ${REGISTRY}/zipkin-consumer:${TAG}
+    ports:
+      - "8005:8080"
+
+  zipkin:
+      image: openzipkin/zipkin
+      # Environment settings are defined here https://github.com/openzipkin/zipkin/tree/1.19.0/zipkin-server#environment-variables
+      environment:
+        - STORAGE_TYPE=mem
+      ports:
+        # Port used for the Zipkin UI and HTTP Api
+        - 9411:9411
+
+#  demo:
+#    image: localhost:5000/tracing-example
+#    ports:
+#      - "8004:8080"
