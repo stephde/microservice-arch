@@ -5,13 +5,13 @@ version: "3"
 services:
 
   kubeconsumer:
-    image: localhost:5000/kubernetes-consumer
+    image: fb14srv7:5000/kubernetes-consumer
     ports: 
       - "8001:8080"
       - "8002:8081"
 
   modelmaintainer:
-    image: localhost:5000/model-maintainer
+    image: fb14srv7:5000/model-maintainer
     ports: 
       - "8003:8080"
     deploy:
@@ -24,7 +24,7 @@ services:
       - "61616:61616"
 
   zipkinconsumer:
-    image: localhost:5000/zipkin-consumer
+    image: fb14srv7:5000/zipkin-consumer
     ports:
       - "8005:8080"
 
@@ -38,6 +38,6 @@ services:
         - 9411:9411
 
   demo:
-    image: localhost:5000/tracing-example
+    image: fb14srv7:5000/tracing-example
     ports:
       - "8004:8080"

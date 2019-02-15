@@ -73,7 +73,7 @@ docker run -d -p 5000:5000 --restart=always --name registry registry:2
 Additionally, you need to add registry as insecure in docker.json on your development computer so that you can push images
 So add `fb14srv7:5000` there.
 Now you should be able to push docker images to the server with `scripts/tagAndPushDocker.sh`
-(Alternatively, you can use the flag `--insecure-registry=fb14srv7:6000` with your docker push command)
+(Alternatively, you can use the flag `--insecure-registry=fb14srv7:5000` with your docker push command)
 
 
 
