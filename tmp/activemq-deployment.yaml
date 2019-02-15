@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yml
+    kompose.version: 1.17.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: activemq
+  name: activemq
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: activemq
+    spec:
+      containers:
+      - image: webcenter/activemq:latest
+        name: activemq
+        ports:
+        - containerPort: 61616
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -29,11 +29,30 @@ kubectl get nodes
 ```
 
 Set-Up kubectl connection from host to VM
+Therefore, get ca-data and token from kubernetes similar to 
+http://docs.shippable.com/deploy/tutorial/create-kubeconfig-for-self-hosted-kubernetes-cluster/ 
 ```bash
 # make sure port forward is right / or network is connect otherwise
+# in vagrant file forward port 6443
 
-# copy from admin.config in VM to ~/.kube/conf on host   
+# create auth service in kubernetes
+# get token from default service account
+kubectl describe serviceaccount default
+kubectl describe secrets default-token-f46pz
+# copy token and insert in sample-config
+ 
+# get certificate auth data
+kubectl config view --flatten --minify > cluster-cert.txt
+less cluster-cert.txt
+# copy certificate-authority-data to ca-data in sample-config
+# copy sample-config to ~/.kube/conf on server
 ```
+now you should be able to reach the cluster by using kubectl
+if you get something like Unable to connect to the server: x509: certificate is valid for 10.96.0.1, 172.42.42.11, not 127.0.0.1
+use flag to ignore tls certificate
+```bash
+kubectl --insecure-skip-tls-verify get pods
+``` 
 
 Without kubectl connection from host
 ```bash
@@ -46,6 +65,11 @@ Add admin rights to default kubernetes user, so that kube-consumer can query the
 ```bash
 kubectl apply -f scripts/admin-role.yml
 ```
+
+### On your own maschine
+add registry as insecure in docker.json so that you can push images
+--insecure-registry=fb14srv7:6000
+
 
 
 ### Resources
