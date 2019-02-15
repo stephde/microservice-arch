@@ -18,7 +18,7 @@ spec:
         io.kompose.service: demo
     spec:
       containers:
-      - image: localhost:6000/tracing-example
+      - image: localhost:5000/tracing-example
         name: demo
         ports:
         - containerPort: 8080

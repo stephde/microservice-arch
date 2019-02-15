@@ -18,7 +18,7 @@ spec:
         io.kompose.service: kubeconsumer
     spec:
       containers:
-      - image: localhost:6000/kubernetes-consumer
+      - image: localhost:5000/kubernetes-consumer
         name: kubeconsumer
         ports:
         - containerPort: 8080

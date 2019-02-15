@@ -18,7 +18,7 @@ spec:
         io.kompose.service: modelmaintainer
     spec:
       containers:
-      - image: localhost:6000/model-maintainer
+      - image: localhost:5000/model-maintainer
         name: modelmaintainer
         ports:
         - containerPort: 8080

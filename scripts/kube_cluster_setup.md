@@ -66,9 +66,15 @@ Add admin rights to default kubernetes user, so that kube-consumer can query the
 kubectl apply -f scripts/admin-role.yml
 ```
 
-### On your own maschine
-add registry as insecure in docker.json so that you can push images
---insecure-registry=fb14srv7:6000
+Run docker registry in VM
+```bash
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+```
+Additionally, you need to add registry as insecure in docker.json on your development computer so that you can push images
+So add `fb14srv7:5000` there.
+Now you should be able to push docker images to the server with `scripts/tagAndPushDocker.sh`
+(Alternatively, you can use the flag `--insecure-registry=fb14srv7:6000` with your docker push command)
+
 
 
 

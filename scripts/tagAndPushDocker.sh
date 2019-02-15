@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REGISTRY_URI=fb14srv7:6000/
+REGISTRY_URI=fb14srv7:5000/
 
 docker tag model-maintainer ${REGISTRY_URI}model-maintainer
 docker push ${REGISTRY_URI}model-maintainer
