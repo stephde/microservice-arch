@@ -46,6 +46,12 @@ kubectl config view --flatten --minify > cluster-cert.txt
 less cluster-cert.txt
 # copy certificate-authority-data to ca-data in sample-config
 # copy sample-config to ~/.kube/conf on server
+
+# copy admin role yml from host to vm
+vagrant scp ../distributed-monitoring/scripts/admin-role.yml k8s1:~/admin-role.yml
+# apply admin role to default user in VM
+# also required for kube-consumer to query the API
+kubectl apply -f admin-role.yml
 ```
 now you should be able to reach the cluster by using kubectl
 if you get something like Unable to connect to the server: x509: certificate is valid for 10.96.0.1, 172.42.42.11, not 127.0.0.1
@@ -54,16 +60,14 @@ use flag to ignore tls certificate
 kubectl --insecure-skip-tls-verify get pods
 ``` 
 
+
+
+
 Without kubectl connection from host
 ```bash
 # copy compose file from host to vm
 # vagrant plugin install vagrant-scp
 vagrant scp docker-compose.hub.yml k8s1:~/docker-compose.hub.yml
-```
-
-Add admin rights to default kubernetes user, so that kube-consumer can query the API
-```bash
-kubectl apply -f scripts/admin-role.yml
 ```
 
 Run docker registry in VM

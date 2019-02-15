@@ -2,12 +2,12 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f ../docker-compose.yml
+    kompose.cmd: kompose convert -f ../docker-compose.hub.yml
     kompose.version: 1.17.0 ()
   creationTimestamp: null
   labels:
-    io.kompose.service: zipkinconsumer
-  name: zipkinconsumer
+    io.kompose.service: kubeconsumer
+  name: kubeconsumer
 spec:
   replicas: 1
   strategy: {}
@@ -15,13 +15,14 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: zipkinconsumer
+        io.kompose.service: kubeconsumer
     spec:
       containers:
-      - image: fb14srv7:5000/zipkin-consumer
-        name: zipkinconsumer
+      - image: stephde/kubernetes-consumer:v1
+        name: kubeconsumer
         ports:
         - containerPort: 8080
+        - containerPort: 8081
         resources: {}
       restartPolicy: Always
 status: {}
