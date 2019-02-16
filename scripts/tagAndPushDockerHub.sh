@@ -14,3 +14,6 @@ docker push ${REGISTRY_URI}tracing-example${TAG}
 
 docker tag zipkin-consumer ${REGISTRY_URI}zipkin-consumer${TAG}
 docker push ${REGISTRY_URI}zipkin-consumer${TAG}
+
+docker tag gateway ${REGISTRY_URI}gateway${TAG}
+docker push ${REGISTRY_URI}gateway${TAG}

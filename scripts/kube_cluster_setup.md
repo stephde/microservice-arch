@@ -61,6 +61,11 @@ kubectl --insecure-skip-tls-verify get pods
 ``` 
 
 
+```bash
+# add port foward
+kubectl port-forward svc/gateway 80:80 --namespace=dm
+# make sure nginx conf matches the port
+```
 
 
 Without kubectl connection from host

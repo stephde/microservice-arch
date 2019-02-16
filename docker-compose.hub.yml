@@ -37,6 +37,11 @@ services:
       # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
 
+  gateway:
+    image: ${REGISTRY}/gateway:${TAG}
+    ports:
+      - "80:80"
+
 #  demo:
 #    image: localhost:5000/tracing-example
 #    ports:

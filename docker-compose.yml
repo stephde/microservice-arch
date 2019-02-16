@@ -37,6 +37,11 @@ services:
         # Port used for the Zipkin UI and HTTP Api
         - 9411:9411
 
+  gateway:
+    image: stephde/gateway
+    ports:
+      - "80:80"
+
   demo:
     image: stephde/tracing-example
     ports:

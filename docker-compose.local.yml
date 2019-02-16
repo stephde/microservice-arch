@@ -41,6 +41,11 @@ services:
       # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
 
+  gateway:
+    image: gateway
+    ports:
+      - "80:80"
+
 #  jaeger:
 #    image: jaegertracing/all-in-one
 #    ports:
