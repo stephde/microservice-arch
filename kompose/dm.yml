@@ -1,0 +1,334 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: activemq
+    name: activemq
+  spec:
+    ports:
+    - name: "61616"
+      port: 61616
+      targetPort: 61616
+    selector:
+      io.kompose.service: activemq
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: demo
+    name: demo
+  spec:
+    ports:
+    - name: "8004"
+      port: 8004
+      targetPort: 8080
+    selector:
+      io.kompose.service: demo
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: gateway
+    name: gateway
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+    selector:
+      io.kompose.service: gateway
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: kubeconsumer
+    name: kubeconsumer
+  spec:
+    ports:
+    - name: "8001"
+      port: 8001
+      targetPort: 8080
+    - name: "8002"
+      port: 8002
+      targetPort: 8081
+    selector:
+      io.kompose.service: kubeconsumer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: modelmaintainer
+    name: modelmaintainer
+  spec:
+    ports:
+    - name: "8003"
+      port: 8003
+      targetPort: 8080
+    selector:
+      io.kompose.service: modelmaintainer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: zipkin
+    name: zipkin
+  spec:
+    ports:
+    - name: "9411"
+      port: 9411
+      targetPort: 9411
+    selector:
+      io.kompose.service: zipkin
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: zipkinconsumer
+    name: zipkinconsumer
+  spec:
+    ports:
+    - name: "8005"
+      port: 8005
+      targetPort: 8080
+    selector:
+      io.kompose.service: zipkinconsumer
+  status:
+    loadBalancer: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: activemq
+    name: activemq
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: activemq
+      spec:
+        containers:
+        - image: webcenter/activemq:latest
+          name: activemq
+          ports:
+          - containerPort: 61616
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: demo
+    name: demo
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: demo
+      spec:
+        containers:
+        - image: stephde/tracing-example:v1
+          name: demo
+          ports:
+          - containerPort: 8080
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: gateway
+    name: gateway
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: gateway
+      spec:
+        containers:
+        - image: stephde/gateway:v1
+          name: gateway
+          ports:
+          - containerPort: 80
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: kubeconsumer
+    name: kubeconsumer
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: kubeconsumer
+      spec:
+        containers:
+        - image: stephde/kubernetes-consumer:v1
+          name: kubeconsumer
+          ports:
+          - containerPort: 8080
+          - containerPort: 8081
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: modelmaintainer
+    name: modelmaintainer
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: modelmaintainer
+      spec:
+        containers:
+        - image: stephde/model-maintainer:v1
+          name: modelmaintainer
+          ports:
+          - containerPort: 8080
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: zipkin
+    name: zipkin
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: zipkin
+      spec:
+        containers:
+        - env:
+          - name: STORAGE_TYPE
+            value: mem
+          image: openzipkin/zipkin
+          name: zipkin
+          ports:
+          - containerPort: 9411
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: zipkinconsumer
+    name: zipkinconsumer
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: zipkinconsumer
+      spec:
+        containers:
+        - image: stephde/zipkin-consumer:v1
+          name: zipkinconsumer
+          ports:
+          - containerPort: 8080
+          resources: {}
+        restartPolicy: Always
+  status: {}
+kind: List
+metadata: {}
+
