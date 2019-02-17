@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.hub.yml
+    kompose.version: 1.17.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gateway
+  name: gateway
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: gateway
+    spec:
+      containers:
+      - image: stephde/gateway:v1
+        name: gateway
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -42,7 +42,7 @@ services:
     ports:
       - "80:80"
 
-#  demo:
-#    image: localhost:5000/tracing-example
-#    ports:
-#      - "8004:8080"
+  demo:
+    image: ${REGISTRY}/tracing-example:${TAG}
+    ports:
+      - "8004:8080"

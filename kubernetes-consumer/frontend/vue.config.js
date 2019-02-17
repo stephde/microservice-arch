@@ -1,3 +1,4 @@
+// https://github.com/vuejs-templates/webpack/issues/546
 
 module.exports = {
     // baseUrl: '/kube-ui',
