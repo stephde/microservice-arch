@@ -46,25 +46,6 @@ items:
       kompose.version: 1.17.0 ()
     creationTimestamp: null
     labels:
-      io.kompose.service: gateway
-    name: gateway
-  spec:
-    ports:
-    - name: "80"
-      port: 80
-      targetPort: 80
-    selector:
-      io.kompose.service: gateway
-  status:
-    loadBalancer: {}
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
-      kompose.version: 1.17.0 ()
-    creationTimestamp: null
-    labels:
       io.kompose.service: kubeconsumer
     name: kubeconsumer
   spec:
@@ -198,33 +179,6 @@ items:
       kompose.version: 1.17.0 ()
     creationTimestamp: null
     labels:
-      io.kompose.service: gateway
-    name: gateway
-  spec:
-    replicas: 1
-    strategy: {}
-    template:
-      metadata:
-        creationTimestamp: null
-        labels:
-          io.kompose.service: gateway
-      spec:
-        containers:
-        - image: stephde/gateway:v1
-          name: gateway
-          ports:
-          - containerPort: 80
-          resources: {}
-        restartPolicy: Always
-  status: {}
-- apiVersion: extensions/v1beta1
-  kind: Deployment
-  metadata:
-    annotations:
-      kompose.cmd: kompose convert -o dm.yml -f ../docker-compose.hub.yml
-      kompose.version: 1.17.0 ()
-    creationTimestamp: null
-    labels:
       io.kompose.service: kubeconsumer
     name: kubeconsumer
   spec:
@@ -329,6 +283,32 @@ items:
           resources: {}
         restartPolicy: Always
   status: {}
+- apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    name: dm-ingress
+    annotations:
+      ingress.kubernetes.io/rewrite-target: /
+  spec:
+    rules:
+    - http:
+        paths:
+          - path: /model
+            backend:
+              serviceName: modelmaintainer
+              servicePort: 8080
+          - path: /kubeconsumer
+            backend:
+              serviceName: kubeconsumer
+              servicePort: 8081
+          - path: /demo
+            backend:
+              serviceName: demo
+              servicePort: 8080
+          - path: /kube-ui
+            backend:
+              serviceName: kubeconsumer
+              servicePort: 8080
+
 kind: List
 metadata: {}
-
