@@ -4,6 +4,8 @@ FROM openjdk:8-jdk-alpine
 RUN apk add nodejs nodejs-npm supervisor
 RUN npm install -g yarn
 
+ENV IS_PROD 'true'
+
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency
 ARG JAR_FILE

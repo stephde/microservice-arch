@@ -1,7 +1,13 @@
 <template>
-  <div class="hello">
+  <div class="global-container">
     <h1>Kubernetes Monitor</h1>
-    <div class="namespace-container">
+    <div class="property-container">
+      <md-field>
+        <label>API Url</label>
+        <md-input v-model="apiUrl" placeholder="Set Base Url" @change="() => handleUrlUpdate(apiUrl)"></md-input>
+      </md-field>
+    </div>
+    <div class="property-container">
       <md-field>
         <label>Monitored Namespace</label>
         <md-input v-model="namespace" placeholder="Set Namespace" @change="() => handleNamespaceUpdate(namespace)"></md-input>
@@ -24,7 +30,7 @@ import api from './api'
 export default {
   name: 'Monitor',
   data () {
-      return { namespace: null , watchers: []}
+      return { namespace: null , watchers: [], apiUrl: null}
   },
   created () {
     // fetch the data when the view is created and the data is
@@ -33,15 +39,19 @@ export default {
   },
   methods: {
     async fetchData () {
+      this.apiUrl = api.getBaseUrl()
       this.namespace = await api.getNamespace()
       this.watchers = await api.getWatchers()
-      console.info(this.watchers)
     },
     handleToggle(watcher) {
       api.setWatcher(watcher.type, watcher.active)
     },
     handleNamespaceUpdate(namespace) {
       api.setNamespace(namespace)
+    },
+    handleUrlUpdate(url) {
+      api.setBaseUrl(url)
+      this.fetchData()
     }
   }
 }
@@ -70,13 +80,13 @@ input {
   border-color: rgb(191, 203, 217);
   margin: 0 20px;
 }
-.namespace {
-  font-weight: bold;
-  display: inline-block;
-  padding-left: 20px;
+.global-container {
+  max-width: 500px;
+  margin: auto;
 }
-.namespace-container {
+.property-container {
   display: inline-flex;
+  width: 100%;
 }
 .watcher-name {
   flex-grow: 1;

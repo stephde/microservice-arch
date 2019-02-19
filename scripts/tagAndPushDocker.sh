@@ -14,6 +14,6 @@ docker push ${REGISTRY_URI}tracing-example
 docker tag zipkin-consumer ${REGISTRY_URI}zipkin-consumer
 docker push ${REGISTRY_URI}zipkin-consumer
 
-docker build -t gateway ./../gateway
+#docker build -t gateway ./../gateway
 docker tag gateway ${REGISTRY_URI}gateway
 docker push ${REGISTRY_URI}gateway

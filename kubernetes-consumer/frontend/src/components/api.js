@@ -1,13 +1,22 @@
 import * as Axios from 'axios'
 
-const axios = Axios.create({
-    baseURL: 'http://localhost:8002',
+let DEFAULT_API_URL = process.env.IS_PROD
+    ? 'http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer/'
+    : 'http://localhost:8002';
+
+const ORIGIN = process.env.IS_PROD
+    ? 'http://fb14srv7.hpi.uni-potsdam.de:1801'
+    : 'http:localhost:8001';
+
+const AXIOS_CONF = {
+    baseURL: DEFAULT_API_URL,
     headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:8001',
-        // 'X-CSRF-TOKEN' : 'cross-site-forgery-token'
+        'Access-Control-Allow-Origin': ORIGIN,
         'Content-Type': 'application/json'
     }
-})
+}
+
+let axios = Axios.create(AXIOS_CONF)
 
 const handleApiError = response => {
     console.error(JSON.stringify(response))
@@ -35,5 +44,12 @@ export default {
     setWatcher: (type, active) => {
         console.info(`Setting watcher ${type} to ${active}`)
         axios.post(`/api/watchers/${type}`, active ? "true" : "false")
+    },
+
+    getBaseUrl: () => AXIOS_CONF.baseURL,
+
+    setBaseUrl: baseURL => {
+        AXIOS_CONF.baseURL = baseURL
+        axios = Axios.create(AXIOS_CONF)
     }
 }

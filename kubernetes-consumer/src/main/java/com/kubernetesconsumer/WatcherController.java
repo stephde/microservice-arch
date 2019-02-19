@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:8001", maxAge = 3600)
+@CrossOrigin(origins = "http://fb14srv7.hpi.uni-potsdam.de:1801", maxAge = 3600)
 public class WatcherController {
 
     private final KubernetesConnector kubernetesConnector;
