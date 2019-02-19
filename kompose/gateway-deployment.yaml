@@ -18,7 +18,7 @@ spec:
         io.kompose.service: gateway
     spec:
       containers:
-      - image: stephde/gateway:v1
+      - image: stephde/gateway:latest
         name: gateway
         ports:
         - containerPort: 80

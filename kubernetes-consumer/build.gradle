@@ -24,6 +24,10 @@ docker {
 			include 'supervisord.conf'
 			into 'dependency'
 		}
+		from('.') {
+			include '.kube_config'
+			into 'dependency'
+		}
 		from('build/libs') {
 			into 'dependency/jar'
 		}

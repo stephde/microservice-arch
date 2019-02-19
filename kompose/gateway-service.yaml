@@ -10,8 +10,8 @@ metadata:
   name: gateway
 spec:
   ports:
-  - name: "80"
-    port: 80
+  - name: "8888"
+    port: 8888
     targetPort: 80
   selector:
     io.kompose.service: gateway

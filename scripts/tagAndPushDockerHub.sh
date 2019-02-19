@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 REGISTRY_URI=stephde/
-TAG=:v1
+TAG=:latest
 
 docker tag model-maintainer ${REGISTRY_URI}model-maintainer${TAG}
 docker push ${REGISTRY_URI}model-maintainer${TAG}

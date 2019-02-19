@@ -40,7 +40,7 @@ services:
   gateway:
     image: ${REGISTRY}/gateway:${TAG}
     ports:
-      - "80:80"
+      - "8888:80"
 
   demo:
     image: ${REGISTRY}/tracing-example:${TAG}

@@ -21,6 +21,10 @@ RUN cd /app/frontend && yarn
 # add supervisor config to run multiple services
 ADD ${DEPENDENCY}/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# add kube config
+ADD ${DEPENDENCY}/.kube_config /app/.kube/config
+ENV KUBECONFIG /app/.kube/config
+
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 EXPOSE 8080
 EXPOSE 8081
