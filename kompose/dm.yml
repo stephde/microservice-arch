@@ -183,7 +183,7 @@ items:
           io.kompose.service: demo
       spec:
         containers:
-        - image: /tracing-example:latest
+        - image: stephde/tracing-example:latest
           name: demo
           ports:
           - containerPort: 8080
@@ -210,7 +210,7 @@ items:
           io.kompose.service: gateway
       spec:
         containers:
-        - image: /gateway:latest
+        - image: stephde/gateway:latest
           name: gateway
           ports:
           - containerPort: 80
@@ -237,7 +237,7 @@ items:
           io.kompose.service: kubeconsumer
       spec:
         containers:
-        - image: /kubernetes-consumer:latest
+        - image: stephde/kubernetes-consumer:latest
           name: kubeconsumer
           ports:
           - containerPort: 8080
@@ -265,7 +265,7 @@ items:
           io.kompose.service: modelmaintainer
       spec:
         containers:
-        - image: /model-maintainer:latest
+        - image: stephde/model-maintainer:latest
           name: modelmaintainer
           ports:
           - containerPort: 8080
@@ -322,7 +322,7 @@ items:
           io.kompose.service: zipkinconsumer
       spec:
         containers:
-        - image: /zipkin-consumer:latest
+        - image: stephde/zipkin-consumer:latest
           name: zipkinconsumer
           ports:
           - containerPort: 8080
