@@ -58,10 +58,23 @@ remove stack with docker stack:
 docker stack rm --namespace dm dm
 ```
 
+## Run on kubernetes
+* make sure the kompose files (dm.yml is up to date)
+* generate with `REGISTRY=stephde TAG=latest kompose convert -f ../docker-compose.hub.yml -o kompose/dm.yml`
+* make sure `imagePullPolicy: Always` is set for all containers in dm.yml so that kubernetes always uses the newest images
+* run `kubectl apply kompose/dm.yml -n dm` to create monitoring setup in namespace `dm`
+* find out the ip of the gateway with `kubectl get svc -n dm`
+* use `vagrant ssh k8s1` to ssh into the virtual kubernetes master node
+* set the gateway ip in `/etc/nginx/nginx.conf` and reload with `sudo nginx -s reload` 
+
+
 ## Monitor an application
 The namespace of the target application needs to match the namespace in the application.properties of the monitor.
 Otherwise, it can also be adjusted at runtime by calling the `POST /namespace` endpoint (as in `scripts/changeNamespace.sh`)
 
+### Running the monitoring UI
+* run as docker image on server
+* set API url in UI (e.g. to `http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer`)
 
 ## Events on Replication
 
@@ -97,6 +110,13 @@ http://localhost:9411/zipkin/api/v2/dependencies?endTs=1545921678313
 * use spring boot starter
 * add new module to settings.gradle
 * ...
+
+
+## FAQ
+How do I scale a service?
+```
+kubectl scale --replicas=2 deployments/workloademulator
+```
 
 
 ## Notes

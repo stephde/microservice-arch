@@ -36,26 +36,25 @@ public class CompArchFactory {
     }
 
     public MonitoredProperty createLastUpdateProperty(DateTime time) {
-        return createProperty(PROPERTY_LAST_UPDATE, time);
+        return createProperty(PROPERTY_LAST_UPDATE, time.toString());
     }
 
     public MonitoredProperty createCreationTimeProperty(DateTime time) {
-        return createProperty(PROPERTY_CREATION_TIME, time);
+        return createProperty(PROPERTY_CREATION_TIME, time.toString());
     }
 
     public MonitoredProperty createInvocationProperty(Integer invocationCount) {
-        return createProperty(PROPERTY_INVOCATION_COUNT, invocationCount);
+        return createProperty(PROPERTY_INVOCATION_COUNT, invocationCount == null ? "NONE" : String.valueOf(invocationCount));
     }
 
     public MonitoredProperty createErrorCountProperty(Integer errorCount) {
-        return createProperty(PROPERTY_ERROR_COUNT, errorCount);
+        return createProperty(PROPERTY_ERROR_COUNT, errorCount == null ? "NONE" : String.valueOf(errorCount));
     }
 
-    private MonitoredProperty createProperty(String name, Object value) {
-        Optional<Object> optionalValue = Optional.ofNullable(value);
+    private MonitoredProperty createProperty(String name, String value) {
         MonitoredProperty monitoredProperty = this.factory.createMonitoredProperty();
         monitoredProperty.setName(name);
-        monitoredProperty.setValue(optionalValue.orElse("NONE").toString());
+        monitoredProperty.setValue(value);
         return monitoredProperty;
     }
 
