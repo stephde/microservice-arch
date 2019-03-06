@@ -1,8 +1,8 @@
 import * as Axios from 'axios'
 
 let DEFAULT_API_URL = process.env.IS_DEV
-    ? 'http://localhost:8002'
-    : 'http://fb14srv7.hpi.uni-potsdam.de:1800/zipkin-consumer';
+    ? 'http://localhost:8003'
+    : 'http://fb14srv7.hpi.uni-potsdam.de:1800/workload';
 
 const ORIGIN = process.env.IS_DEV
     ? 'http://localhost:8081'
@@ -26,24 +26,22 @@ const handleApiError = response => {
 
 export default {
     startLoop: async () => {
-        let { data } = await axios.post('/start')
+        let { data } = await axios.get('/start')
 
         consumerIsActive = true;
-
-        return data.trim()
+        console.info(data)
     },
     stopLoop: async () => {
-        let { data } = await axios.post('/stop')
+        let { data } = await axios.get('/stop')
 
         consumerIsActive = false;
-
-        return data.trim()
+        console.info(data)
     },
 
-    getDependencies: async () => {
-        let { data } = await axios.get('/dependencies')
+    getServices: async () => {
+        let { data } = await axios.get('/services')
 
-        console.info(data)
+        return data
     },
 
     getBaseUrl: () => AXIOS_CONF.baseURL,

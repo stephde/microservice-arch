@@ -23,6 +23,7 @@
     </div>
 
     <!--------------- ---------------->
+
     <h1>Zipkin Consumer</h1>
     <div class="property-container" v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">
       <md-field>
@@ -36,12 +37,33 @@
         <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
       </div>
     </div>
+
+    <!--------------- ---------------->
+
+    <h1>Workload Emulator</h1>
+    <div class="property-container" v-bind:class="{ connected: isWorkloadEmulatorConnected, disconnected: !isWorkloadEmulatorConnected }">
+      <md-field>
+        <label>API Url</label>
+        <md-input v-model="workloadApiUrl" placeholder="Set Base Url" @change="() => handleWorkloadUrlUpdate(workloadApiUrl)"></md-input>
+      </md-field>
+    </div>
+    <div class="watcherList">
+      <div class="watcherItem">
+        <div class="watcher-name">Emulate Workload :</div>
+        <toggle-button @change="() => handleWorkloadToggle()" v-model="isWorkloadRunning"/>
+      </div>
+      <div class="watcherItem">
+        <div class="watcher-name">Services under load:</div>
+        <div>{{ this.servicesUnderLoad }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import kubeApi from './api-kube-consumer'
 import zipkinApi from './api-zipkin-consumer'
+import workloadApi from './api-workload'
 
 export default {
   name: 'Monitor',
@@ -50,10 +72,14 @@ export default {
           namespace: null ,
           watchers: [],
           apiUrl: null,
-          isKubeConsumerConnected: false,
           zipkinApiUrl: null,
-          zipkinConsumerIsActive: false,
+          workloadApiUrl: null,
+          isKubeConsumerConnected: false,
           isZipkinConsumerConnected: false,
+          isWorkloadEmulatorConnected: false,
+          zipkinConsumerIsActive: false,
+          isWorkloadRunning: false,
+          servicesUnderLoad: 'NONE',
       }
   },
   created () {
@@ -65,8 +91,8 @@ export default {
     async fetchData () {
       this.apiUrl = kubeApi.getBaseUrl()
       this.zipkinApiUrl = zipkinApi.getBaseUrl()
+      this.workloadApiUrl = workloadApi.getBaseUrl()
       this.zipkinConsumerIsActive = zipkinApi.getIsConsumerActive()
-
 
       try {
         this.namespace = await kubeApi.getNamespace()
@@ -78,11 +104,19 @@ export default {
       }
 
       try {
-          zipkinApi.getDependencies()
-          this.zipkinConsumerIsActive = true
+          await zipkinApi.getDependencies()
+          this.isZipkinConsumerConnected = true
       } catch (e) {
           console.error(e)
           this.isZipkinConsumerConnected = false
+      }
+
+      try {
+          this.servicesUnderLoad = await workloadApi.getServices();
+          this.isWorkloadEmulatorConnected = true
+      } catch (e) {
+          console.error(e)
+          this.isWorkloadEmulatorConnected = false
       }
     },
     handleToggle(watcher) {
@@ -93,6 +127,11 @@ export default {
         ? zipkinApi.startLoop()
         : zipkinApi.stopLoop()
     },
+    handleWorkloadToggle() {
+      this.isWorkloadRunning
+        ? workloadApi.startLoop()
+        : workloadApi.stopLoop()
+    },
     handleNamespaceUpdate(namespace) {
       kubeApi.setNamespace(namespace)
     },
@@ -102,6 +141,10 @@ export default {
     },
     handleZipkinUrlUpdate(url) {
       zipkinApi.setBaseUrl(url)
+      this.fetchData()
+    },
+    handleWorkloadUrlUpdate(url) {
+      workloadApi.setBaseUrl(url)
       this.fetchData()
     }
   }
