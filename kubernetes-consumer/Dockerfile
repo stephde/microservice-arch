@@ -1,9 +1,5 @@
 FROM openjdk:8-jdk-alpine
 
-# install dependencies
-RUN apk add nodejs nodejs-npm supervisor
-RUN npm install -g yarn
-
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency
 ARG JAR_FILE
@@ -14,17 +10,9 @@ COPY ${DEPENDENCY}/META-INF /app/META-INF
 COPY ${DEPENDENCY}/BOOT-INF/classes /app
 ADD ${DEPENDENCY}/jar/${JAR_FILE} app.jar
 
-# add frontend and install dependencies
-COPY ${DEPENDENCY}/frontend /app/frontend
-RUN cd /app/frontend && yarn
-
-# add supervisor config to run multiple services
-ADD ${DEPENDENCY}/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 # add kube config
 ADD ${DEPENDENCY}/.kube_config /app/.kube/config
 ENV KUBECONFIG /app/.kube/config
 
-ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 EXPOSE 8080
-EXPOSE 8081

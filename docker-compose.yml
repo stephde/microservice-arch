@@ -7,8 +7,7 @@ services:
   kubeconsumer:
     image: stephde/kubernetes-consumer
     ports: 
-      - "8001:8080"
-      - "8002:8081"
+      - "8002:8080"
 
   modelmaintainer:
     image: stephde/model-maintainer

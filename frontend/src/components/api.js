@@ -1,12 +1,12 @@
 import * as Axios from 'axios'
 
 let DEFAULT_API_URL = process.env.IS_PROD
-    ? 'http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer/'
+    ? 'http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer'
     : 'http://localhost:8002';
 
 const ORIGIN = process.env.IS_PROD
     ? 'http://fb14srv7.hpi.uni-potsdam.de:1801'
-    : 'http:localhost:8001';
+    : 'http:localhost:8081';
 
 const AXIOS_CONF = {
     baseURL: DEFAULT_API_URL,

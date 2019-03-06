@@ -26,7 +26,7 @@ public class Controller {
     }
 
     @PostMapping("/stop")
-    public void startLoop() {
+    public void stopLoop() {
         zipkinApi.stopUpdating();
     }
 }

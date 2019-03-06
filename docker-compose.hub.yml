@@ -7,8 +7,7 @@ services:
   kubeconsumer:
     image: ${REGISTRY}/kubernetes-consumer:${TAG}
     ports: 
-      - "8001:8080"
-      - "8002:8081"
+      - "8002:8080"
 
   modelmaintainer:
     image: ${REGISTRY}/model-maintainer:${TAG}

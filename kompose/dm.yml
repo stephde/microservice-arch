@@ -69,12 +69,9 @@ items:
     name: kubeconsumer
   spec:
     ports:
-    - name: "8001"
-      port: 8001
-      targetPort: 8080
     - name: "8002"
       port: 8002
-      targetPort: 8081
+      targetPort: 8080
     selector:
       io.kompose.service: kubeconsumer
   status:
@@ -244,7 +241,6 @@ items:
           name: kubeconsumer
           ports:
           - containerPort: 8080
-          - containerPort: 8081
           resources: {}
           imagePullPolicy: Always
         restartPolicy: Always

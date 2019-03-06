@@ -16,14 +16,6 @@ docker {
 		from(tasks.unpack.outputs) {
 			into 'dependency'
 		}
-		from('frontend') {
-			include '**'
-			into 'dependency/frontend'
-		}
-		from('.') {
-			include 'supervisord.conf'
-			into 'dependency'
-		}
 		from('.') {
 			include '.kube_config'
 			into 'dependency'
