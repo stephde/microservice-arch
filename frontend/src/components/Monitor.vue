@@ -14,8 +14,8 @@
       </md-field>
     </div>
     <div>
-      <ul id="watcherList">
-        <li v-for="watcher in watchers">
+      <ul class="watcherList">
+        <li v-for="watcher in watchers" class="watcherItem">
           <div class="watcher-name">{{ watcher.type}} :</div>
           <toggle-button @change="() => handleToggle(watcher)" v-model="watcher.active"/>
         </li>
@@ -30,9 +30,11 @@
         <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
       </md-field>
     </div>
-    <div>
+    <div class="watcherList">
+      <div class="watcherItem">
         <div class="watcher-name">Fetch Zipkin Updates :</div>
         <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
+      </div>
     </div>
   </div>
 </template>
@@ -115,7 +117,7 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-li {
+.watcherItem {
   display: flex;
   padding: 10px;
   margin: 0 10px;
@@ -140,7 +142,7 @@ input {
 .watcher-name {
   flex-grow: 1;
 }
-#watcherList {
+.watcherList {
   display: inline-grid
 }
 .vue-js-switch {
@@ -152,6 +154,6 @@ input {
 }
 
 .connected {
-  border-right: 5px solid darkgreen;
+  border-right: 5px solid #4ac08e;
 }
 </style>
