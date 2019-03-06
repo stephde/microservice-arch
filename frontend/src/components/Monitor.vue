@@ -1,7 +1,7 @@
 <template>
   <div class="global-container">
-    <h1>Kubernetes Monitor</h1>
-    <div class="property-container">
+    <h1>Kubernetes Consumer</h1>
+    <div class="property-container" v-bind:class="{ connected: isKubeConsumerConnected, disconnected: !isKubeConsumerConnected }">
       <md-field>
         <label>API Url</label>
         <md-input v-model="apiUrl" placeholder="Set Base Url" @change="() => handleUrlUpdate(apiUrl)"></md-input>
@@ -21,16 +21,38 @@
         </li>
       </ul>
     </div>
+
+    <!--------------- ---------------->
+    <h1>Zipkin Consumer</h1>
+    <div class="property-container" v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">
+      <md-field>
+        <label>API Url</label>
+        <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
+      </md-field>
+    </div>
+    <div>
+        <div class="watcher-name">Fetch Zipkin Updates :</div>
+        <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
+    </div>
   </div>
 </template>
 
 <script>
-import api from './api'
+import kubeApi from './api-kube-consumer'
+import zipkinApi from './api-zipkin-consumer'
 
 export default {
   name: 'Monitor',
   data () {
-      return { namespace: null , watchers: [], apiUrl: null}
+      return {
+          namespace: null ,
+          watchers: [],
+          apiUrl: null,
+          isKubeConsumerConnected: false,
+          zipkinApiUrl: null,
+          zipkinConsumerIsActive: false,
+          isZipkinConsumerConnected: false,
+      }
   },
   created () {
     // fetch the data when the view is created and the data is
@@ -39,18 +61,45 @@ export default {
   },
   methods: {
     async fetchData () {
-      this.apiUrl = api.getBaseUrl()
-      this.namespace = await api.getNamespace()
-      this.watchers = await api.getWatchers()
+      this.apiUrl = kubeApi.getBaseUrl()
+      this.zipkinApiUrl = zipkinApi.getBaseUrl()
+      this.zipkinConsumerIsActive = zipkinApi.getIsConsumerActive()
+
+
+      try {
+        this.namespace = await kubeApi.getNamespace()
+        this.watchers = await kubeApi.getWatchers()
+        this.isKubeConsumerConnected = true
+      } catch (e) {
+          console.error(e)
+          this.isKubeConsumerConnected = false
+      }
+
+      try {
+          zipkinApi.getDependencies()
+          this.zipkinConsumerIsActive = true
+      } catch (e) {
+          console.error(e)
+          this.isZipkinConsumerConnected = false
+      }
     },
     handleToggle(watcher) {
-      api.setWatcher(watcher.type, watcher.active)
+      kubeApi.setWatcher(watcher.type, watcher.active)
+    },
+    handleZipkinToggle() {
+      this.zipkinConsumerIsActive
+        ? zipkinApi.startLoop()
+        : zipkinApi.stopLoop()
     },
     handleNamespaceUpdate(namespace) {
-      api.setNamespace(namespace)
+      kubeApi.setNamespace(namespace)
     },
     handleUrlUpdate(url) {
-      api.setBaseUrl(url)
+      kubeApi.setBaseUrl(url)
+      this.fetchData()
+    },
+    handleZipkinUrlUpdate(url) {
+      zipkinApi.setBaseUrl(url)
       this.fetchData()
     }
   }
@@ -96,5 +145,13 @@ input {
 }
 .vue-js-switch {
   padding-left: 20px;
+}
+
+.disconnected {
+  border-right: 5px solid darkred;
+}
+
+.connected {
+  border-right: 5px solid darkgreen;
 }
 </style>

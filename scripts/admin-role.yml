@@ -1,5 +1,5 @@
 # apply this resource in order to grant admin rights to the default user in kubernetes
-# this is necessary for the kube-consumer to query the api
+# this is necessary for the kube-consumer to query the kubeApi
 
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
