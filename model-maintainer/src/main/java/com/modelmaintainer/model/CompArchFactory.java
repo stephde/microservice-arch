@@ -61,13 +61,13 @@ public class CompArchFactory {
     public Component createComponent(String name) {
         Component component = this.factory.createComponent();
         log.info("Settings component name to: {}", name);
-        component.setName(name);
+        component.setName(name.toLowerCase());
         return component;
     }
 
     public ComponentType createComponentType(String componentName) {
         ComponentType ct = this.factory.createComponentType();
-        ct.setName(componentName);
+        ct.setName(componentName.toLowerCase());
         return ct;
     }
 

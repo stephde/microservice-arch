@@ -144,7 +144,7 @@ public class ModelWrapper {
     public boolean isStaleInstance(String instanceName) {
         return removedInstances
                 .stream()
-                .anyMatch(c -> c.getName().equals(instanceName));
+                .anyMatch(c -> c.getName().equalsIgnoreCase(instanceName));
     }
 
 
@@ -152,7 +152,7 @@ public class ModelWrapper {
         return getComponentType(componentName)
                 .getInstances()
                 .stream()
-                .filter(i -> i.getName().equals(instanceName))
+                .filter(i -> i.getName().equalsIgnoreCase(instanceName))
                 .findFirst()
                 .orElseThrow(() -> new ComponentNotFoundException(instanceName));
     }
@@ -204,7 +204,7 @@ public class ModelWrapper {
     private ComponentType getComponentType(String typeName) throws ComponentTypeNotFoundException {
         return this.model.getComponentTypes()
                 .stream()
-                .filter(c -> c.getName().equals(typeName))
+                .filter(c -> c.getName().equalsIgnoreCase(typeName))
                 .findFirst()
                 .orElseThrow(() -> new ComponentTypeNotFoundException(typeName));
     }
@@ -215,7 +215,7 @@ public class ModelWrapper {
         try {
             tenant = this.model.getTenants()
                     .stream()
-                    .filter(t -> t.getName().equals(tenantName))
+                    .filter(t -> t.getName().equalsIgnoreCase(tenantName))
                     .findFirst()
                     .orElseThrow(() -> new TenantNotFoundExceptions(tenantName));
         } catch (TenantNotFoundExceptions e) {
