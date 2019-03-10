@@ -62,7 +62,7 @@ public class ModelWrapper {
         this.model = this.factory.createModel(name);
     }
 
-    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime) {
+    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime, String runtimeEnv) {
         if ( isStaleInstance(instanceName) ) {
             // do nothing if update is irrelevant
             return;
@@ -83,8 +83,21 @@ public class ModelWrapper {
             properties.add(this.factory.createNodeProperty(nodeName));
             properties.add(this.factory.createLastUpdateProperty(eventTime));
             properties.add(this.factory.createCreationTimeProperty(creationTime));
+            properties.add(this.factory.createRuntimeEnvProperty(runtimeEnv));
             log.info("Changed {} state to: {}", component.getName(), state);
         }
+    }
+
+    public void handleServiceStateUpdate(String componentTypeName, String clusterIP, List<Integer> ports) {
+        try {
+            ComponentType componentType = getComponentType(componentTypeName);
+            EList<MonitoredProperty> properties = componentType.getMonitoredProperties();
+            properties.add(this.factory.createClusterIPProperty(clusterIP));
+            properties.add(this.factory.createPortsProperty(ports));
+        } catch (ComponentTypeNotFoundException e) {
+            log.warn(e.getMessage());
+        }
+
     }
 
     public void handleDependencyUpdate(String callingService, String calledService, Integer callCount, Integer errorCount) {
@@ -202,6 +215,9 @@ public class ModelWrapper {
     }
 
     private ComponentType getComponentType(String typeName) throws ComponentTypeNotFoundException {
+        if(typeName == null) {
+            throw new ComponentTypeNotFoundException(typeName);
+        }
         return this.model.getComponentTypes()
                 .stream()
                 .filter(c -> c.getName().equalsIgnoreCase(typeName))

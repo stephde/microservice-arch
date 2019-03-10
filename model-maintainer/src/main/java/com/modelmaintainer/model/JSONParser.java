@@ -24,6 +24,9 @@ public class JSONParser {
             ct.getInstances().forEach(i -> instances.add(getComponentAsJson(i)));
             jsonComponent.add("instances", instances);
 
+            // add component type properties
+            ct.getMonitoredProperties().forEach(prop -> jsonComponent.addProperty(prop.getName(), prop.getValue()));
+
             jsonComponent.addProperty("parameters", ct.getParameterTypes().toString());
             json.add(ct.getName(), jsonComponent);
         });

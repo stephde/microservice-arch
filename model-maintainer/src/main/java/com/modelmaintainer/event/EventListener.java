@@ -76,7 +76,8 @@ public class EventListener {
                 event.getNodeName(),
                 parseState(event.getStatus()),
                 event.getEventDateTime(),
-                event.getCreationDateTime());
+                event.getCreationDateTime(),
+                event.getRuntimeEnv());
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",
@@ -84,6 +85,10 @@ public class EventListener {
                 selector = "_eventType = 'SERVICE_UPDATE'")
     public void receiveEvent(@Payload final ServiceEvent event) {
         log.info("Received : {} ", event.toString());
+        modelWrapper.handleServiceStateUpdate(
+                event.getComponentName(),
+                event.getClusterIP(),
+                event.getPorts());
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",

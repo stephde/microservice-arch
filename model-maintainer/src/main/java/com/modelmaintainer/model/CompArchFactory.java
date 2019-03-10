@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.modelmaintainer.model.MonitorableProperties.*;
@@ -49,6 +50,22 @@ public class CompArchFactory {
 
     public MonitoredProperty createErrorCountProperty(Integer errorCount) {
         return createProperty(PROPERTY_ERROR_COUNT, errorCount == null ? "NONE" : String.valueOf(errorCount));
+    }
+
+    public MonitoredProperty createRuntimeEnvProperty(String runtime) {
+        return createProperty(PROPERTY_RUNTIME_ENV, runtime == null ? "NONE" : String.valueOf(runtime));
+    }
+
+    public MonitoredProperty createClusterIPProperty(String ip) {
+        return createProperty(PROPERTY_CLUSTER_IP, ip == null ? "NONE" : String.valueOf(ip));
+    }
+
+    public MonitoredProperty createPortsProperty(List<Integer> ports) {
+        String portsString = ports == null
+                ? "NONE"
+                : ports.toString();
+
+        return createProperty(PROPERTY_PORTS, portsString);
     }
 
     private MonitoredProperty createProperty(String name, String value) {

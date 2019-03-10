@@ -17,3 +17,6 @@ can be build with
 ```
 ./gradlew docker
 ```
+
+## find out env
+* via deploymentSpec > PodTemplateSpec > PodSpec > Container > CMD

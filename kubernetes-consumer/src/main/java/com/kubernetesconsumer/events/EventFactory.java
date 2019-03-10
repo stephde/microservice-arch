@@ -1,10 +1,14 @@
 package com.kubernetesconsumer.events;
 
 import com.dm.events.DeploymentEvent;
+import com.dm.events.ServiceEvent;
 import com.kubernetesconsumer.models.KubeEvent;
 import com.kubernetesconsumer.models.Pod;
+import com.kubernetesconsumer.models.Service;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class EventFactory {
@@ -21,6 +25,16 @@ public class EventFactory {
         return new DeploymentEvent(pod.getName(), eventTime, pod.getCreationTime())
                 .setStatus(pod.getStatus())
                 .setNodeName(pod.getNodeName())
-                .setServiceName(pod.getServiceName());
+                .setServiceName(pod.getServiceName())
+                .setRuntimeEnv(pod.getRuntimeEnv());
+    }
+
+    public ServiceEvent createServiceEvent(Service service, DateTime eventTime) {
+        return new ServiceEvent(
+                service.getName(),
+                service.getPorts(),
+                service.getClusterIP(),
+                eventTime,
+                service.getCreationTime());
     }
 }

@@ -39,7 +39,10 @@ public class WatcherController {
 
     @GetMapping("/api/watchers")
     public List<WatcherDTO> getWatchers() {
-        return this.watchers.stream().map(AbstractWatcher::getDTO).collect(Collectors.toList());
+        return this.watchers
+                .stream()
+                .map(AbstractWatcher::getDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/api/watchers/{type}")

@@ -40,7 +40,7 @@ public class InfoController {
 
     @GetMapping("/publish/service")
     public void publishService() {
-        publisher.publishEvent(new ServiceEvent("AuthService", Collections.singletonList(8080), DateTime.now(), DateTime.now()));
+        publisher.publishEvent(new ServiceEvent("AuthService", Collections.singletonList(8080), "127.0.0.1", DateTime.now(), DateTime.now()));
     }
 
     @GetMapping("/pods")

@@ -11,6 +11,7 @@ public class Pod extends WatchableEntity {
     private int containerCount;
     private String nodeName;
     private String status;
+    private String runtimeEnv;
 
     // ToDo: add containers
 

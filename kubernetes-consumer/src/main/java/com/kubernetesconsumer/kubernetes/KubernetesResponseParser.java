@@ -2,11 +2,16 @@ package com.kubernetesconsumer.kubernetes;
 
 import com.kubernetesconsumer.models.*;
 import io.kubernetes.client.models.*;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
+@Slf4j
 public class KubernetesResponseParser {
 
     public ComponentStatus parseComponentStatusResponse(V1ComponentStatus status) {
@@ -15,11 +20,36 @@ public class KubernetesResponseParser {
     }
 
     public Pod parsePodResponse(V1Pod podResponse) {
-        return new Pod(parseMetadata(podResponse.getMetadata()))
+        Optional<V1Container> optionalContainer = podResponse.getSpec().getContainers().stream().findFirst();
+
+        Pod pod = new Pod(parseMetadata(podResponse.getMetadata()))
                 .setStartTime(podResponse.getStatus().getStartTime())
                 .setStatus(podResponse.getStatus().getPhase())
                 .setContainerCount(podResponse.getSpec().getContainers().size())
                 .setNodeName(podResponse.getSpec().getNodeName());
+
+        Map<String, String> labels = podResponse.getMetadata().getLabels();
+
+        if(labels != null) {
+            List<String> labelStrings = labels.keySet().stream().map(key -> {
+                log.info("Label - {} : {} ", key, labels.get(key));
+                return String.format("%s : %s", key, labels.get(key));
+            }).collect(Collectors.toList());
+        }
+
+        optionalContainer.ifPresent(c -> {
+            List<String> envs = new ArrayList<>();
+            if (c.getEnv() != null) {
+                    envs = c.getEnv()
+                            .stream()
+                            .map(e -> String.format("%s : %s", e.getName(), e.getValue()))
+                            .collect(Collectors.toList());
+            }
+
+            pod.setRuntimeEnv(extractRuntimeEnv(c.getCommand(), envs, c.getArgs()));
+        });
+
+        return pod;
     }
 
     public Service parseServiceResponse(V1Service serviceResponse) {
@@ -31,7 +61,8 @@ public class KubernetesResponseParser {
 
         return new Service(parseMetadata(serviceResponse.getMetadata()))
                 .setExternalName(serviceResponse.getSpec().getExternalName())
-                .setPorts(ports);
+                .setPorts(ports)
+                .setClusterIP(serviceResponse.getSpec().getClusterIP());
     }
 
     public Deployment parseDeploymentResponse(V1Deployment deploymentResponse) {
@@ -75,6 +106,14 @@ public class KubernetesResponseParser {
                 .setNamespace(metadata.getNamespace())
                 .setCreationTime(metadata.getCreationTimestamp())
                 .setServiceName(extractServiceName(metadata.getName()));
+    }
+
+    private String extractRuntimeEnv(List<String> cmd, List<String> envs, List<String> args) {
+        log.info("Command: {}", cmd);
+        log.info("Env Vars: {}", envs);
+        log.info("Arguments: {}", args);
+
+        return "Alpine, Java";
     }
 
     private String extractServiceName(String instanceName) {

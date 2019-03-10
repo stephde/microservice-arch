@@ -8,6 +8,7 @@ import java.util.List;
 public class Service extends WatchableEntity {
     private String externalName;
     private List<Integer> ports;
+    private String clusterIP;
 
     public Service(WatchableEntity watchableEntity){
         super(watchableEntity);
