@@ -1,5 +1,6 @@
 package com.dm.zipkinconsumer;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class ZipkinApiConfig {
 
     @Value("${zipkin.api.url}")
+    @Setter
     String URL;
 
     @Value("${zipkin.api.path}")

@@ -31,6 +31,12 @@
         <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
       </md-field>
     </div>
+    <div class="property-container">
+      <md-field>
+        <label>Zipkin Collector Service Url</label>
+        <md-input v-model="zipkinCollectorUrl" placeholder="Set Base Url" @change="() => handleZipkinCollectorUrlUpdate(zipkinCollectorUrl)"></md-input>
+      </md-field>
+    </div>
     <div class="item-list">
       <div class="toggleItem">
         <div class="item-name">Fetch Zipkin Updates :</div>
@@ -80,6 +86,7 @@ export default {
           watchers: [],
           apiUrl: null,
           zipkinApiUrl: null,
+          zipkinCollectorUrl: null,
           workloadApiUrl: null,
           isKubeConsumerConnected: false,
           isZipkinConsumerConnected: false,
@@ -112,7 +119,7 @@ export default {
       }
 
       try {
-          await zipkinApi.getDependencies()
+          this.zipkinCollectorUrl = await zipkinApi.getCollectorUrl()
           this.isZipkinConsumerConnected = true
       } catch (e) {
           console.error(e)
@@ -154,6 +161,9 @@ export default {
     handleZipkinUrlUpdate(url) {
       zipkinApi.setBaseUrl(url)
       this.fetchData()
+    },
+    handleZipkinCollectorUrlUpdate(url) {
+      zipkinApi.setCollectorUrl(url)
     },
     handleWorkloadUrlUpdate(url) {
       workloadApi.setBaseUrl(url)

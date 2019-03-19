@@ -46,6 +46,16 @@ export default {
         console.info(data)
     },
 
+    getCollectorUrl: async () => {
+        let { data } = await axios.get('/zipkinurl')
+
+        return data
+    },
+
+    setCollectorUrl: async url => {
+        axios.post('/zipkinurl', url)
+    },
+
     getBaseUrl: () => AXIOS_CONF.baseURL,
 
     setBaseUrl: baseURL => {

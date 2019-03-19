@@ -88,6 +88,14 @@ public class ZipkinApi {
         this.isRunning = false;
     }
 
+    public void setZipkinUrl(String url) {
+        this.config.setURL(url);
+    }
+
+    public String getZipkinUrl() {
+        return this.config.URL;
+    }
+
     private DependencyEvent createDependencyEvent(Dependency dependency) {
         DependencyEvent event = new DependencyEvent(dependency.getParent(), DateTime.now(), DateTime.now());
         event.setCallCount(dependency.getCallCount());

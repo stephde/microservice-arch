@@ -3,10 +3,7 @@ package com.dm.zipkinconsumer;
 import com.dm.zipkinconsumer.models.Dependency;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,15 @@ public class Controller {
     @PostMapping("/stop")
     public void stopLoop() {
         zipkinApi.stopUpdating();
+    }
+
+    @GetMapping("/zipkinurl")
+    public String getZipkinUrl() {
+        return zipkinApi.getZipkinUrl();
+    }
+
+    @PostMapping("/zipkinurl")
+    public void setZipkinUrl(@RequestBody String url) {
+        zipkinApi.setZipkinUrl(url);
     }
 }
