@@ -1,7 +1,7 @@
 import * as Axios from 'axios'
 
 let DEFAULT_API_URL = process.env.IS_DEV
-    ? 'http://localhost:8003'
+    ? 'http://localhost:8080'
     : 'http://fb14srv7.hpi.uni-potsdam.de:1800/workload';
 
 const ORIGIN = process.env.IS_DEV
@@ -42,6 +42,16 @@ export default {
         let { data } = await axios.get('/services')
 
         return data
+    },
+
+    getActiveServices: async () => {
+        let { data } = await axios.get('/activeservices')
+
+        return data
+    },
+
+    setServiceActive: async (serviceName, active) => {
+        axios.post(`/services/${serviceName}`, active)
     },
 
     getBaseUrl: () => AXIOS_CONF.baseURL,

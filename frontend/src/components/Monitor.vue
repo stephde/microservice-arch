@@ -14,9 +14,9 @@
       </md-field>
     </div>
     <div>
-      <ul class="watcherList">
-        <li v-for="watcher in watchers" class="watcherItem">
-          <div class="watcher-name">{{ watcher.type}} :</div>
+      <ul class="item-list">
+        <li v-for="watcher in watchers" class="toggleItem">
+          <div class="item-name">{{ watcher.type}} :</div>
           <toggle-button @change="() => handleToggle(watcher)" v-model="watcher.active"/>
         </li>
       </ul>
@@ -31,9 +31,9 @@
         <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
       </md-field>
     </div>
-    <div class="watcherList">
-      <div class="watcherItem">
-        <div class="watcher-name">Fetch Zipkin Updates :</div>
+    <div class="item-list">
+      <div class="toggleItem">
+        <div class="item-name">Fetch Zipkin Updates :</div>
         <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
       </div>
     </div>
@@ -47,16 +47,23 @@
         <md-input v-model="workloadApiUrl" placeholder="Set Base Url" @change="() => handleWorkloadUrlUpdate(workloadApiUrl)"></md-input>
       </md-field>
     </div>
-    <div class="watcherList">
-      <div class="watcherItem">
-        <div class="watcher-name">Emulate Workload :</div>
+    <div class="item-list">
+      <div class="toggleItem">
+        <div class="item-name">Emulate Workload :</div>
         <toggle-button @change="() => handleWorkloadToggle()" v-model="isWorkloadRunning"/>
       </div>
-      <div class="watcherItem">
-        <div class="watcher-name">Services under load:</div>
+      <div class="toggleItem">
+        <div class="item-name">Services under load:</div>
         <div>{{ this.servicesUnderLoad }}</div>
       </div>
     </div>
+
+    <ul class="item-list">
+      <li v-for="service in activeServices" class="toggleItem">
+        <div class="item-name">{{ service.name}} :</div>
+        <toggle-button @change="() => handleServiceWorkloadToggle(service)" v-model="service.active"/>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -80,6 +87,7 @@ export default {
           zipkinConsumerIsActive: false,
           isWorkloadRunning: false,
           servicesUnderLoad: 'NONE',
+          activeServices: [],
       }
   },
   created () {
@@ -113,6 +121,7 @@ export default {
 
       try {
           this.servicesUnderLoad = await workloadApi.getServices();
+          this.activeServices = await workloadApi.getActiveServices();
           this.isWorkloadEmulatorConnected = true
       } catch (e) {
           console.error(e)
@@ -131,6 +140,9 @@ export default {
       this.isWorkloadRunning
         ? workloadApi.startLoop()
         : workloadApi.stopLoop()
+    },
+    handleServiceWorkloadToggle(service) {
+      workloadApi.setServiceActive(service.name, service.active)
     },
     handleNamespaceUpdate(namespace) {
       kubeApi.setNamespace(namespace)
@@ -160,7 +172,7 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-.watcherItem {
+.toggleItem {
   display: flex;
   padding: 10px;
   margin: 0 10px;
@@ -182,10 +194,10 @@ input {
   display: inline-flex;
   width: 100%;
 }
-.watcher-name {
+.item-name {
   flex-grow: 1;
 }
-.watcherList {
+.item-list {
   display: inline-grid
 }
 .vue-js-switch {
