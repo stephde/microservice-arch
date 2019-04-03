@@ -50,7 +50,7 @@ public class ZipkinApi {
                 null,
                 new ParameterizedTypeReference<List<Dependency>>() {});
 
-        log.info("Received {} dependecy objects from zipkin", response.getBody().size());
+        log.info("Received {} dependency objects from zipkin", response.getBody());
         return response.getBody();
     }
 
@@ -95,7 +95,7 @@ public class ZipkinApi {
     public String getZipkinUrl() {
         return this.config.URL;
     }
-    
+
     public Integer getInterval() {
         return this.config.INTERVAL;
     }

@@ -42,7 +42,7 @@ public class ServiceApi {
                 null,
                 Integer.class);
 
-        log.info("Received {} from inventory service", response.getBody());
+        log.info("Received response from inventory service: {}", response.getBody());
         return response.getBody();
     }
 

@@ -60,7 +60,7 @@ docker stack rm --namespace dm dm
 
 ## Run on kubernetes
 * make sure the kompose files (dm.yml is up to date)
-* generate with `REGISTRY=stephde TAG=v2 kompose convert -f ../docker-compose.hub.yml -o kompose/dm.yml`
+* generate with `REGISTRY=stephde TAG=latest kompose convert -f ../docker-compose.hub.yml -o kompose/dm.yml`
 * make sure `imagePullPolicy: Always` is set for all containers in dm.yml so that kubernetes always uses the newest images
 * run `kubectl apply kompose/dm.yml -n dm` to create monitoring setup in namespace `dm`
 * find out the ip of the gateway with `kubectl get svc -n dm`
