@@ -10,8 +10,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -44,11 +47,21 @@ public class ZipkinApi {
 
         log.info("Requesting: {}", url);
 
-        ResponseEntity<List<Dependency>> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Dependency>>() {});
+        ResponseEntity<List<Dependency>> response;
+        try {
+            response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Dependency>>() {
+                    });
+        } catch (RestClientException ex) {
+            log.error("Error while accessing dependencies endpoitn: {}", ex.getMessage());
+            return Collections.emptyList();
+        } catch (Exception ex) {
+            log.error("Unkown exception thrown during dependency fetch: {}", ex.getMessage());
+            return Collections.emptyList();
+        }
 
         log.info("Received {} dependency objects from zipkin", response.getBody());
         return response.getBody();
