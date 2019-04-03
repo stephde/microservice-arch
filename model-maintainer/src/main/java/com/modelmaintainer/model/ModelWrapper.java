@@ -89,15 +89,10 @@ public class ModelWrapper {
     }
 
     public void handleServiceStateUpdate(String componentTypeName, String clusterIP, List<Integer> ports) {
-        try {
-            ComponentType componentType = getComponentType(componentTypeName);
-            EList<MonitoredProperty> properties = componentType.getMonitoredProperties();
-            properties.add(this.factory.createClusterIPProperty(clusterIP));
-            properties.add(this.factory.createPortsProperty(ports));
-        } catch (ComponentTypeNotFoundException e) {
-            log.warn(e.getMessage());
-        }
-
+        ComponentType componentType = getOrCreateComponentType(componentTypeName);
+        EList<MonitoredProperty> properties = componentType.getMonitoredProperties();
+        properties.add(this.factory.createClusterIPProperty(clusterIP));
+        properties.add(this.factory.createPortsProperty(ports));
     }
 
     public void handleDependencyUpdate(String callingService, String calledService, Integer callCount, Integer errorCount) {
@@ -115,6 +110,18 @@ public class ModelWrapper {
                 properties.add(this.factory.createInvocationProperty(callCount));
                 properties.add(this.factory.createErrorCountProperty(errorCount));
             }
+        } catch (ElementNotFoundException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    public void handleInstancePropertyUpdate(String componentType, String propertyKey, String value) {
+        try {
+            Component component = this.getAnyComponent(componentType);
+            EList<MonitoredProperty> properties = component.getMonitoredProperties();
+
+            // ToDo: use property key to distinguish between properties
+            properties.add(this.factory.createHttpExceptionProperty(value));
         } catch (ElementNotFoundException e) {
             log.error(e.getMessage());
         }
@@ -186,18 +193,24 @@ public class ModelWrapper {
         } catch (ElementNotFoundException e) {
             component = this.factory.createComponent(instanceName);
 
-            ComponentType componentType;
-            try {
-                componentType = getComponentType(serviceName);
-            } catch (ComponentTypeNotFoundException ex) {
-                componentType = this.factory.createComponentType(serviceName);
-                this.model.getComponentTypes().add(componentType);
-            }
+            ComponentType componentType = getOrCreateComponentType(serviceName);
             componentType.getInstances().add(component);
             log.info("Created and added component : {}", component);
         }
 
         return component;
+    }
+
+    private ComponentType getOrCreateComponentType(String typeName) {
+        ComponentType componentType;
+        try {
+            componentType = getComponentType(typeName);
+        } catch (ComponentTypeNotFoundException ex) {
+            componentType = this.factory.createComponentType(typeName);
+            this.model.getComponentTypes().add(componentType);
+        }
+
+        return componentType;
     }
 
     private Optional<Component> removeComponent(String componentName, String instanceName) {

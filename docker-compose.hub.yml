@@ -45,3 +45,8 @@ services:
     image: ${REGISTRY}/tracing-example:${TAG}
     ports:
       - "8004:8080"
+
+  metricsconsumer:
+    image: ${REGISTRY}/custom-consumer:${TAG}
+    ports:
+      - "8006:8080"

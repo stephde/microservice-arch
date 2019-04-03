@@ -45,8 +45,7 @@ services:
     ports:
       - "80:80"
 
-#  jaeger:
-#    image: jaegertracing/all-in-one
-#    ports:
-#      - "16686:16686"
-#      - "6831:6831"
+  metricsconsumer:
+    image: stephde/custom-consumer
+    ports:
+      - "8006:8080"

@@ -68,6 +68,10 @@ public class CompArchFactory {
         return createProperty(PROPERTY_PORTS, portsString);
     }
 
+    public MonitoredProperty createHttpExceptionProperty(String value) {
+        return createProperty(PROPERTY_HTTP_EXCEPTION_COUNT, value);
+    }
+
     private MonitoredProperty createProperty(String name, String value) {
         MonitoredProperty monitoredProperty = this.factory.createMonitoredProperty();
         monitoredProperty.setName(name);

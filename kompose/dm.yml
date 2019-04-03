@@ -84,6 +84,25 @@ items:
       kompose.version: 1.17.0 ()
     creationTimestamp: null
     labels:
+      io.kompose.service: metricsconsumer
+    name: metricsconsumer
+  spec:
+    ports:
+    - name: "8006"
+      port: 8006
+      targetPort: 8080
+    selector:
+      io.kompose.service: metricsconsumer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.hub.yml -o kompose/dm.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
       io.kompose.service: modelmaintainer
     name: modelmaintainer
   spec:
@@ -242,7 +261,33 @@ items:
           ports:
           - containerPort: 8080
           resources: {}
-          imagePullPolicy: Always
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.hub.yml -o kompose/dm.yml
+      kompose.version: 1.17.0 ()
+    creationTimestamp: null
+    labels:
+      io.kompose.service: metricsconsumer
+    name: metricsconsumer
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: metricsconsumer
+      spec:
+        containers:
+        - image: stephde/custom-consumer:latest
+          name: metricsconsumer
+          ports:
+          - containerPort: 8080
+          resources: {}
         restartPolicy: Always
   status: {}
 - apiVersion: extensions/v1beta1

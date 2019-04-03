@@ -9,4 +9,5 @@ public final class MonitorableProperties {
     static final String PROPERTY_RUNTIME_ENV = "runtimeEnv";
     static final String PROPERTY_PORTS = "ports";
     static final String PROPERTY_CLUSTER_IP = "clusterIP";
+    static final String PROPERTY_HTTP_EXCEPTION_COUNT = "httpExceptionCount";
 }

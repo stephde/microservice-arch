@@ -1,51 +1,47 @@
-package com.dm.zipkinconsumer;
+package com.dm.customconsumer;
 
-import com.dm.zipkinconsumer.models.Dependency;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://fb14srv7.hpi.uni-potsdam.de:1801", maxAge = 3600)
 public class Controller {
 
     @Autowired
-    private ZipkinApi zipkinApi;
+    private ServiceApi serviceApi;
 
-    @GetMapping("/dependencies")
-    public List<Dependency> getDependencies() {
-        return zipkinApi.fetchDependencies(DateTime.now());
+    @GetMapping("/metrics")
+    public Integer getMetrics() {
+        return serviceApi.fetchMetrics();
     }
 
     @PostMapping("/start")
     public void startLoop() {
-        zipkinApi.startUpdating();
+        serviceApi.startUpdating();
     }
 
     @PostMapping("/stop")
     public void stopLoop() {
-        zipkinApi.stopUpdating();
+        serviceApi.stopUpdating();
     }
 
-    @GetMapping("/zipkinurl")
+    @GetMapping("/serviceurl")
     public String getZipkinUrl() {
-        return zipkinApi.getZipkinUrl();
+        return serviceApi.getServiceUrl();
     }
 
-    @PostMapping("/zipkinurl")
+    @PostMapping("/serviceurl")
     public void setZipkinUrl(@RequestBody String url) {
-        zipkinApi.setZipkinUrl(url);
+        serviceApi.setServiceUrl(url);
     }
 
     @GetMapping("/interval")
     public Integer getInterval() {
-        return zipkinApi.getInterval();
+        return serviceApi.getInterval();
     }
 
     @PostMapping("/interval")
     public void setInterval(@RequestBody Integer interval) {
-        zipkinApi.setInterval(interval);
+        serviceApi.setInterval(interval);
     }
 }

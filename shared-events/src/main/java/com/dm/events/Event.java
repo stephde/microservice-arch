@@ -12,7 +12,8 @@ public class Event {
         DEPLOYMENT_STATUS_UPDATE,
         SERVICE_UPDATE,
         NAMESPACE_UPDATE,
-        DEPENDENCY_UPDATE
+        DEPENDENCY_UPDATE,
+        PROPERTY_UPDATE
     }
 
     private EVENT_TYPE type;

@@ -13,7 +13,7 @@ services:
     image: stephde/model-maintainer
     ports: 
       - "8003:8080"
-    deploy:
+#    deploy:
 #      autoredeploy: true
 #       target_num_containers: 3
 
@@ -45,3 +45,8 @@ services:
     image: stephde/tracing-example
     ports:
       - "8004:8080"
+
+  metricsconsumer:
+    image: stephde/custom-consumer
+    ports:
+      - "8006:8080"

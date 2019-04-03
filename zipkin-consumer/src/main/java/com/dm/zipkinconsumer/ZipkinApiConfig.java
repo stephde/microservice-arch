@@ -15,6 +15,7 @@ public class ZipkinApiConfig {
     String BASE_PATH;
 
     @Value("${zipkin.api.interval}")
+    @Setter
     Integer INTERVAL;
 
     public String getURL(String path) {

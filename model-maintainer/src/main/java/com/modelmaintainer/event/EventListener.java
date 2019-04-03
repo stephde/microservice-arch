@@ -1,9 +1,6 @@
 package com.modelmaintainer.event;
 
-import com.dm.events.DependencyEvent;
-import com.dm.events.DeploymentEvent;
-import com.dm.events.NamespaceEvent;
-import com.dm.events.ServiceEvent;
+import com.dm.events.*;
 import com.modelmaintainer.model.ModelWrapper;
 import de.mdelab.comparch.ComponentState;
 import lombok.extern.slf4j.Slf4j;
@@ -98,6 +95,18 @@ public class EventListener {
         log.info("Received : {} ", event.toString());
         modelWrapper.generateModel(event.getName());
     }
+
+    @JmsListener(destination = "${spring.activemq.queue-name}",
+                containerFactory = "jmsListenerContainerFactory",
+                selector = "_eventType = 'PROPERTY_UPDATE'")
+    public void receiveEvent(@Payload final PropertyEvent event) {
+        log.info("Received : {} ", event.toString());
+        modelWrapper.handleInstancePropertyUpdate(
+                event.getComponentName(),
+                event.getPropertyName(),
+                event.getValue());
+    }
+
     @JmsListener(destination = "${spring.activemq.queue-name}",
                 containerFactory = "jmsListenerContainerFactory",
                 selector = "_eventType = 'DEPENDENCY_UPDATE'")
