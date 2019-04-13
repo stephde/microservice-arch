@@ -3,8 +3,10 @@ package com.modelmaintainer.event;
 import com.dm.events.*;
 import com.modelmaintainer.model.ModelWrapper;
 import de.mdelab.comparch.ComponentState;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.JmsListener;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class EventListener {
+
+    @Getter
+    private Long messageCount = 0L;
 
     @Autowired
     QueueConfig queueConfig;
@@ -66,6 +71,7 @@ public class EventListener {
                 selector = "_eventType = 'DEPLOYMENT_STATUS_UPDATE'")
     public void receiveEvent(@Payload final DeploymentEvent event) {
         log.info("Received : {}", event.toString());
+        incrementMessageCount();
 
         modelWrapper.handleInstanceStateUpdate(
                 event.getServiceName(),
@@ -82,6 +88,8 @@ public class EventListener {
                 selector = "_eventType = 'SERVICE_UPDATE'")
     public void receiveEvent(@Payload final ServiceEvent event) {
         log.info("Received : {} ", event.toString());
+        incrementMessageCount();
+
         modelWrapper.handleServiceStateUpdate(
                 event.getComponentName(),
                 event.getClusterIP(),
@@ -93,6 +101,7 @@ public class EventListener {
                 selector = "_eventType = 'NAMESPACE_UPDATE'")
     public void receiveEvent(@Payload final NamespaceEvent event) {
         log.info("Received : {} ", event.toString());
+        incrementMessageCount();
         modelWrapper.generateModel(event.getName());
     }
 
@@ -101,6 +110,7 @@ public class EventListener {
                 selector = "_eventType = 'PROPERTY_UPDATE'")
     public void receiveEvent(@Payload final PropertyEvent event) {
         log.info("Received : {} ", event.toString());
+        incrementMessageCount();
         modelWrapper.handleInstancePropertyUpdate(
                 event.getComponentName(),
                 event.getPropertyName(),
@@ -112,6 +122,7 @@ public class EventListener {
                 selector = "_eventType = 'DEPENDENCY_UPDATE'")
     public void receiveEvent(@Payload final DependencyEvent event) {
         log.info("Received : {} ", event.toString());
+        incrementMessageCount();
         modelWrapper.handleDependencyUpdate(
                 event.getComponentName(),
                 event.getCalledServiceName(),
@@ -131,5 +142,18 @@ public class EventListener {
 
         log.debug("Actual component state === {}", state.getName());
         return state;
+    }
+
+    private void incrementMessageCount() {
+        messageCount++;
+
+        if(messageCount % 100 == 0) {
+            log.info("Received {} message until {}", messageCount, DateTime.now());
+        }
+    }
+
+    public void resetMessageCount() {
+        log.info("Resetting message count from {} to 0", messageCount);
+        messageCount = 0L;
     }
 }

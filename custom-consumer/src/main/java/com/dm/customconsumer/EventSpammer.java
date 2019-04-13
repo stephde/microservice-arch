@@ -5,19 +5,15 @@ import com.dm.events.PropertyEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
-public class ServiceApi {
+public class EventSpammer {
 
-    private final ServiceApiConfig config;
-    private final RestTemplate restTemplate;
+    private Integer INTERVAL = 30;
     private final Publisher publisher;
 
     private boolean isRunning = false;
@@ -25,41 +21,26 @@ public class ServiceApi {
     // see https://zipkin.io/zipkin-api/#/default/get_dependencies
 
     @Autowired
-    public ServiceApi(ServiceApiConfig config, RestTemplate restTemplate, Publisher publisher) {
-        this.config = config;
-        this.restTemplate = restTemplate;
+    public EventSpammer(Publisher publisher) {
         this.publisher = publisher;
 
-//        this.startUpdating();
+        this.startUpdating();
     }
 
-    public Integer fetchMetrics() {
-        log.info("Requesting: {}", config.getURL("metrics"));
-
-        ResponseEntity<Integer> response = restTemplate.exchange(
-                config.getURL("metrics"),
-                HttpMethod.GET,
-                null,
-                Integer.class);
-
-        log.info("Received response from inventory service: {}", response.getBody());
-        return response.getBody();
-    }
-
-    private void updateMetrics() {
-        Integer value = fetchMetrics();
+    private void updateDependencies() {
+        Integer value = (int )(Math.random() * 4 + 1);
 
         publisher.publishEvent(createPropertyEvent(value));
     }
 
     private void doUpdate() {
         while (this.isRunning) {
-            updateMetrics();
+            updateDependencies();
 
             //sleep 5 seconds
             try {
-                log.info("Waiting for {} s before making next call", config.INTERVAL / 1000);
-                Thread.sleep(config.INTERVAL);
+                log.info("Waiting for {} s before making next call", INTERVAL / 1000);
+                Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -77,24 +58,16 @@ public class ServiceApi {
         this.isRunning = false;
     }
 
-    public void setServiceUrl(String url) {
-        this.config.setURL(url);
-    }
-
-    public String getServiceUrl() {
-        return this.config.URL;
-    }
-
     public Integer getInterval() {
-        return this.config.INTERVAL;
+        return INTERVAL;
     }
 
     public void setInterval(Integer interval) {
-        this.config.setINTERVAL(interval);
+        this.INTERVAL = interval;
     }
 
     private PropertyEvent createPropertyEvent(Integer value) {
-        PropertyEvent event = new PropertyEvent(config.getService(), DateTime.now());
+        PropertyEvent event = new PropertyEvent("zipkin", DateTime.now());
         event.setPropertyName("httpExceptionCount");
         event.setValue(value.toString());
         return event;

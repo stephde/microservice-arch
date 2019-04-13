@@ -1,6 +1,7 @@
 package com.modelmaintainer;
 
 import com.dm.events.DeploymentEvent;
+import com.modelmaintainer.event.EventListener;
 import com.modelmaintainer.model.JSONParser;
 import com.modelmaintainer.model.ModelWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,12 @@ public class Controller {
 
     @Autowired
     ModelWrapper modelWrapper;
-    @Autowired JmsTemplate jmsTemplate;
+    @Autowired
+    JmsTemplate jmsTemplate;
     @Autowired
     JSONParser jsonParser;
+    @Autowired
+    EventListener eventListener;
 
     @GetMapping("/model")
     public String load() {
@@ -38,5 +42,15 @@ public class Controller {
             m.setStringProperty("_eventType", event.getType().name());
             return m;
         });
+    }
+
+    @GetMapping("/messagecount")
+    public Long getMessageCount() {
+        return eventListener.getMessageCount();
+    }
+
+    @PostMapping("/messagecount/reset")
+    public void resetMessageCount() {
+        eventListener.resetMessageCount();
     }
 }

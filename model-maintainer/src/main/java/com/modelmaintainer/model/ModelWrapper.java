@@ -120,8 +120,21 @@ public class ModelWrapper {
             Component component = this.getAnyComponent(componentType);
             EList<MonitoredProperty> properties = component.getMonitoredProperties();
 
-            // ToDo: use property key to distinguish between properties
-            properties.add(this.factory.createHttpExceptionProperty(value));
+            Optional<MonitoredProperty> prop = properties.stream()
+                    .filter(p -> p.getName().equals(propertyKey))
+                    .findFirst();
+
+            if (prop.isPresent()) {
+                MonitoredProperty p = prop.get();
+                if(!p.getValue().equals(value)) {
+                    p.setValue(value);
+                } else {
+                    log.info("Skipping update for property '{}' with value '{}'", propertyKey, value);
+                }
+            } else {
+                // todo: distinguish between property keys
+                properties.add(this.factory.createHttpExceptionProperty(value));
+            }
         } catch (ElementNotFoundException e) {
             log.error(e.getMessage());
         }
