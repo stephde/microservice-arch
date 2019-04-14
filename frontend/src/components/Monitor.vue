@@ -1,6 +1,6 @@
 <template>
   <div class="global-container">
-    <h1>Kubernetes Consumer</h1>
+    <h1>Kubernetes Sensor</h1>
     <div class="property-container" v-bind:class="{ connected: isKubeConsumerConnected, disconnected: !isKubeConsumerConnected }">
       <md-field>
         <label>API Url</label>
@@ -24,10 +24,10 @@
 
     <!--------------- ---------------->
 
-    <h1>Zipkin Consumer</h1>
+    <h1>Zipkin Sensor</h1>
     <div class="property-container" v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">
       <md-field>
-        <label>API Url</label>
+        <label>Sensor API Url</label>
         <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
       </md-field>
     </div>
@@ -37,10 +37,44 @@
         <md-input v-model="zipkinCollectorUrl" placeholder="Set Base Url" @change="() => handleZipkinCollectorUrlUpdate(zipkinCollectorUrl)"></md-input>
       </md-field>
     </div>
+    <div class="property-container">
+      <md-field>
+        <label>Zipkin Fetch Interval in ms</label>
+        <md-input type="number" v-model.number="zipkinInterval" placeholder="Set Fetch Interval" @change="() => handleZipkinIntervalUpdate(zipkinInterval)"></md-input>
+      </md-field>
+    </div>
     <div class="item-list">
       <div class="toggleItem">
         <div class="item-name">Fetch Zipkin Updates :</div>
         <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
+      </div>
+    </div>
+
+    <!--------------- ---------------->
+
+    <h1>Metrics Sensor</h1>
+    <div class="property-container" v-bind:class="{ connected: isMetricsConsumerConnected, disconnected: !isMetricsConsumerConnected }">
+      <md-field>
+        <label>Metrics Sensor API Url</label>
+        <md-input v-model="metricsApiUrl" placeholder="Set Base Url" @change="() => handleMetricsApiUrlUpdate(metricsApiUrl)"></md-input>
+      </md-field>
+    </div>
+    <div class="property-container">
+      <md-field>
+        <label>Metrics Service Url</label>
+        <md-input v-model="metricsUrl" placeholder="Set Fetch Interval" @change="() => handleMetricsUrlUpdate(metricsUrl)"></md-input>
+      </md-field>
+    </div>
+    <div class="property-container">
+      <md-field>
+        <label>Metrics Fetch Interval in ms</label>
+        <md-input type="number" v-model.number="metricsInterval" placeholder="Set Fetch Interval" @change="() => handleMetricsIntervalUpdate(metricsInterval)"></md-input>
+      </md-field>
+    </div>
+    <div class="item-list">
+      <div class="toggleItem">
+        <div class="item-name">Fetch Metrics Updates :</div>
+        <toggle-button @change="() => handleMetricsToggle()" v-model="metricsConsumerIsActive"/>
       </div>
     </div>
 
@@ -77,6 +111,7 @@
 import kubeApi from './api-kube-consumer'
 import zipkinApi from './api-zipkin-consumer'
 import workloadApi from './api-workload'
+import metricsApi from './api-metrics-consumer'
 
 export default {
   name: 'Monitor',
@@ -87,11 +122,17 @@ export default {
           apiUrl: null,
           zipkinApiUrl: null,
           zipkinCollectorUrl: null,
+          zipkinInterval: null,
+          metricsApiUrl: null,
+          metricsUrl: null,
+          metricsInterval: null,
           workloadApiUrl: null,
           isKubeConsumerConnected: false,
           isZipkinConsumerConnected: false,
+          isMetricsConsumerConnected: false,
           isWorkloadEmulatorConnected: false,
           zipkinConsumerIsActive: false,
+          metricsConsumerIsActive: false,
           isWorkloadRunning: false,
           servicesUnderLoad: 'NONE',
           activeServices: [],
@@ -106,8 +147,11 @@ export default {
     async fetchData () {
       this.apiUrl = kubeApi.getBaseUrl()
       this.zipkinApiUrl = zipkinApi.getBaseUrl()
-      this.workloadApiUrl = workloadApi.getBaseUrl()
       this.zipkinConsumerIsActive = zipkinApi.getIsConsumerActive()
+      this.metricsApiUrl = metricsApi.getBaseUrl()
+      this.metricsUrl = metricsApi.getMetricsUrl()
+      this.metricsConsumerIsActive.getIsConsumerActive()
+      this.workloadApiUrl = workloadApi.getBaseUrl()
 
       try {
         this.namespace = await kubeApi.getNamespace()
@@ -120,10 +164,20 @@ export default {
 
       try {
           this.zipkinCollectorUrl = await zipkinApi.getCollectorUrl()
+          this.zipkinInterval = await zipkinApi.getInterval()
           this.isZipkinConsumerConnected = true
       } catch (e) {
           console.error(e)
           this.isZipkinConsumerConnected = false
+      }
+
+      try {
+          this.metricsUrl = await metricsApi.getMetricsUrl()
+          this.metricsInterval = await metricsApi.getInterval()
+          this.isMetricsConsumerConnected = true
+      } catch (e) {
+          console.error(e)
+          this.isMetricsConsumerConnected = false
       }
 
       try {
@@ -142,6 +196,11 @@ export default {
       this.zipkinConsumerIsActive
         ? zipkinApi.startLoop()
         : zipkinApi.stopLoop()
+    },
+    handleMetricsToggle() {
+      this.metricsConsumerIsActive
+        ? metricsApi.startLoop()
+        : metricsApi.stopLoop()
     },
     handleWorkloadToggle() {
       this.isWorkloadRunning
@@ -162,8 +221,21 @@ export default {
       zipkinApi.setBaseUrl(url)
       this.fetchData()
     },
+    handleMetricsApiUrlUpdate(url) {
+      metricsApi.setBaseUrl(url)
+      this.fetchData()
+    },
     handleZipkinCollectorUrlUpdate(url) {
       zipkinApi.setCollectorUrl(url)
+    },
+    handleZipkinIntervalUpdate(interval) {
+      zipkinApi.setInterval(interval)
+    },
+    handleMetricsUrlUpdate(url) {
+      metricsApi.setMetricsUrl(url)
+    },
+    handleMetricsIntervalUpdate(interval) {
+      metricsApi.setInterval(interval)
     },
     handleWorkloadUrlUpdate(url) {
       workloadApi.setBaseUrl(url)

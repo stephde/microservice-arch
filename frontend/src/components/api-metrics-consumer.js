@@ -2,7 +2,7 @@ import * as Axios from 'axios'
 
 let DEFAULT_API_URL = process.env.IS_DEV
     ? 'http://localhost:8002'
-    : 'http://fb14srv7.hpi.uni-potsdam.de:1800/zipkin-consumer';
+    : 'http://fb14srv7.hpi.uni-potsdam.de:1800/aspect';
 
 const ORIGIN = process.env.IS_DEV
     ? 'http://localhost:8081'
@@ -19,11 +19,6 @@ const AXIOS_CONF = {
 let axios = Axios.create(AXIOS_CONF)
 let consumerIsActive = false;
 
-const handleApiError = response => {
-    console.error(JSON.stringify(response))
-    error({statusCode: response.status(), message: response.message()})
-}
-
 export default {
     startLoop: async () => {
         let { data } = await axios.post('/start')
@@ -32,6 +27,7 @@ export default {
 
         return data.trim()
     },
+
     stopLoop: async () => {
         let { data } = await axios.post('/stop')
 
@@ -40,20 +36,14 @@ export default {
         return data.trim()
     },
 
-    getDependencies: async () => {
-        let { data } = await axios.get('/dependencies')
-
-        console.info(data)
-    },
-
-    getCollectorUrl: async () => {
-        let { data } = await axios.get('/zipkinurl')
+    getMetricsUrl: async () => {
+        let { data } = await axios.get('/serviceurl')
 
         return data
     },
 
-    setCollectorUrl: async url => {
-        axios.post('/zipkinurl', url)
+    setMetricsUrl: async url => {
+        axios.post('/serviceurl', url)
     },
 
     getInterval: async () => {
