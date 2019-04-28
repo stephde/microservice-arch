@@ -6,6 +6,14 @@ The data is used to generate a CompArch model which can be used to explore the a
 Furthermore, zipkin is used to explore dependecies between the services and add their interfaces and their usage to the model.
 The CompArch implementation is copied from [thomas-vogel/mRUBiS](https://github.com/thomas-vogel/mRUBiS). 
 
+## System Overview
+
+![Architecture Overview](./documentation/dm_architecture_v2.png)
+
+![Sequence Diagram](./documentation/kubernetes_sensor_sequence.png)
+
+![Image of the ocnfiguration UI](./documentation/ui.png)
+
 ## Prerequisites
 * git
 * docker, docker-compose
