@@ -122,6 +122,9 @@ How do I scale a service?
 kubectl scale --replicas=2 deployments/workloademulator
 ```
 
+## Known Issues
+* version mismatch between zipkin-consumer -- zipkin -- spring-sleuth instrumentation
+
 
 ## Notes
 

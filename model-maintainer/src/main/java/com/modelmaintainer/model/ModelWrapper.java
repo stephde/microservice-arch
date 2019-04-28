@@ -97,6 +97,7 @@ public class ModelWrapper {
 
     public void handleDependencyUpdate(String callingService, String calledService, Integer callCount, Integer errorCount) {
         try {
+            // ToDo: change to component type
             Component callingComponent = this.getAnyComponent(callingService);
             Component calledComponent = this.getAnyComponent(calledService);
 

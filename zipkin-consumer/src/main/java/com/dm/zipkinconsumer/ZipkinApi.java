@@ -6,14 +6,11 @@ import com.dm.zipkinconsumer.models.Dependency;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.ConnectException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -47,24 +44,23 @@ public class ZipkinApi {
 
         log.info("Requesting: {}", url);
 
-        ResponseEntity<List<Dependency>> response;
+        List<Dependency> response;
         try {
-            response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Dependency>>() {
-                    });
-        } catch (RestClientException ex) {
-            log.error("Error while accessing dependencies endpoitn: {}", ex.getMessage());
+
+            Dependency[] array = restTemplate.getForObject(url, Dependency[].class);
+            response = Arrays.asList(array);
+        } catch (HttpStatusCodeException ex) {
+            log.error("Error while accessing dependencies endpoint: {}", ex.getMessage());
+            log.error(ex.getResponseBodyAsString());
+            log.error(ex.getResponseHeaders().toString());
             return Collections.emptyList();
         } catch (Exception ex) {
             log.error("Unkown exception thrown during dependency fetch: {}", ex.getMessage());
             return Collections.emptyList();
         }
 
-        log.info("Received {} dependency objects from zipkin", response.getBody());
-        return response.getBody();
+        log.info("Received {} dependency objects from zipkin", response);
+        return response;
     }
 
     private void updateDependencies() {
