@@ -1,7 +1,7 @@
 <template>
   <div class="global-container">
-    <h1>Kubernetes Sensor</h1>
-    <div class="property-container" v-bind:class="{ connected: isKubeConsumerConnected, disconnected: !isKubeConsumerConnected }">
+    <h1 v-bind:class="{ connected: isKubeConsumerConnected, disconnected: !isKubeConsumerConnected }">Kubernetes Sensor</h1>
+    <div class="property-container">
       <md-field>
         <label>API Url</label>
         <md-input v-model="apiUrl" placeholder="Set Base Url" @change="() => handleUrlUpdate(apiUrl)"></md-input>
@@ -25,14 +25,14 @@
     <!--------------- ---------------->
 
     <foldable class="component-container" no-mask="true">
-      <h1>Zipkin Sensor</h1>
-      <div class="item-list">
+      <h1 v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">Zipkin Sensor</h1>
+      <div class="item-list" >
         <div class="toggleItem">
           <div class="item-name">Fetch Zipkin Updates :</div>
           <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
         </div>
       </div>
-      <div class="property-container" v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">
+      <div class="property-container">
         <md-field>
           <label>Sensor API Url</label>
           <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
@@ -55,14 +55,14 @@
     <!--------------- ---------------->
 
     <foldable class="component-container" no-mask="true">
-      <h1>Metrics Sensor</h1>
+      <h1 v-bind:class="{ connected: isMetricsConsumerConnected, disconnected: !isMetricsConsumerConnected }">Metrics Sensor</h1>
       <div class="item-list">
         <div class="toggleItem">
           <div class="item-name">Fetch Metrics Updates :</div>
           <toggle-button @change="() => handleMetricsToggle()" v-model="metricsConsumerIsActive"/>
         </div>
       </div>
-      <div class="property-container" v-bind:class="{ connected: isMetricsConsumerConnected, disconnected: !isMetricsConsumerConnected }">
+      <div class="property-container">
         <md-field>
           <label>Metrics Sensor API Url</label>
           <md-input v-model="metricsApiUrl" placeholder="Set Base Url" @change="() => handleMetricsApiUrlUpdate(metricsApiUrl)"></md-input>
@@ -85,7 +85,7 @@
     <!--------------- ---------------->
 
     <foldable class="component-container" no-mask="true">
-      <h1>Workload Emulator</h1>
+      <h1 v-bind:class="{ connected: isWorkloadEmulatorConnected, disconnected: !isWorkloadEmulatorConnected }">Workload Emulator</h1>
       <div class="item-list">
         <div class="toggleItem">
           <div class="item-name">Emulate Workload :</div>
@@ -96,7 +96,7 @@
           <div>{{ this.servicesUnderLoad }}</div>
         </div>
       </div>
-      <div class="property-container" v-bind:class="{ connected: isWorkloadEmulatorConnected, disconnected: !isWorkloadEmulatorConnected }">
+      <div class="property-container">
         <md-field>
           <label>API Url</label>
           <md-input v-model="workloadApiUrl" placeholder="Set Base Url" @change="() => handleWorkloadUrlUpdate(workloadApiUrl)"></md-input>
@@ -113,7 +113,7 @@
 
     <!----------------- --------------->
 
-    <h1>Model</h1>
+    <h1 v-bind:class="{ connected: isModelConnected, disconnected: !isModelConnected }">Model</h1>
     <div class="property-container">
       <md-field>
         <label>API Url</label>
@@ -153,6 +153,7 @@ export default {
           isZipkinConsumerConnected: false,
           isMetricsConsumerConnected: false,
           isWorkloadEmulatorConnected: false,
+          isModelConnected: false,
           zipkinConsumerIsActive: false,
           metricsConsumerIsActive: false,
           isWorkloadRunning: false,
@@ -169,14 +170,13 @@ export default {
   },
   methods: {
     async fetchData () {
+      this.modelApiUrl = modelApi.getBaseUrl()
       this.apiUrl = kubeApi.getBaseUrl()
       this.zipkinApiUrl = zipkinApi.getBaseUrl()
-      this.zipkinConsumerIsActive = zipkinApi.getIsConsumerActive()
       this.metricsApiUrl = metricsApi.getBaseUrl()
-      this.metricsUrl = metricsApi.getMetricsUrl()
-      this.metricsConsumerIsActive.getIsConsumerActive()
       this.workloadApiUrl = workloadApi.getBaseUrl()
-      this.modelApiUrl = modelApi.getBaseUrl()
+      this.zipkinConsumerIsActive = zipkinApi.getIsConsumerActive()
+      this.metricsConsumerIsActive.getIsConsumerActive()
 
       try {
         this.namespace = await kubeApi.getNamespace()
@@ -212,6 +212,13 @@ export default {
       } catch (e) {
           console.error(e)
           this.isWorkloadEmulatorConnected = false
+      }
+
+      try {
+          this.model = await modelApi.getModel();
+      } catch (e) {
+          console.error(e)
+          this.isModelConnected = false
       }
     },
     handleToggle(watcher) {
