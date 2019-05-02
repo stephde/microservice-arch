@@ -125,6 +125,12 @@
     </div>
     <md-button @click="getModel" class="green md-raised">Reload Model</md-button>
 
+    <Model ref="diag"
+             v-bind:model-data="modelData"
+             v-on:model-changed="() => {}"
+             v-on:changed-selection="handleModelSelectionChange"
+             style="border: solid 1px black; width:100%; height:400px"></Model>
+
   </div>
 </template>
 
@@ -134,9 +140,11 @@ import zipkinApi from './api-zipkin-consumer'
 import workloadApi from './api-workload'
 import metricsApi from './api-metrics-consumer'
 import modelApi from './api-model'
+import Model from './Model'
 
 export default {
   name: 'Monitor',
+  components: { Model },
   data () {
       return {
           namespace: null ,
@@ -161,6 +169,7 @@ export default {
           activeServices: [],
           model: { EMPTY: true},
           modelApiUrl: null,
+          modelData: null,
       }
   },
   created () {
@@ -275,10 +284,29 @@ export default {
     },
     getModel() {
       this.model = modelApi.getModel()
+      this.modelData = this.convertModel(this.model)
+    },
+    convertModel(model) {
+      return {
+          nodeDataArray: [
+              { key: 1, text: "Alpha", color: "lightblue" },
+              { key: 2, text: "Beta", color: "orange" },
+              { key: 3, text: "Gamma", color: "lightgreen" },
+              { key: 4, text: "Delta", color: "pink" }
+          ],
+          linkDataArray: [
+              { from: 1, to: 2 },
+              { from: 1, to: 3 },
+              { from: 3, to: 4 }
+          ]
+      }
     },
     handleModelUrlUpdate(url) {
       modelApi.setBaseUrl(url)
     },
+    handleModelSelectionChange(key) {
+      console.log(key)
+    }
   }
 }
 </script>
