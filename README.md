@@ -112,7 +112,7 @@ http://localhost:9411/zipkin/api/v2/dependencies?endTs=1545921678313
 ## Gateway
 * the gateway is a simple nginx based proxy
 * any service that should be accessible from outside the cluster needs to be configured here
-* build docker image with `docker build -t stephde/nginx:latest .`
+* build docker image with `docker build -t stephde/gateway:latest .`
 
 ## Frontend
 * build docker image `docker build -t dm-frontend ./frontend`
