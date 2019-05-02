@@ -6439,6 +6439,11 @@ vue-eslint-parser@^4.0.2:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
+vue-foldable@^1.0.0:
+  version "1.0.0"
+  resolved "http://artifactory.nexenio.local:80/artifactory/api/npm/nexboard-public/vue-foldable/-/vue-foldable-1.0.0.tgz#08443c142861f16c54c3ea7a7571b3ba31447d78"
+  integrity sha1-CEQ8FChh8WxUw+p6dXGzujFEfXg=
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"

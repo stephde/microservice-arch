@@ -24,86 +24,92 @@
 
     <!--------------- ---------------->
 
-    <h1>Zipkin Sensor</h1>
-    <div class="property-container" v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">
-      <md-field>
-        <label>Sensor API Url</label>
-        <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
-      </md-field>
-    </div>
-    <div class="property-container">
-      <md-field>
-        <label>Zipkin Collector Service Url</label>
-        <md-input v-model="zipkinCollectorUrl" placeholder="Set Base Url" @change="() => handleZipkinCollectorUrlUpdate(zipkinCollectorUrl)"></md-input>
-      </md-field>
-    </div>
-    <div class="property-container">
-      <md-field>
-        <label>Zipkin Fetch Interval in ms</label>
-        <md-input type="number" v-model.number="zipkinInterval" placeholder="Set Fetch Interval" @change="() => handleZipkinIntervalUpdate(zipkinInterval)"></md-input>
-      </md-field>
-    </div>
-    <div class="item-list">
-      <div class="toggleItem">
-        <div class="item-name">Fetch Zipkin Updates :</div>
-        <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
+    <foldable class="component-container" no-mask="true">
+      <h1>Zipkin Sensor</h1>
+      <div class="item-list">
+        <div class="toggleItem">
+          <div class="item-name">Fetch Zipkin Updates :</div>
+          <toggle-button @change="() => handleZipkinToggle()" v-model="zipkinConsumerIsActive"/>
+        </div>
       </div>
-    </div>
+      <div class="property-container" v-bind:class="{ connected: isZipkinConsumerConnected, disconnected: !isZipkinConsumerConnected }">
+        <md-field>
+          <label>Sensor API Url</label>
+          <md-input v-model="zipkinApiUrl" placeholder="Set Base Url" @change="() => handleZipkinUrlUpdate(zipkinApiUrl)"></md-input>
+        </md-field>
+      </div>
+      <div class="property-container">
+        <md-field>
+          <label>Zipkin Collector Service Url</label>
+          <md-input v-model="zipkinCollectorUrl" placeholder="Set Base Url" @change="() => handleZipkinCollectorUrlUpdate(zipkinCollectorUrl)"></md-input>
+        </md-field>
+      </div>
+      <div class="property-container">
+        <md-field>
+          <label>Zipkin Fetch Interval in ms</label>
+          <md-input type="number" v-model.number="zipkinInterval" placeholder="Set Fetch Interval" @change="() => handleZipkinIntervalUpdate(zipkinInterval)"></md-input>
+        </md-field>
+      </div>
+    </foldable>
 
     <!--------------- ---------------->
 
-    <h1>Metrics Sensor</h1>
-    <div class="property-container" v-bind:class="{ connected: isMetricsConsumerConnected, disconnected: !isMetricsConsumerConnected }">
-      <md-field>
-        <label>Metrics Sensor API Url</label>
-        <md-input v-model="metricsApiUrl" placeholder="Set Base Url" @change="() => handleMetricsApiUrlUpdate(metricsApiUrl)"></md-input>
-      </md-field>
-    </div>
-    <div class="property-container">
-      <md-field>
-        <label>Metrics Service Url</label>
-        <md-input v-model="metricsUrl" placeholder="Set Fetch Interval" @change="() => handleMetricsUrlUpdate(metricsUrl)"></md-input>
-      </md-field>
-    </div>
-    <div class="property-container">
-      <md-field>
-        <label>Metrics Fetch Interval in ms</label>
-        <md-input type="number" v-model.number="metricsInterval" placeholder="Set Fetch Interval" @change="() => handleMetricsIntervalUpdate(metricsInterval)"></md-input>
-      </md-field>
-    </div>
-    <div class="item-list">
-      <div class="toggleItem">
-        <div class="item-name">Fetch Metrics Updates :</div>
-        <toggle-button @change="() => handleMetricsToggle()" v-model="metricsConsumerIsActive"/>
+    <foldable class="component-container" no-mask="true">
+      <h1>Metrics Sensor</h1>
+      <div class="item-list">
+        <div class="toggleItem">
+          <div class="item-name">Fetch Metrics Updates :</div>
+          <toggle-button @change="() => handleMetricsToggle()" v-model="metricsConsumerIsActive"/>
+        </div>
       </div>
-    </div>
+      <div class="property-container" v-bind:class="{ connected: isMetricsConsumerConnected, disconnected: !isMetricsConsumerConnected }">
+        <md-field>
+          <label>Metrics Sensor API Url</label>
+          <md-input v-model="metricsApiUrl" placeholder="Set Base Url" @change="() => handleMetricsApiUrlUpdate(metricsApiUrl)"></md-input>
+        </md-field>
+      </div>
+      <div class="property-container">
+        <md-field>
+          <label>Metrics Service Url</label>
+          <md-input v-model="metricsUrl" placeholder="Set Fetch Interval" @change="() => handleMetricsUrlUpdate(metricsUrl)"></md-input>
+        </md-field>
+      </div>
+      <div class="property-container">
+        <md-field>
+          <label>Metrics Fetch Interval in ms</label>
+          <md-input type="number" v-model.number="metricsInterval" placeholder="Set Fetch Interval" @change="() => handleMetricsIntervalUpdate(metricsInterval)"></md-input>
+        </md-field>
+      </div>
+    </foldable>
 
     <!--------------- ---------------->
 
-    <h1>Workload Emulator</h1>
-    <div class="property-container" v-bind:class="{ connected: isWorkloadEmulatorConnected, disconnected: !isWorkloadEmulatorConnected }">
-      <md-field>
-        <label>API Url</label>
-        <md-input v-model="workloadApiUrl" placeholder="Set Base Url" @change="() => handleWorkloadUrlUpdate(workloadApiUrl)"></md-input>
-      </md-field>
-    </div>
-    <div class="item-list">
-      <div class="toggleItem">
-        <div class="item-name">Emulate Workload :</div>
-        <toggle-button @change="() => handleWorkloadToggle()" v-model="isWorkloadRunning"/>
+    <foldable class="component-container" no-mask="true">
+      <h1>Workload Emulator</h1>
+      <div class="item-list">
+        <div class="toggleItem">
+          <div class="item-name">Emulate Workload :</div>
+          <toggle-button @change="() => handleWorkloadToggle()" v-model="isWorkloadRunning"/>
+        </div>
+        <div class="toggleItem">
+          <div class="item-name">Services under load:</div>
+          <div>{{ this.servicesUnderLoad }}</div>
+        </div>
       </div>
-      <div class="toggleItem">
-        <div class="item-name">Services under load:</div>
-        <div>{{ this.servicesUnderLoad }}</div>
+      <div class="property-container" v-bind:class="{ connected: isWorkloadEmulatorConnected, disconnected: !isWorkloadEmulatorConnected }">
+        <md-field>
+          <label>API Url</label>
+          <md-input v-model="workloadApiUrl" placeholder="Set Base Url" @change="() => handleWorkloadUrlUpdate(workloadApiUrl)"></md-input>
+        </md-field>
       </div>
-    </div>
 
-    <ul class="item-list">
-      <li v-for="service in activeServices" class="toggleItem">
-        <div class="item-name">{{ service.name}} :</div>
-        <toggle-button @change="() => handleServiceWorkloadToggle(service)" v-model="service.active"/>
-      </li>
-    </ul>
+      <ul class="item-list">
+        <li v-for="service in activeServices" class="toggleItem">
+          <div class="item-name">{{ service.name}} :</div>
+          <toggle-button @change="() => handleServiceWorkloadToggle(service)" v-model="service.active"/>
+        </li>
+      </ul>
+    </foldable>
 
     <!----------------- --------------->
 
@@ -114,10 +120,10 @@
         <md-input v-model="modelApiUrl" placeholder="Set Model Url" @change="() => handleModelUrlUpdate(modelApiUrl)"></md-input>
       </md-field>
     </div>
-    <md-button @click="getModel" class="md-accent md-raised">Reload Model</md-button>
-    <div>
+    <div class="model-wrapper">
       <tree-view :data="model" :options="{maxDepth: 4, rootObjectKey: 'model'}"></tree-view>
     </div>
+    <md-button @click="getModel" class="green md-raised">Reload Model</md-button>
 
   </div>
 </template>
@@ -308,6 +314,18 @@ input {
 .item-list {
   display: inline-grid
 }
+button.md-button.md-raised.green {
+  background-color: #41b883ae;
+}
+
+.model-wrapper {
+  margin: 1em;
+}
+
+.component-container {
+  margin-bottom: 3em;
+}
+
 .vue-js-switch {
   padding-left: 20px;
 }
@@ -318,5 +336,13 @@ input {
 
 .connected {
   border-right: 5px solid #4ac08e;
+}
+
+.vue-foldable-container {
+  transition: max-height 0.3s;
+}
+
+.vue-foldable-mask {
+  transition: opacity 3s;
 }
 </style>
