@@ -104,6 +104,21 @@
         <toggle-button @change="() => handleServiceWorkloadToggle(service)" v-model="service.active"/>
       </li>
     </ul>
+
+    <!----------------- --------------->
+
+    <h1>Model</h1>
+    <div class="property-container">
+      <md-field>
+        <label>API Url</label>
+        <md-input v-model="modelApiUrl" placeholder="Set Model Url" @change="() => handleModelUrlUpdate(modelApiUrl)"></md-input>
+      </md-field>
+    </div>
+    <md-button @click="getModel" class="md-accent md-raised">Reload Model</md-button>
+    <div>
+      <tree-view :data="model" :options="{maxDepth: 4, rootObjectKey: 'model'}"></tree-view>
+    </div>
+
   </div>
 </template>
 
@@ -112,6 +127,7 @@ import kubeApi from './api-kube-consumer'
 import zipkinApi from './api-zipkin-consumer'
 import workloadApi from './api-workload'
 import metricsApi from './api-metrics-consumer'
+import modelApi from './api-model'
 
 export default {
   name: 'Monitor',
@@ -136,6 +152,8 @@ export default {
           isWorkloadRunning: false,
           servicesUnderLoad: 'NONE',
           activeServices: [],
+          model: { EMPTY: true},
+          modelApiUrl: null,
       }
   },
   created () {
@@ -152,6 +170,7 @@ export default {
       this.metricsUrl = metricsApi.getMetricsUrl()
       this.metricsConsumerIsActive.getIsConsumerActive()
       this.workloadApiUrl = workloadApi.getBaseUrl()
+      this.modelApiUrl = modelApi.getBaseUrl()
 
       try {
         this.namespace = await kubeApi.getNamespace()
@@ -240,7 +259,13 @@ export default {
     handleWorkloadUrlUpdate(url) {
       workloadApi.setBaseUrl(url)
       this.fetchData()
-    }
+    },
+    getModel() {
+      this.model = modelApi.getModel()
+    },
+    handleModelUrlUpdate(url) {
+      modelApi.setBaseUrl(url)
+    },
   }
 }
 </script>
@@ -271,6 +296,7 @@ input {
 .global-container {
   max-width: 500px;
   margin: auto;
+  margin-bottom: 6em;
 }
 .property-container {
   display: inline-flex;

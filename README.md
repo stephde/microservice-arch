@@ -80,10 +80,6 @@ docker stack rm --namespace dm dm
 The namespace of the target application needs to match the namespace in the application.properties of the monitor.
 Otherwise, it can also be adjusted at runtime by calling the `POST /namespace` endpoint (as in `scripts/changeNamespace.sh`)
 
-### Running the monitoring UI
-* run as docker image on server
-* set API url in UI (e.g. to `http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer`)
-
 ## Events on Replication
 
 ```bash
@@ -117,6 +113,11 @@ http://localhost:9411/zipkin/api/v2/dependencies?endTs=1545921678313
 * the gateway is a simple nginx based proxy
 * any service that should be accessible from outside the cluster needs to be configured here
 * build docker image with `docker build -t stephde/nginx:latest .`
+
+## Frontend
+* build docker image `docker build -t dm-frontend ./frontend`
+* run as docker image on server
+* set API url in UI (e.g. to `http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer`)
 
 ## How to add a module
 * use spring boot starter
