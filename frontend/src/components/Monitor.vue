@@ -225,6 +225,7 @@ export default {
 
       try {
           this.model = await modelApi.getModel();
+          this.isModelConnected = true
       } catch (e) {
           console.error(e)
           this.isModelConnected = false
@@ -282,25 +283,11 @@ export default {
       workloadApi.setBaseUrl(url)
       this.fetchData()
     },
-    getModel() {
-      this.model = modelApi.getModel()
-      this.modelData = this.convertModel(this.model)
-    },
-    convertModel(model) {
-      let data =
-      return {
-          nodeDataArray: [
-              { key: 1, text: "Alpha", color: "lightblue" },
-              { key: 2, text: "Beta", color: "orange" },
-              { key: 3, text: "Gamma", color: "lightgreen" },
-              { key: 4, text: "Delta", color: "pink" }
-          ],
-          linkDataArray: [
-              { from: 1, to: 2 },
-              { from: 1, to: 3 },
-              { from: 3, to: 4 }
-          ]
-      }
+    async getModel() {
+      this.model = await modelApi.getModel()
+      this.isModelConnected = true
+
+      this.modelData = modelApi.convertModel(this.model.services)
     },
     handleModelUrlUpdate(url) {
       modelApi.setBaseUrl(url)
@@ -356,6 +343,7 @@ button.md-button.md-raised.green {
 
 .model-wrapper {
   margin: 1em;
+  text-align: start;
 }
 
 .component-container {

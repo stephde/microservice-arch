@@ -26,6 +26,34 @@ export default {
     return data
   },
 
+  convertModel: model => {
+
+      const nodes = model.services.map(service => { return {
+          key: service.name,
+          text: service.name,
+          color: 'lightblue'
+      }})
+
+      const links = []
+      model.services.forEach(service => {
+          service.instances.forEach(instance => {
+              if(instance.requiredInterfaces) {
+                  instance.requiredInterfaces.forEach(i => {
+                      links.push({
+                          from: service.name,
+                          to: i.targetName
+                      })
+                  })
+              }
+          })
+      })
+
+      return {
+          nodeDataArray: nodes,
+          linkDataArray: links,
+      }
+  },
+
   getBaseUrl: () => AXIOS_CONF.baseURL,
 
   setBaseUrl: baseURL => {
