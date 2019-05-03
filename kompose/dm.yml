@@ -341,7 +341,7 @@ items:
         - env:
           - name: STORAGE_TYPE
             value: mem
-          image: openzipkin/zipkin
+          image: openzipkin/zipkin:2.11
           name: zipkin
           ports:
           - containerPort: 9411

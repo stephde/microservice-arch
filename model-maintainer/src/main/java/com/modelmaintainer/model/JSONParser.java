@@ -16,6 +16,7 @@ public class JSONParser {
         JsonObject json = new JsonObject();
         json.addProperty("instance", model.toString());
 
+        JsonArray services = new JsonArray();
         model.getComponentTypes().forEach(ct -> {
             JsonObject jsonComponent = new JsonObject();
             jsonComponent.addProperty("name", ct.getName());
@@ -28,9 +29,10 @@ public class JSONParser {
             ct.getMonitoredProperties().forEach(prop -> jsonComponent.addProperty(prop.getName(), prop.getValue()));
 
             jsonComponent.addProperty("parameters", ct.getParameterTypes().toString());
-            json.add(ct.getName(), jsonComponent);
+            services.add(jsonComponent);
         });
 
+        json.add("services", services);
         return json;
     }
 

@@ -185,7 +185,7 @@ export default {
       this.metricsApiUrl = metricsApi.getBaseUrl()
       this.workloadApiUrl = workloadApi.getBaseUrl()
       this.zipkinConsumerIsActive = zipkinApi.getIsConsumerActive()
-      this.metricsConsumerIsActive.getIsConsumerActive()
+      this.metricsConsumerIsActive = metricsApi.getIsConsumerActive()
 
       try {
         this.namespace = await kubeApi.getNamespace()
@@ -287,6 +287,7 @@ export default {
       this.modelData = this.convertModel(this.model)
     },
     convertModel(model) {
+      let data =
       return {
           nodeDataArray: [
               { key: 1, text: "Alpha", color: "lightblue" },

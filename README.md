@@ -116,7 +116,7 @@ http://localhost:9411/zipkin/api/v2/dependencies?endTs=1545921678313
 
 ## Frontend
 * build docker image `docker build -t dm-frontend ./frontend`
-* run as docker image on server
+* run as docker image on server `docker run -d --restart-always --name dm-frontend -p 1801:8080 stephde/dm-frontend`
 * set API url in UI (e.g. to `http://fb14srv7.hpi.uni-potsdam.de:1800/kube-consumer`)
 
 ## How to add a module

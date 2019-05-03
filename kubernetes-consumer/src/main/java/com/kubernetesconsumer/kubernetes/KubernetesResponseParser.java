@@ -46,7 +46,10 @@ public class KubernetesResponseParser {
                             .collect(Collectors.toList());
             }
 
-            pod.setRuntimeEnv(extractRuntimeEnv(c.getCommand(), envs, c.getArgs()));
+            String runtimeEnv = extractRuntimeEnv(c.getCommand(), envs, c.getArgs());
+            if(runtimeEnv != null) {
+                pod.setRuntimeEnv(runtimeEnv);
+            }
         });
 
         return pod;
@@ -113,7 +116,7 @@ public class KubernetesResponseParser {
         log.info("Env Vars: {}", envs);
         log.info("Arguments: {}", args);
 
-        return "Alpine, Java";
+        return null;
     }
 
     private String extractServiceName(String instanceName) {

@@ -62,7 +62,7 @@ public class ModelWrapper {
         this.model = this.factory.createModel(name);
     }
 
-    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime, String runtimeEnv) {
+    public void handleInstanceStateUpdate(String componentName, String instanceName, String nodeName, ComponentState state, DateTime eventTime, DateTime creationTime) {
         if ( isStaleInstance(instanceName) ) {
             // do nothing if update is irrelevant
             return;
@@ -83,7 +83,7 @@ public class ModelWrapper {
             properties.add(this.factory.createNodeProperty(nodeName));
             properties.add(this.factory.createLastUpdateProperty(eventTime));
             properties.add(this.factory.createCreationTimeProperty(creationTime));
-            properties.add(this.factory.createRuntimeEnvProperty(runtimeEnv));
+//            properties.add(this.factory.createRuntimeEnvProperty(runtimeEnv));
             log.info("Changed {} state to: {}", component.getName(), state);
         }
     }

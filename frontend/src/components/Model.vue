@@ -3,6 +3,7 @@
 </template>
 
 <script>
+// inspired by https://github.com/NorthwoodsSoftware/GoJS/blob/master/samples/vue.html
     import * as go from 'gojs'
     const make = go.GraphObject.make
 

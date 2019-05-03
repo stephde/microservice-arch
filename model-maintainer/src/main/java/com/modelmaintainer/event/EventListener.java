@@ -79,8 +79,7 @@ public class EventListener {
                 event.getNodeName(),
                 parseState(event.getStatus()),
                 event.getEventDateTime(),
-                event.getCreationDateTime(),
-                event.getRuntimeEnv());
+                event.getCreationDateTime());
     }
 
     @JmsListener(destination = "${spring.activemq.queue-name}",
