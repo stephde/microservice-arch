@@ -287,7 +287,7 @@ export default {
       this.model = await modelApi.getModel()
       this.isModelConnected = true
 
-      this.modelData = modelApi.convertModel(this.model.services)
+      this.modelData = modelApi.convertModel(this.model)
     },
     handleModelUrlUpdate(url) {
       modelApi.setBaseUrl(url)

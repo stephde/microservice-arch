@@ -55,7 +55,7 @@ public class JSONParser {
     private JsonArray getInterfacesAsJSON(List<RequiredInterface> interfaces) {
         JsonArray jsonArray = new JsonArray();
         interfaces.forEach(i -> {
-            String targetComponentName = i.getConnector().getTarget().getComponent().getName();
+            String targetComponentName = i.getConnector().getTarget().getComponent().getType().getName();
 
             JsonObject jsonComponent = new JsonObject();
             jsonComponent.addProperty("targetName", targetComponentName);
