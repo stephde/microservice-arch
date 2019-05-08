@@ -68,40 +68,21 @@ kubectl port-forward svc/gateway 80:80 --namespace=dm
 ```
 
 
-Without kubectl connection from host
-```bash
-# copy compose file from host to vm
-# vagrant plugin install vagrant-scp
-vagrant scp docker-compose.hub.yml k8s1:~/docker-compose.hub.yml
-```
-
-Run docker registry in VM
-```bash
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
-```
-Additionally, you need to add registry as insecure in docker.json on your development computer so that you can push images
-So add `fb14srv7:5000` there.
-Now you should be able to push docker images to the server with `scripts/tagAndPushDocker.sh`
-(Alternatively, you can use the flag `--insecure-registry=fb14srv7:5000` with your docker push command)
-
-
-
-
 ### Resources
 https://medium.com/@lizrice/kubernetes-in-vagrant-with-kubeadm-21979ded6c63
 
 
 ---------------------------------------------------------------------
 
-## DEPRECATED!!!
+## (OPTIONAL) Alternative Installation via kubeadm instead of vagrant 
 
-## Resources
+### Resources for installatation via kubeadm
 kubeadm - https://kubernetes.io/docs/setup/independent/
 cluster - https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
 in VM - https://www.mirantis.com/blog/how-install-kubernetes-kubeadm/
 in VM - https://medium.com/@KevinHoffman/building-a-kubernetes-cluster-in-virtualbox-with-ubuntu-22cd338846dd
 
-#### Preconditions
+### Preconditions
 * >= 2 CPUs, >= 2GB RAM
 * turn off 
 ```bash
